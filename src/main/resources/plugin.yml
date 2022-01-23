@@ -1,0 +1,14 @@
+name: DecentMenus
+version: '${version}'
+main: eu.decentsoftware.decentmenus.DecentMenus
+api-version: 1.13
+prefix: [ DecentMenus ]
+softdepend: [ PlaceholderAPI, HeadDatabase ]
+authors: [ d0by ]
+website: www.decentsoftware.eu
+
+permissions:
+  'decentmenus.tab_complete':
+    description: Allows player to tab-complete through menus in /openmenu command.
+  'decentmenus.admin':
+    'decentmenus.tab_complete': true
