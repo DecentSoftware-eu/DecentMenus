@@ -20,14 +20,12 @@ public final class Config {
 
     @ConfigValue("prefix")
     public static String PREFIX = "&8[&3DecentMenus&8] &7";
-    @ConfigValue("messages.use_help")
-    public static String USE_HELP = "{prefix}Use: &b/decentmenus help";
     @ConfigValue("messages.unknown_sub_command")
     public static String UNKNOWN_SUB_COMMAND = "{prefix}&cUnknown sub command.";
     @ConfigValue("messages.menu_no_perm")
     public static String MENU_NO_PERM = "{prefix}You cannot open that menu.";
     @ConfigValue("messages.menu_usage")
-    public static String MENU_USAGE = "{prefix}Usage: &b/decentmenus <args>";
+    public static String MENU_USAGE = "{prefix}Usage: &b/decentmenus <list|ver>";
     @ConfigValue("messages.menu_open_usage")
     public static String MENU_OPEN_USAGE = "{prefix}Usage: &b/openmenu <menu>";
     @ConfigValue("messages.menu_does_not_exist")
