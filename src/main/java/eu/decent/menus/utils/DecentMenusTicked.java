@@ -13,10 +13,16 @@ public abstract class DecentMenusTicked extends Ticked {
         super(id, interval);
     }
 
+    /**
+     * Register this ticked object into the plugins' Ticker.
+     */
     protected void startTicking() {
         DecentMenus.getInstance().getTicker().register(this);
     }
 
+    /**
+     * Unregister this ticked object from the plugins' Ticker.
+     */
     protected void stopTicking() {
         DecentMenus.getInstance().getTicker().unregister(this.getId());
     }

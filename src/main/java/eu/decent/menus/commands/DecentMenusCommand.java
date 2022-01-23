@@ -42,6 +42,6 @@ public class DecentMenusCommand extends DecentCommand {
         return null;
     }
 
-    // TODO list, open, ver
+    // TODO list, ver
 
 }

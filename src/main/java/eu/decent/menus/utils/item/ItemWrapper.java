@@ -12,6 +12,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -28,96 +30,46 @@ public class ItemWrapper {
 	protected ItemFlag[] flags;
 	protected boolean unbreakable;
 
-	public boolean canParse() {
-		return material != null;
-	}
-
 	public ItemStack parse() {
-		ItemBuilder itemBuilder = new ItemBuilder(material == null ? Material.STONE : material);
-		if (name != null) {
-			itemBuilder.withName(Common.colorize(name));
-		}
-		itemBuilder.withAmount(amount);
-		itemBuilder.withDurability(durability);
-		if (lore != null && !lore.isEmpty()) {
-			itemBuilder.withLore(Common.colorize(lore));
-		}
-		if (enchantments != null && !enchantments.isEmpty()) {
-			enchantments.forEach(itemBuilder::withUnsafeEnchantment);
-		}
-		if (skullOwner != null) {
-			itemBuilder.withSkullOwner(skullOwner);
-		} else if (skullTexture != null) {
-			itemBuilder.withSkullTexture(skullTexture);
-		}
-		itemBuilder.withItemFlags(flags);
-		itemBuilder.withUnbreakable(unbreakable);
-		return itemBuilder.build();
+		return parse(null);
 	}
 
 	public ItemStack parse(Player player) {
-		return this.parseBuilder(player).build();
+		return parse(player, Common::colorize);
 	}
 
-	public ItemBuilder parseBuilder(Player player) {
+	public ItemStack parse(Player player, MenuItem menuItem) {
+		return parse(player, (s) -> Common.colorize(menuItem.setPlaceholders(player, s)));
+	}
+
+	public ItemStack parse(Player player, Function<String, String> stringProcessor) {
 		ItemBuilder itemBuilder = new ItemBuilder(material == null ? Material.STONE : material);
 		if (name != null) {
-			itemBuilder.withName(Common.colorize(name));
+			if (stringProcessor == null) {
+				itemBuilder.withName(name);
+			} else {
+				itemBuilder.withName(stringProcessor.apply(name));
+			}
 		}
-		itemBuilder.withAmount(amount);
-		itemBuilder.withDurability(durability);
 		if (lore != null && !lore.isEmpty()) {
-			itemBuilder.withLore(Common.colorize(lore));
+			if (stringProcessor == null) {
+				itemBuilder.withLore(lore);
+			} else {
+				itemBuilder.withLore(lore.stream()
+						.map(stringProcessor)
+						.collect(Collectors.toList())
+				);
+			}
 		}
 		if (enchantments != null && !enchantments.isEmpty()) {
 			enchantments.forEach(itemBuilder::withUnsafeEnchantment);
 		}
 		if (skullOwner != null) {
-			itemBuilder.withSkullOwner(skullOwner.equals("@") ? player.getName() : skullOwner);
-		} else if (skullTexture != null) {
-			itemBuilder.withSkullTexture(skullTexture);
-		}
-		itemBuilder.withItemFlags(flags);
-		itemBuilder.withUnbreakable(unbreakable);
-		return itemBuilder;
-	}
-
-	public ItemStack parse(MenuItem menuItem, Player player) {
-		ItemBuilder itemBuilder = new ItemBuilder(material == null ? Material.STONE : material);
-		if (name != null) {
-			itemBuilder.withName(Common.colorize(menuItem.setPlaceholders(player, name)));
-		}
-		itemBuilder.withAmount(amount);
-		itemBuilder.withDurability(durability);
-		if (lore != null && !lore.isEmpty()) {
-			itemBuilder.withLore(Common.colorize(menuItem.setPlaceholders(player, lore)));
-		}
-		if (enchantments != null && !enchantments.isEmpty()) {
-			enchantments.forEach(itemBuilder::withUnsafeEnchantment);
-		}
-		if (skullOwner != null) {
-			itemBuilder.withSkullOwner(skullOwner.equals("@") ? player.getName() : skullOwner);
-		} else if (skullTexture != null) {
-			itemBuilder.withSkullTexture(skullTexture);
-		}
-		itemBuilder.withItemFlags(flags);
-		itemBuilder.withUnbreakable(unbreakable);
-		return itemBuilder.build();
-	}
-
-	public ItemStack parseFrom(ItemStack itemStack, MenuItem menuItem, Player player) {
-		ItemBuilder itemBuilder = new ItemBuilder(itemStack);
-		if (name != null) {
-			itemBuilder.withName(Common.colorize(menuItem.setPlaceholders(player, name)));
-		}
-		if (lore != null && !lore.isEmpty()) {
-			itemBuilder.withLore(Common.colorize(menuItem.setPlaceholders(player, lore)));
-		}
-		if (enchantments != null && !enchantments.isEmpty()) {
-			enchantments.forEach(itemBuilder::withUnsafeEnchantment);
-		}
-		if (skullOwner != null) {
-			itemBuilder.withSkullOwner(skullOwner.equals("@") ? player.getName() : skullOwner);
+			if (skullOwner.equals("@") && player != null) {
+				itemBuilder.withSkullOwner(player.getName());
+			} else {
+				itemBuilder.withSkullOwner(skullOwner);
+			}
 		} else if (skullTexture != null) {
 			itemBuilder.withSkullTexture(skullTexture);
 		}

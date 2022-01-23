@@ -15,10 +15,14 @@ public class NormalMenuItem extends MenuItem {
         super(config, identifier, EnumMenuItemType.NORMAL);
     }
 
+    public NormalMenuItem(Configuration config, char identifier, EnumMenuItemType type) {
+        super(config, identifier, type);
+    }
+
     @Override
     public ItemStack construct(Menu menu) {
         Player player = menu.getOwner().getPlayer();
-        return itemWrapper.parse(this, player);
+        return itemWrapper.parse(player, this);
     }
 
     @Override

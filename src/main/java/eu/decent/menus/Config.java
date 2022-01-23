@@ -36,6 +36,15 @@ public final class Config {
     public static String MENU_LIST = "{prefix}Menus: &b%s";
 
     /*
+     *  Servers
+     */
+
+    @ConfigValue("servers.online_marker")
+    public static String ONLINE_MARKER = "True";
+    @ConfigValue("servers.offline_marker")
+    public static String OFFLINE_MARKER = "False";
+
+    /*
      *  Utility Methods
      */
 

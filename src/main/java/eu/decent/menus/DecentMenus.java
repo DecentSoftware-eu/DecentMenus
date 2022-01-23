@@ -10,7 +10,9 @@ import eu.decent.menus.menu.MenuListener;
 import eu.decent.menus.menu.MenuRegistry;
 import eu.decent.menus.player.PlayerListener;
 import eu.decent.menus.player.PlayerRegistry;
+import eu.decent.menus.server.ServerRegistry;
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
 
 import java.io.File;
@@ -24,6 +26,7 @@ public final class DecentMenus extends DecentPlugin {
 
     private static DecentMenus instance;
     private PlayerRegistry playerRegistry;
+    private ServerRegistry serverRegistry;
     private MenuRegistry menuRegistry;
     private CommandManager commandManager;
     private Ticker ticker;
@@ -43,6 +46,7 @@ public final class DecentMenus extends DecentPlugin {
     public void enable() {
         Config.CONFIG = CFG.load(Config.class, getConfigFile());
         this.playerRegistry = new PlayerRegistry();
+        this.serverRegistry = new ServerRegistry();
         this.menuRegistry = new MenuRegistry();
         this.commandManager = new CommandManager();
         this.ticker = new Ticker();
@@ -55,16 +59,25 @@ public final class DecentMenus extends DecentPlugin {
         // Register commands
         commandManager.registerCommand(new DecentMenusCommand());
         commandManager.registerCommand(new OpenMenuCommand());
+
+        // Register Bungee channel
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     @Override
     public void disable() {
         this.ticker.shutdown();
         this.menuRegistry.shutdown();
+        this.serverRegistry.shutdown();
         this.playerRegistry.shutdown();
         this.commandManager.unregisterCommand("decentmenus");
         this.commandManager.unregisterCommand("openmenu");
         this.commandManager.destroy();
+
+        // Unregister Bungee channel
+        getServer().getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
+
+        HandlerList.unregisterAll(this);
     }
 
     /**
@@ -86,6 +99,15 @@ public final class DecentMenus extends DecentPlugin {
      */
     public PlayerRegistry getPlayerRegistry() {
         return playerRegistry;
+    }
+
+    /**
+     * Get the {@link ServerRegistry} of this plugin.
+     *
+     * @return The ServerRegistry.
+     */
+    public ServerRegistry getServerRegistry() {
+        return serverRegistry;
     }
 
     /**
