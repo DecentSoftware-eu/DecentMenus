@@ -28,14 +28,13 @@ public class MenuRegistry {
     public MenuRegistry() {
         this.menuModelMap = new DMap<>();
         this.menusDir = null;
+        this.reload();
     }
 
     /**
      * Clear this registry and load all {@link MenuModel}s.
      */
     public void reload() {
-        Common.log("Loading menus...");
-
         // Clear existing menu models
         clear();
 
@@ -44,6 +43,7 @@ public class MenuRegistry {
             menusDir = new File(DecentMenus.getInstance().getDataFolder() + "/menus");
         }
 
+        Common.log("Loading menus...");
         // Load all menu models
         int counter = 0;
         if (menusDir.exists() && menusDir.isDirectory()) {

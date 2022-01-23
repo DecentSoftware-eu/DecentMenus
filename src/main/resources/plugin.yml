@@ -1,11 +1,11 @@
 name: DecentMenus
 version: '${version}'
-main: eu.decentsoftware.decentmenus.DecentMenus
+main: eu.decent.menus.DecentMenus
 api-version: 1.13
-prefix: [ DecentMenus ]
+prefix: '[DecentMenus]'
 softdepend: [ PlaceholderAPI, HeadDatabase ]
 authors: [ d0by ]
-website: www.decentsoftware.eu
+website: github.decentsoftware.eu
 
 permissions:
   'decentmenus.tab_complete':

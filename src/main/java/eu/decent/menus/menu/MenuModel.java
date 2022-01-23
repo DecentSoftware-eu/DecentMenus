@@ -6,6 +6,7 @@ import eu.decent.menus.DecentMenus;
 import eu.decent.menus.menu.enums.EnumMenuItemType;
 import eu.decent.menus.menu.item.MenuItem;
 import eu.decent.menus.utils.config.Configuration;
+import jdk.internal.joptsimple.internal.Strings;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.apache.commons.lang.Validate;
@@ -62,8 +63,8 @@ public class MenuModel {
 
         // Get the slots
         List<String> slots = config.getStringList("slots");
-        if (slots == null || slots.isEmpty()) {
-            slots = Lists.newArrayList("         ");
+        if (slots.isEmpty()) {
+            slots = Lists.newArrayList(Strings.repeat(' ', 9));
         }
 
         DMap<Character, MenuItem> itemMap = new DMap<>();
@@ -72,13 +73,15 @@ public class MenuModel {
         }
         // Load the items
         ConfigurationSection items = config.getConfigurationSection("items");
-        for (String key : items.getKeys(false)) {
-            if (key.length() != 1) continue;
-            char ch = key.charAt(0);
-            String typeName = items.getString(key + ".type", "NORMAL");
-            EnumMenuItemType type = EnumMenuItemType.fromName(typeName);
-            Configuration configuration = (Configuration) items.getConfigurationSection(key);
-            itemMap.put(ch, type.create(configuration, ch));
+        if (items != null) {
+            for (String key : items.getKeys(false)) {
+                if (key.length() != 1) continue;
+                char ch = key.charAt(0);
+                String typeName = items.getString(key + ".type", "NORMAL");
+                EnumMenuItemType type = EnumMenuItemType.fromName(typeName);
+                Configuration configuration = (Configuration) items.getConfigurationSection(key);
+                itemMap.put(ch, type.create(configuration, ch));
+            }
         }
         return new MenuModel(name, config, title, permission, slots, itemMap, updating, updateInterval);
     }
