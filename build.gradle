@@ -6,10 +6,9 @@ group = 'eu.decent'
 version = '1.0.0'
 
 repositories {
-    mavenLocal()
     mavenCentral()
-    maven { url = 'https://repo.codemc.io/repository/nms/' }
-    maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://oss.sonatype.org/content/groups/public/' }
 }
 
 dependencies {
@@ -17,8 +16,8 @@ dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
 
     // Annotations
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
     compileOnly 'org.jetbrains:annotations:22.0.0'
     annotationProcessor 'org.jetbrains:annotations:22.0.0'
 }
@@ -27,13 +26,19 @@ compileJava {
     options.encoding = 'UTF-8'
 }
 
-def targetJavaVersion = 8
+def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release = targetJavaVersion
     }
 }
 

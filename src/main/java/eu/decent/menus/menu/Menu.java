@@ -50,7 +50,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      * @param previousMenu The previous menu.
      */
     public Menu(MenuModel menuModel, PlayerProfile owner, Menu previousMenu) {
-        super(menuModel.getUpdateInterval());
+        super(menuModel.updateInterval());
         this.menuModel = menuModel;
         this.owner = owner;
         this.previousMenu = previousMenu;
@@ -70,9 +70,9 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
             return;
         }
 
-        Map<Character, MenuItem> itemMap = menuModel.getItems();
-        List<String> slots = menuModel.getSlots();
-        String title = Common.colorize(menuModel.getTitle());
+        Map<Character, MenuItem> itemMap = menuModel.items();
+        List<String> slots = menuModel.slots();
+        String title = Common.colorize(menuModel.title());
         int size = slots.size() * 9;
 
         items = new MenuItem[size];

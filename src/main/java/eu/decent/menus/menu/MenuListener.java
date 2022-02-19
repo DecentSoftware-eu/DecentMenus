@@ -6,7 +6,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 
 import java.util.function.Consumer;
 
@@ -31,11 +30,8 @@ public class MenuListener implements Listener {
     }
 
     private void executeIfMenu(Inventory inventory, Consumer<Menu> consumer) {
-        if (inventory != null) {
-            InventoryHolder holder = inventory.getHolder();
-            if (holder instanceof Menu) {
-                consumer.accept((Menu) holder);
-            }
+        if (inventory != null && inventory.getHolder() instanceof Menu menu) {
+            consumer.accept(menu);
         }
     }
 

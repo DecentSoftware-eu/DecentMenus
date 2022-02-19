@@ -1,14 +1,12 @@
 package eu.decent.menus.menu;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import eu.decent.library.utils.collection.DMap;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.menu.enums.EnumMenuItemType;
 import eu.decent.menus.menu.item.MenuItem;
 import eu.decent.menus.utils.config.Configuration;
-import jdk.internal.joptsimple.internal.Strings;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -16,18 +14,15 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Map;
 
-@Getter
-@AllArgsConstructor
-public class MenuModel {
-
-    private final String name;
-    private final Configuration config;
-    private final String title;
-    private final String permission;
-    private final List<String> slots;
-    private final Map<Character, MenuItem> items;
-    private final boolean updating;
-    private final int updateInterval;
+public record MenuModel(String name,
+                        Configuration config,
+                        String title,
+                        String permission,
+                        List<String> slots,
+                        Map<Character, MenuItem> items,
+                        boolean updating,
+                        int updateInterval
+) {
 
     /**
      * Check whether the given player is allowed to open the menu.
@@ -64,7 +59,7 @@ public class MenuModel {
         // Get the slots
         List<String> slots = config.getStringList("slots");
         if (slots.isEmpty()) {
-            slots = Lists.newArrayList(Strings.repeat(' ', 9));
+            slots = Lists.newArrayList(Strings.repeat(" ", 9));
         }
 
         DMap<Character, MenuItem> itemMap = new DMap<>();
