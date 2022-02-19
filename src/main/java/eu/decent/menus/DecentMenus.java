@@ -11,6 +11,7 @@ import eu.decent.menus.menu.MenuRegistry;
 import eu.decent.menus.player.PlayerListener;
 import eu.decent.menus.player.PlayerRegistry;
 import eu.decent.menus.server.ServerRegistry;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
@@ -22,6 +23,7 @@ import java.io.File;
  *
  * @author d0by
  */
+@Getter
 public final class DecentMenus extends DecentPlugin {
 
     private static DecentMenus instance;
@@ -33,7 +35,7 @@ public final class DecentMenus extends DecentPlugin {
     // The 'config.yml' file
     private File configFile;
 
-    public DecentMenus() {
+    private DecentMenus() {
         instance = this;
     }
 
@@ -44,7 +46,7 @@ public final class DecentMenus extends DecentPlugin {
 
     @Override
     public void enable() {
-        Config.CONFIG = CFG.load(Config.class, getConfigFile());
+        this.reload();
         this.playerRegistry = new PlayerRegistry();
         this.serverRegistry = new ServerRegistry();
         this.menuRegistry = new MenuRegistry();
@@ -81,6 +83,13 @@ public final class DecentMenus extends DecentPlugin {
     }
 
     /**
+     * Reload this plugin.
+     */
+    public void reload() {
+        Config.CONFIG = CFG.load(Config.class, getConfigFile());
+    }
+
+    /**
      * Get the 'config.yml' file.
      *
      * @return The file.
@@ -90,51 +99,6 @@ public final class DecentMenus extends DecentPlugin {
             configFile = new File(getDataFolder(), "config.yml");
         }
         return configFile;
-    }
-
-    /**
-     * Get the {@link PlayerRegistry} of this plugin.
-     *
-     * @return The PlayerRegistry.
-     */
-    public PlayerRegistry getPlayerRegistry() {
-        return playerRegistry;
-    }
-
-    /**
-     * Get the {@link ServerRegistry} of this plugin.
-     *
-     * @return The ServerRegistry.
-     */
-    public ServerRegistry getServerRegistry() {
-        return serverRegistry;
-    }
-
-    /**
-     * Get the {@link MenuRegistry} of this plugin.
-     *
-     * @return The MenuRegistry.
-     */
-    public MenuRegistry getMenuRegistry() {
-        return menuRegistry;
-    }
-
-    /**
-     * Get the {@link CommandManager} of this plugin.
-     *
-     * @return The CommandManager.
-     */
-    public CommandManager getCommandManager() {
-        return commandManager;
-    }
-
-    /**
-     * Get the {@link Ticker} of this plugin.
-     *
-     * @return The Ticker.
-     */
-    public Ticker getTicker() {
-        return ticker;
     }
 
     /**

@@ -6,6 +6,8 @@ import eu.decent.menus.menu.item.MenuItem;
 import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.DecentMenusTicked;
 import eu.decent.menus.utils.MenuUtils;
+import lombok.AccessLevel;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -13,7 +15,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Map;
@@ -21,12 +22,14 @@ import java.util.Map;
 /**
  * This class represents a menu.
  */
+@Getter
 public class Menu extends DecentMenusTicked implements InventoryHolder {
 
     private final MenuModel menuModel;
     private final PlayerProfile owner;
     private final Menu previousMenu;
     private Inventory inventory;
+    @Getter(AccessLevel.NONE)
     private MenuItem[] items;
 
     /**
@@ -75,7 +78,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
         items = new MenuItem[size];
 
         // Create & open the inventory
-        if (inventory == null || !player.getOpenInventory().getTopInventory().getHolder().equals(this) || inventory.getSize() != size) {
+        if (inventory == null || !equals(player.getOpenInventory().getTopInventory().getHolder()) || inventory.getSize() != size) {
             inventory = Bukkit.createInventory(this, size, title);
             player.openInventory(inventory);
             owner.setOpenMenu(this);
@@ -161,48 +164,6 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
     public void onClose(InventoryCloseEvent event) {
         getOwner().setOpenMenu(null);
         stopTicking();
-    }
-
-    /*
-     *  Getters & Setters
-     */
-
-    /**
-     * Get the bukkit inventory of this menu.
-     *
-     * @return The inventory.
-     */
-    @Override
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    /**
-     * Get the {@link MenuModel} of this menu.
-     *
-     * @return The menu model.
-     */
-    public MenuModel getMenuModel() {
-        return menuModel;
-    }
-
-    /**
-     * Get the owning player of this menu.
-     *
-     * @return The players profile.
-     */
-    public PlayerProfile getOwner() {
-        return owner;
-    }
-
-    /**
-     * Get the previous menu of this menu.
-     *
-     * @return The previous menu.
-     */
-    @Nullable
-    public Menu getPreviousMenu() {
-        return previousMenu;
     }
 
 }

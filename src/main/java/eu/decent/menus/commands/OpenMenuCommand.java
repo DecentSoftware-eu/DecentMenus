@@ -49,7 +49,7 @@ public class OpenMenuCommand extends DecentCommand {
                 return new ArrayList<>();
             }
             MenuRegistry menuRegistry = DecentMenus.getInstance().getMenuRegistry();
-            List<String> list = new ArrayList<>(menuRegistry.getMenuNames());
+            List<String> list = new ArrayList<>(menuRegistry.getKeys());
             Collections.sort(list);
             return list;
         };

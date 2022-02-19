@@ -1,9 +1,9 @@
 package eu.decent.menus.menu;
 
 import eu.decent.library.utils.Common;
-import eu.decent.library.utils.collection.DMap;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.player.PlayerProfile;
+import eu.decent.menus.utils.Registry;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,22 +11,18 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Set;
 
 /**
  * This class holds all menu models.
  */
-public class MenuRegistry {
+public class MenuRegistry extends Registry<String, MenuModel> {
 
-    private final DMap<String, MenuModel> menuModelMap;
     private File menusDir;
 
     /**
      * Create new {@link MenuRegistry}.
      */
     public MenuRegistry() {
-        this.menuModelMap = new DMap<>();
         this.menusDir = null;
         this.reload();
     }
@@ -34,6 +30,7 @@ public class MenuRegistry {
     /**
      * Clear this registry and load all {@link MenuModel}s.
      */
+    @Override
     public void reload() {
         // Clear existing menu models
         clear();
@@ -63,21 +60,17 @@ public class MenuRegistry {
     /**
      * Clear this registry and close all menus.
      */
+    @Override
     public void clear() {
-        if (menuModelMap.isEmpty()) {
-            return;
-        }
-        menuModelMap.clear();
+        super.clear();
 
         // Close all menus
         Bukkit.getOnlinePlayers().forEach((p) -> {
             Inventory inventory = p.getOpenInventory().getTopInventory();
-            if (inventory != null) {
-                InventoryHolder holder = inventory.getHolder();
-                if (holder instanceof Menu) {
-                    Menu menu = (Menu) holder;
-                    menu.close();
-                }
+            InventoryHolder holder = inventory.getHolder();
+            if (holder instanceof Menu) {
+                Menu menu = (Menu) holder;
+                menu.close();
             }
         });
     }
@@ -104,58 +97,12 @@ public class MenuRegistry {
     }
 
     /**
-     * Shutdown this registry.
-     */
-    public void shutdown() {
-        clear();
-    }
-
-    /**
      * Register a new {@link MenuModel}.
      *
      * @param menuModel The MenuModel.
      */
     public void register(MenuModel menuModel) {
-        menuModelMap.put(menuModel.getName(), menuModel);
-    }
-
-    /**
-     * Get a {@link MenuModel} by name.
-     *
-     * @param name The name.
-     * @return The MenuModel.
-     */
-    public MenuModel get(String name) {
-        return menuModelMap.get(name);
-    }
-
-    /**
-     * Remove a {@link MenuModel} by name.
-     *
-     * @param name The name.
-     * @return The MenuModel.
-     */
-    public MenuModel remove(String name) {
-        return menuModelMap.remove(name);
-    }
-
-    /**
-     * Check whether this registry contains a {@link MenuModel} with the given name.
-     *
-     * @param name The name.
-     * @return True if this registry contains the MenuModel.
-     */
-    public boolean contains(String name) {
-        return menuModelMap.containsKey(name);
-    }
-
-    /**
-     * Get a list of all names of registered menu models.
-     *
-     * @return The list.
-     */
-    public Set<String> getMenuNames() {
-        return menuModelMap.keySet();
+        register(menuModel.getName(), menuModel);
     }
 
 }

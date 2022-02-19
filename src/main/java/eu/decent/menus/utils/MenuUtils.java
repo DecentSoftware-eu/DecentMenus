@@ -1,7 +1,6 @@
 package eu.decent.menus.utils;
 
 import eu.decent.library.utils.Common;
-import lombok.experimental.UtilityClass;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;

@@ -12,16 +12,18 @@ import org.bukkit.event.player.PlayerQuitEvent;
  */
 public class PlayerListener implements Listener {
 
+    private static final DecentMenus PLUGIN = DecentMenus.getInstance();
+
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player player = e.getPlayer();
-        DecentMenus.getInstance().getPlayerRegistry().register(player.getUniqueId());
+        PLUGIN.getPlayerRegistry().register(player.getUniqueId());
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        DecentMenus.getInstance().getPlayerRegistry().remove(player.getUniqueId());
+        PLUGIN.getPlayerRegistry().remove(player.getUniqueId());
     }
 
 }

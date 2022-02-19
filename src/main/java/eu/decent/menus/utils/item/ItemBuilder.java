@@ -207,6 +207,15 @@ public class ItemBuilder implements Cloneable {
 		return this;
 	}
 
+	public ItemBuilder withCustomModelData(int customModelData) {
+		ItemMeta meta = itemStack.getItemMeta();
+		if (meta != null) {
+			meta.setCustomModelData(customModelData);
+			itemStack.setItemMeta(meta);
+		}
+		return this;
+	}
+
 	public ItemBuilder withEnchantment(Enchantment enchantment, int level) {
 		itemStack.removeEnchantment(enchantment);
 		itemStack.addEnchantment(enchantment, level);

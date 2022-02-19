@@ -58,7 +58,7 @@ public class DecentMenusCommand extends DecentCommand {
         @Override
         public CommandHandler getCommandHandler() {
             return (sender, args) -> {
-                String[] menus = DecentMenus.getInstance().getMenuRegistry().getMenuNames().toArray(new String[0]);
+                String[] menus = DecentMenus.getInstance().getMenuRegistry().getKeys().toArray(new String[0]);
                 Config.send(sender, Config.MENU_LIST, String.join(", ", menus));
                 return true;
             };

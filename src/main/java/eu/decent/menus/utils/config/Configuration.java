@@ -131,9 +131,10 @@ public class Configuration extends YamlConfiguration {
         });
         String skullOwnerName = getString(path + ".skull.owner");
         String skullTexture = getString(path + ".skull.texture");
+        int customModelData = getInt(path + ".customModelData");
         ItemFlag[] flags = getStringList(path + ".flags").stream().map(ItemFlag::valueOf).toArray(ItemFlag[]::new);
         boolean unbreakable = getBoolean(path + ".unbreakable", false);
-        return new ItemWrapper(material, name, skullOwnerName, skullTexture, amount, durability, lore, enchantments, flags, unbreakable);
+        return new ItemWrapper(material, name, skullOwnerName, skullTexture, customModelData, amount, durability, lore, enchantments, flags, unbreakable);
     }
 
 }

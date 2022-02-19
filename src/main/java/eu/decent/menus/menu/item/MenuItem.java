@@ -1,14 +1,14 @@
 package eu.decent.menus.menu.item;
 
 import eu.decent.library.actions.ActionHolder;
+import eu.decent.library.actions.IAction;
 import eu.decent.library.hooks.PAPI;
-import eu.decent.menus.Config;
 import eu.decent.menus.menu.Menu;
-import eu.decent.menus.menu.MenuModel;
 import eu.decent.menus.menu.enums.EnumDisplayType;
 import eu.decent.menus.menu.enums.EnumMenuItemType;
 import eu.decent.menus.menu.enums.EnumSlotType;
 import eu.decent.menus.utils.config.Configuration;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * This class represents a menu item.
  */
+@Getter
 public abstract class MenuItem {
 
     protected final Configuration config;
@@ -63,8 +64,9 @@ public abstract class MenuItem {
         slotType = EnumSlotType.fromName(config.getString("slot", "DEFAULT"));
 
         List<String> actions = config.getStringList("actions");
-        for (String s: actions) {
-            // TODO this.addAction(new Action(s));
+        for (String actionString: actions) {
+            IAction action = IAction.fromString(actionString);
+            actionHolder.append(action);
         }
     }
 
@@ -139,74 +141,6 @@ public abstract class MenuItem {
      */
     public boolean canDisplay() {
         return true;
-    }
-
-    /*
-     *  Getters & Setters
-     */
-
-    /**
-     * Get the configuration section responsible for this item.
-     *
-     * @return The configuration section.
-     */
-    public Configuration getConfig() {
-        return config;
-    }
-
-    /**
-     * Get the items' identifier from config.
-     *
-     * @return The identifier.
-     */
-    public char getIdentifier() {
-        return identifier;
-    }
-
-    /**
-     * Get the action holder of this item.
-     *
-     * @return The action holder.
-     * @see ActionHolder
-     */
-    public ActionHolder getActionHolder() {
-        return actionHolder;
-    }
-
-    /**
-     * Get the items' type.
-     *
-     * @return The type.
-     */
-    public EnumMenuItemType getType() {
-        return type;
-    }
-
-    /**
-     * Get the {@link EnumDisplayType} of this item.
-     *
-     * @return The display type.
-     */
-    public EnumDisplayType getDisplayType() {
-        return displayType;
-    }
-
-    /**
-     * Get the {@link EnumSlotType} of this item.
-     *
-     * @return The slot type.
-     */
-    public EnumSlotType getSlotType() {
-        return slotType;
-    }
-
-    /**
-     * Get the permission for this item.
-     *
-     * @return The permission.
-     */
-    public String getPermission() {
-        return permission;
     }
 
 }

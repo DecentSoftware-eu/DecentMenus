@@ -9,7 +9,6 @@ import eu.decent.menus.utils.config.Configuration;
 import eu.decent.menus.utils.pinger.PingerResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class ServerMenuItem extends NormalMenuItem {
 

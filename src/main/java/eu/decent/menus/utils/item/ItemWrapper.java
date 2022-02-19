@@ -23,6 +23,7 @@ public class ItemWrapper {
 	protected String name;
 	protected String skullOwner;
 	protected String skullTexture;
+	protected int customModelData;
 	protected int amount;
 	protected short durability;
 	protected List<String> lore;
@@ -73,6 +74,7 @@ public class ItemWrapper {
 		} else if (skullTexture != null) {
 			itemBuilder.withSkullTexture(skullTexture);
 		}
+		itemBuilder.withCustomModelData(customModelData);
 		itemBuilder.withItemFlags(flags);
 		itemBuilder.withUnbreakable(unbreakable);
 		return itemBuilder.build();

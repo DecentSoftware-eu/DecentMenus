@@ -4,6 +4,7 @@ import eu.decent.menus.utils.BungeeUtils;
 import eu.decent.menus.utils.DecentMenusTicked;
 import eu.decent.menus.utils.pinger.Pinger;
 import eu.decent.menus.utils.pinger.PingerResponse;
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.net.InetSocketAddress;
 /**
  * This class represents a cached server.
  */
+@Getter
 public class Server extends DecentMenusTicked {
 
     private final String name;
@@ -29,6 +31,11 @@ public class Server extends DecentMenusTicked {
         this.name = name;
         this.pinger = new Pinger(address);
         this.update();
+    }
+
+    @Override
+    public void tick() {
+        update();
     }
 
     /**
@@ -49,38 +56,6 @@ public class Server extends DecentMenusTicked {
      */
     public void connect(Player player) {
         BungeeUtils.connect(player, name);
-    }
-
-    @Override
-    public void tick() {
-        update();
-    }
-
-    /**
-     * Get the name of this server.
-     *
-     * @return The name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Get the pinger of this server.
-     *
-     * @return The pinger.
-     */
-    public Pinger getPinger() {
-        return pinger;
-    }
-
-    /**
-     * Get the data of this server.
-     *
-     * @return The data.
-     */
-    public PingerResponse getData() {
-        return data;
     }
 
     /**

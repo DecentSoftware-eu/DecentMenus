@@ -6,6 +6,9 @@ import eu.decent.menus.menu.item.MenuItem;
  * This enum represents all {@link MenuItem}s display types.
  */
 public enum EnumDisplayType {
+	/**
+	 * Display all the time.
+	 */
 	DEFAULT,
 	/**
 	 * Only display to players with required permission.
