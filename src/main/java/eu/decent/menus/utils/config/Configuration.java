@@ -1,31 +1,27 @@
 package eu.decent.menus.utils.config;
 
-import com.google.common.collect.Maps;
-import com.google.common.collect.Sets;
-import eu.decent.menus.utils.item.ItemWrapper;
-import org.bukkit.Material;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class Configuration extends YamlConfiguration {
 
     private final String fileName;
     private final JavaPlugin plugin;
+    private final String path;
     private File file;
 
     public Configuration(JavaPlugin javaPlugin, String name) {
+        this(javaPlugin, name, null);
+    }
+
+    public Configuration(JavaPlugin javaPlugin, String name, String path) {
         this.plugin = javaPlugin;
         this.fileName = name.endsWith(".yml") ? name : name + ".yml";
+        this.path = path;
 
         loadFile();
         createData();
@@ -52,7 +48,6 @@ public class Configuration extends YamlConfiguration {
             this.save(this.file);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Attempting to fix error...");
             createData();
             saveData();
         }
@@ -63,6 +58,9 @@ public class Configuration extends YamlConfiguration {
         super.save(file);
     }
 
+    /**
+     * Reload this configuration.
+     */
     public void reload() {
         try {
             this.loadConfig();
@@ -90,51 +88,13 @@ public class Configuration extends YamlConfiguration {
         }
     }
 
+    /**
+     * Delete the file of this configuration.
+     */
     public void delete() {
         if (this.file.exists()) {
             this.file.delete();
         }
-    }
-
-    public Set<String> getSectionKeys(String path) {
-        if (!contains(path)) {
-            return Sets.newHashSet();
-        }
-        return getConfigurationSection(path).getKeys(false);
-    }
-
-    public Object getOrDefault(String path, Object defaultValue) {
-        if (!contains(path)) {
-            set(path, defaultValue);
-            return defaultValue;
-        }
-        return get(path);
-    }
-
-    public ItemStack getItem(String path) {
-        return getItemWrapper(path).parse();
-    }
-
-    public ItemWrapper getItemWrapper(String path) {
-        String materialName = getString(path + ".material");
-        Material material = materialName == null ? null : Material.getMaterial(materialName);
-        String name = getString(path + ".name", null);
-        int amount = getInt(path + ".amount", 1);
-        short durability = (short) getInt(path + ".durability", 0);
-        List<String> lore = getStringList(path + ".lore");
-        Map<Enchantment, Integer> enchantments = Maps.newHashMap();
-        this.getStringList(path + ".enchantments").forEach(s -> {
-            String[] spl = s.split(":");
-            Enchantment enchantment = Enchantment.getByName(spl[0]);
-            int level = Integer.parseInt(spl[1]);
-            enchantments.put(enchantment, level);
-        });
-        String skullOwnerName = getString(path + ".skull.owner");
-        String skullTexture = getString(path + ".skull.texture");
-        int customModelData = getInt(path + ".customModelData");
-        ItemFlag[] flags = getStringList(path + ".flags").stream().map(ItemFlag::valueOf).toArray(ItemFlag[]::new);
-        boolean unbreakable = getBoolean(path + ".unbreakable", false);
-        return new ItemWrapper(material, name, skullOwnerName, skullTexture, customModelData, amount, durability, lore, enchantments, flags, unbreakable);
     }
 
 }

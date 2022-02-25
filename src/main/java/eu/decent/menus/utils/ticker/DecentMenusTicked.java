@@ -1,4 +1,4 @@
-package eu.decent.menus.utils;
+package eu.decent.menus.utils.ticker;
 
 import eu.decent.library.ticker.Ticked;
 import eu.decent.menus.DecentMenus;

@@ -9,6 +9,7 @@ import eu.decent.menus.menu.enums.EnumMenuItemType;
 import eu.decent.menus.menu.enums.EnumSlotType;
 import eu.decent.menus.utils.config.Configuration;
 import lombok.Getter;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -21,7 +22,7 @@ import java.util.List;
 @Getter
 public abstract class MenuItem {
 
-    protected final Configuration config;
+    protected final ConfigurationSection config;
     protected final char identifier;
     protected final ActionHolder actionHolder;
     protected final EnumMenuItemType type;
@@ -36,7 +37,7 @@ public abstract class MenuItem {
      * @param identifier The items' identifier from config.
      * @param type The items' type.
      */
-    public MenuItem(Configuration config, char identifier, EnumMenuItemType type) {
+    public MenuItem(ConfigurationSection config, char identifier, EnumMenuItemType type) {
         this.config = config;
         this.identifier = identifier;
         this.type = type;

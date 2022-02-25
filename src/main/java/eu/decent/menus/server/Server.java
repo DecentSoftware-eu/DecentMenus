@@ -1,7 +1,7 @@
 package eu.decent.menus.server;
 
 import eu.decent.menus.utils.BungeeUtils;
-import eu.decent.menus.utils.DecentMenusTicked;
+import eu.decent.menus.utils.ticker.DecentMenusTicked;
 import eu.decent.menus.utils.pinger.Pinger;
 import eu.decent.menus.utils.pinger.PingerResponse;
 import lombok.Getter;

@@ -2,6 +2,7 @@ package eu.decent.menus.menu.item;
 
 import eu.decent.menus.menu.Menu;
 import eu.decent.menus.menu.enums.EnumMenuItemType;
+import eu.decent.menus.utils.config.ConfigUtils;
 import eu.decent.menus.utils.config.Configuration;
 import eu.decent.menus.utils.item.ItemWrapper;
 import org.bukkit.entity.Player;
@@ -29,7 +30,7 @@ public class NormalMenuItem extends MenuItem {
     public void load() {
         super.load();
         this.permission = config.getString("permission", null);
-        this.itemWrapper = config.getItemWrapper("item");
+        this.itemWrapper = ConfigUtils.getItemWrapper(config, "item");
     }
 
 }

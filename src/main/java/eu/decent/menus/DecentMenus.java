@@ -35,7 +35,7 @@ public final class DecentMenus extends DecentPlugin {
     // The 'config.yml' file
     private File configFile;
 
-    private DecentMenus() {
+    public DecentMenus() {
         instance = this;
     }
 

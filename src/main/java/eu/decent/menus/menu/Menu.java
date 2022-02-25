@@ -4,7 +4,7 @@ import eu.decent.library.utils.Common;
 import eu.decent.menus.menu.enums.EnumSlotType;
 import eu.decent.menus.menu.item.MenuItem;
 import eu.decent.menus.player.PlayerProfile;
-import eu.decent.menus.utils.DecentMenusTicked;
+import eu.decent.menus.utils.ticker.DecentMenusTicked;
 import eu.decent.menus.utils.MenuUtils;
 import lombok.AccessLevel;
 import lombok.Getter;

@@ -6,6 +6,7 @@ import eu.decent.menus.menu.item.ServerMenuItem;
 import eu.decent.menus.menu.item.ServersMenuItem;
 import eu.decent.menus.utils.config.Configuration;
 import lombok.Getter;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -42,9 +43,9 @@ public enum EnumMenuItemType {
 	 * @param identifier The items' config identifier.
 	 * @return The MenuItem.
 	 */
-	public MenuItem create(Configuration config, char identifier) {
+	public MenuItem create(ConfigurationSection config, char identifier) {
 		try {
-			Constructor<? extends MenuItem> constructor = clazz.getDeclaredConstructor(Configuration.class, char.class);
+			Constructor<? extends MenuItem> constructor = clazz.getDeclaredConstructor(ConfigurationSection.class, char.class);
 			return constructor.newInstance(config, identifier);
 		} catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();

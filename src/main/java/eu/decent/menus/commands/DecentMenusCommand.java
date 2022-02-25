@@ -11,7 +11,7 @@ import eu.decent.menus.DecentMenus;
         permission = Config.ADMIN_PERM,
         usage = "/decentmenus <args>",
         description = "The main command of DecentMenus.",
-        aliases = {"decentmenu", "dmenus", "dm"}
+        aliases = {"decentmenu", "dmenus", "dmenu", "dm"}
 )
 public class DecentMenusCommand extends DecentCommand {
 

@@ -74,7 +74,7 @@ public record MenuModel(String name,
                 char ch = key.charAt(0);
                 String typeName = items.getString(key + ".type", "NORMAL");
                 EnumMenuItemType type = EnumMenuItemType.fromName(typeName);
-                Configuration configuration = (Configuration) items.getConfigurationSection(key);
+                ConfigurationSection configuration = items.getConfigurationSection(key);
                 itemMap.put(ch, type.create(configuration, ch));
             }
         }
