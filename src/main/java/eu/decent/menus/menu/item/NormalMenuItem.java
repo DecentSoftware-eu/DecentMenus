@@ -23,7 +23,7 @@ public class NormalMenuItem extends MenuItem {
     @Override
     public ItemStack construct(Menu menu) {
         Player player = menu.getOwner().getPlayer();
-        return itemWrapper.parse(player, this);
+        return itemWrapper.toItemStack(player, s -> setPlaceholders(player, s));
     }
 
     @Override

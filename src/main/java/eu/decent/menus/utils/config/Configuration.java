@@ -11,17 +11,11 @@ public class Configuration extends YamlConfiguration {
 
     private final String fileName;
     private final JavaPlugin plugin;
-    private final String path;
     private File file;
 
     public Configuration(JavaPlugin javaPlugin, String name) {
-        this(javaPlugin, name, null);
-    }
-
-    public Configuration(JavaPlugin javaPlugin, String name, String path) {
         this.plugin = javaPlugin;
         this.fileName = name.endsWith(".yml") ? name : name + ".yml";
-        this.path = path;
 
         loadFile();
         createData();
