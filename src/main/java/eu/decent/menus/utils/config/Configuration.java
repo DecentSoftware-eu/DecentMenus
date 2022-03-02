@@ -3,10 +3,12 @@ package eu.decent.menus.utils.config;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class Configuration extends YamlConfiguration {
 
     private final String fileName;
@@ -32,12 +34,11 @@ public class Configuration extends YamlConfiguration {
     }
 
     public File loadFile() {
-        this.file = new File(this.plugin.getDataFolder(), this.fileName);
-        return this.file;
+        return this.file = new File(plugin.getDataFolder(), this.fileName);
     }
 
     public void saveData() {
-        this.file = new File(this.plugin.getDataFolder(), this.fileName);
+        this.file = new File(plugin.getDataFolder(), this.fileName);
         try {
             this.save(this.file);
         } catch (IOException e) {
@@ -48,7 +49,7 @@ public class Configuration extends YamlConfiguration {
     }
 
     @Override
-    public void save(File file) throws IOException {
+    public void save(@NotNull File file) throws IOException {
         super.save(file);
     }
 
@@ -65,19 +66,17 @@ public class Configuration extends YamlConfiguration {
 
     public void createData() {
         if (!file.exists()) {
-            if (!this.plugin.getDataFolder().exists()) {
-                this.plugin.getDataFolder().mkdirs();
-            }
+            plugin.getDataFolder().mkdirs();
 
             // If file isn't a resource, create from scratch
-            if (this.plugin.getResource(this.fileName) == null) {
+            if (plugin.getResource(this.fileName) == null) {
                 try {
-                    this.file.createNewFile();
+                    file.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else {
-                this.plugin.saveResource(this.fileName, false);
+                plugin.saveResource(this.fileName, false);
             }
         }
     }

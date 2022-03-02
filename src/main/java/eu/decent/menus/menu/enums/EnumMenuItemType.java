@@ -4,7 +4,6 @@ import eu.decent.menus.menu.item.MenuItem;
 import eu.decent.menus.menu.item.NormalMenuItem;
 import eu.decent.menus.menu.item.ServerMenuItem;
 import eu.decent.menus.menu.item.ServersMenuItem;
-import eu.decent.menus.utils.config.Configuration;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 

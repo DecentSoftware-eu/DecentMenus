@@ -161,8 +161,10 @@ public enum ActionType {
 
     ActionType(String... aliases) {
         this.aliases = new HashSet<>();
-        for (String alias : aliases) {
-            this.aliases.add(alias.toLowerCase());
+        if (aliases != null) {
+            for (String alias : aliases) {
+                this.aliases.add(alias.toLowerCase());
+            }
         }
     }
 
