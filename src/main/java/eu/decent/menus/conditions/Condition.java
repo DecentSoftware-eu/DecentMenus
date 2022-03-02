@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 public abstract class Condition {
 
     protected boolean inverted;
+    protected boolean required;
     protected ActionHolder metActions;
     protected ActionHolder notMetActions;
 
@@ -24,6 +25,7 @@ public abstract class Condition {
 
     public Condition(boolean inverted) {
         this.inverted = inverted;
+        this.required = true;
     }
 
     /**

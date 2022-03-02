@@ -25,7 +25,7 @@ public class Action {
      * @param type Type of the new action.
      * @param data Data, used by the new action.
      */
-    public Action(ActionType type, String data) {
+    public Action(@NotNull ActionType type, String data) {
         this.type = type;
         this.data = data;
         // Default values

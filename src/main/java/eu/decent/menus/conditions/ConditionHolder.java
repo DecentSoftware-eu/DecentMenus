@@ -18,25 +18,28 @@ public class ConditionHolder extends DecentHolder<Condition> {
      * @return True if all the conditions are fulfilled, False otherwise.
      */
     public boolean checkAll(@NotNull PlayerProfile profile) {
+        boolean success = true;
         for (Condition condition : asList()) {
             // Check and flip if inverted.
             boolean fulfilled = condition.isInverted() != condition.check(profile);
             ActionHolder actions;
             if (!fulfilled) {
                 // Not met
-                if ((actions = condition.getNotMetActions()) != null) {
+                if ((actions = condition.getNotMetActions()) != null && actions.asList().isNotEmpty()) {
                     // Execute 'not met' actions if any.
                     actions.execute(profile);
                 }
-                // Return false; Not all conditions are fulfilled.
-                return false;
-            } else if ((actions = condition.getMetActions()) != null) {
+                if (condition.isRequired()) {
+                    // Not all required conditions are fulfilled.
+                    success = false;
+                }
+            } else if ((actions = condition.getMetActions()) != null && actions.asList().isNotEmpty()) {
                 // Execute 'met' actions if any.
                 actions.execute(profile);
             }
         }
         // All conditions are fulfilled.
-        return true;
+        return success;
     }
 
 }
