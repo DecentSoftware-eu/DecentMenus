@@ -8,6 +8,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 
 import java.io.File;
 
@@ -66,8 +67,9 @@ public class MenuRegistry extends Registry<String, MenuModel> {
         // Close all menus
         Bukkit.getOnlinePlayers().forEach((p) -> {
             Inventory inventory = p.getOpenInventory().getTopInventory();
-            if (inventory.getHolder() instanceof Menu menu) {
-                menu.close();
+            InventoryHolder holder = inventory.getHolder();
+            if (holder instanceof Menu) {
+                ((Menu) holder).close();
             }
         });
     }
@@ -99,7 +101,7 @@ public class MenuRegistry extends Registry<String, MenuModel> {
      * @param menuModel The MenuModel.
      */
     public void register(MenuModel menuModel) {
-        register(menuModel.name(), menuModel);
+        register(menuModel.getName(), menuModel);
     }
 
 }

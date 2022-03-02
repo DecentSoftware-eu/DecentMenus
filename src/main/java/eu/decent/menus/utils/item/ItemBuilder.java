@@ -243,7 +243,8 @@ public class ItemBuilder implements Cloneable {
 
 	public ItemBuilder withLeatherArmorColor(Color color) {
 		ItemMeta meta = itemStack.getItemMeta();
-		if (meta instanceof LeatherArmorMeta leatherArmorMeta) {
+		if (meta instanceof LeatherArmorMeta) {
+			LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
 			leatherArmorMeta.setColor(color);
 			itemStack.setItemMeta(leatherArmorMeta);
 		}
@@ -252,7 +253,8 @@ public class ItemBuilder implements Cloneable {
 
 	public ItemBuilder withPotionType(PotionEffectType type) {
 		ItemMeta meta = itemStack.getItemMeta();
-		if (meta instanceof PotionMeta potionMeta) {
+		if (meta instanceof PotionMeta) {
+			PotionMeta potionMeta = (PotionMeta) meta;
 			potionMeta.setMainEffect(type);
 			itemStack.setItemMeta(meta);
 		}
@@ -261,7 +263,8 @@ public class ItemBuilder implements Cloneable {
 
 	public ItemBuilder withCustomPotionEffect(PotionEffect effect, boolean overwrite) {
 		ItemMeta meta = itemStack.getItemMeta();
-		if (meta instanceof PotionMeta potionMeta) {
+		if (meta instanceof PotionMeta) {
+			PotionMeta potionMeta = (PotionMeta) meta;
 			potionMeta.addCustomEffect(effect, overwrite);
 			itemStack.setItemMeta(meta);
 		}
@@ -270,7 +273,8 @@ public class ItemBuilder implements Cloneable {
 
 	public ItemBuilder removeCustomPotionEffect(PotionEffectType type) {
 		ItemMeta meta = itemStack.getItemMeta();
-		if (meta instanceof PotionMeta potionMeta) {
+		if (meta instanceof PotionMeta) {
+			PotionMeta potionMeta = (PotionMeta) meta;
 			potionMeta.removeCustomEffect(type);
 			itemStack.setItemMeta(meta);
 		}
@@ -279,7 +283,8 @@ public class ItemBuilder implements Cloneable {
 
 	public ItemBuilder clearCustomPotionEffects() {
 		ItemMeta meta = itemStack.getItemMeta();
-		if (meta instanceof PotionMeta potionMeta) {
+		if (meta instanceof PotionMeta) {
+			PotionMeta potionMeta = (PotionMeta) meta;
 			potionMeta.clearCustomEffects();
 			itemStack.setItemMeta(meta);
 		}
@@ -288,7 +293,8 @@ public class ItemBuilder implements Cloneable {
 
 	public ItemBuilder withSkullOwner(String playerName) {
 		ItemMeta meta = itemStack.getItemMeta();
-		if (meta instanceof SkullMeta skullMeta) {
+		if (meta instanceof SkullMeta) {
+			SkullMeta skullMeta = (SkullMeta) meta;
 			skullMeta.setOwner(playerName);
 			itemStack.setItemMeta(meta);
 			withDurability((short) SkullType.PLAYER.ordinal());
@@ -298,7 +304,8 @@ public class ItemBuilder implements Cloneable {
 
 	public String getSkullOwner() {
 		ItemMeta meta = itemStack.getItemMeta();
-		if (meta instanceof SkullMeta skullMeta) {
+		if (meta instanceof SkullMeta) {
+			SkullMeta skullMeta = (SkullMeta) meta;
 			return skullMeta.getOwner();
 		}
 		return null;

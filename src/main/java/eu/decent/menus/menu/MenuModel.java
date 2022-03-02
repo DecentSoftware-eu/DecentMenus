@@ -7,6 +7,8 @@ import eu.decent.menus.DecentMenus;
 import eu.decent.menus.menu.enums.EnumMenuItemType;
 import eu.decent.menus.menu.item.MenuItem;
 import eu.decent.menus.utils.config.Configuration;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -14,15 +16,18 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Map;
 
-public record MenuModel(String name,
-                        Configuration config,
-                        String title,
-                        String permission,
-                        List<String> slots,
-                        Map<Character, MenuItem> items,
-                        boolean updating,
-                        int updateInterval
-) {
+@Getter
+@AllArgsConstructor
+public class MenuModel {
+
+    private final String name;
+    private final Configuration config;
+    private final String title;
+    private final String permission;
+    private final List<String> slots;
+    private final Map<Character, MenuItem> items;
+    private final boolean updating;
+    private final int updateInterval;
 
     /**
      * Check whether the given player is allowed to open the menu.

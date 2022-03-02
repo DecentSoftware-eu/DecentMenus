@@ -11,6 +11,7 @@ import java.util.Set;
  * @param <K> Class of the key.
  * @param <V> Class of the value.
  */
+@SuppressWarnings("unused")
 public abstract class Registry<K, V> {
 
     protected final Map<K, V> map;
