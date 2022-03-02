@@ -48,6 +48,9 @@ public class Action {
      * @return Boolean whether this action should be executed.
      */
     public boolean checkChance() {
+        if (chance < 0d || chance >= 100d) {
+            return true;
+        }
         double random = ThreadLocalRandom.current().nextDouble() * 100d;
         return random > chance;
     }
