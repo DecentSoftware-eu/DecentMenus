@@ -29,6 +29,7 @@ public abstract class MenuItem {
     protected EnumDisplayType displayType;
     protected EnumSlotType slotType;
     protected String permission;
+    protected boolean updating; // TODO
 
     /**
      * Create new {@link MenuItem}.

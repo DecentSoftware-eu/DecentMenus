@@ -1,7 +1,9 @@
 package eu.decent.menus.actions;
 
 import eu.decent.library.objects.DecentHolder;
+import eu.decent.menus.DecentMenus;
 import eu.decent.menus.player.PlayerProfile;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,7 +18,12 @@ public class ActionHolder extends DecentHolder<Action> {
      */
     public void execute(@NotNull PlayerProfile profile) {
         for (Action action : asList()) {
-            action.execute(profile);
+            long delay = action.getDelay();
+            if (delay > 0) {
+                Bukkit.getScheduler().runTaskLater(DecentMenus.getInstance(), () -> action.execute(profile), delay);
+            } else {
+                action.execute(profile);
+            }
         }
     }
 

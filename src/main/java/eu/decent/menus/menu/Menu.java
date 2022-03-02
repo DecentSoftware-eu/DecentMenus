@@ -15,6 +15,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -38,7 +39,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      * @param menuModel The {@link MenuModel} for this menu.
      * @param owner The owning players profile.
      */
-    public Menu(MenuModel menuModel, PlayerProfile owner) {
+    public Menu(@NotNull MenuModel menuModel, @NotNull PlayerProfile owner) {
         this(menuModel, owner, null);
     }
 
@@ -49,7 +50,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      * @param owner The owning players profile.
      * @param previousMenu The previous menu.
      */
-    public Menu(MenuModel menuModel, PlayerProfile owner, Menu previousMenu) {
+    public Menu(@NotNull MenuModel menuModel, @NotNull PlayerProfile owner, Menu previousMenu) {
         super(menuModel.getUpdateInterval());
         this.menuModel = menuModel;
         this.owner = owner;
@@ -138,7 +139,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      *
      * @param event The event.
      */
-    public void onClick(InventoryClickEvent event) {
+    public void onClick(@NotNull InventoryClickEvent event) {
         event.setCancelled(true);
         int slot = event.getSlot();
         MenuItem menuItem = items[slot];
@@ -152,7 +153,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      *
      * @param event The event.
      */
-    public void onDrag(InventoryDragEvent event) {
+    public void onDrag(@NotNull InventoryDragEvent event) {
         event.setCancelled(true);
     }
 
@@ -161,7 +162,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      *
      * @param event The event.
      */
-    public void onClose(InventoryCloseEvent event) {
+    public void onClose(@NotNull InventoryCloseEvent event) {
         getOwner().setOpenMenu(null);
         stopTicking();
     }

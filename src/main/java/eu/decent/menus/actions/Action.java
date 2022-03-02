@@ -14,6 +14,7 @@ public class Action {
 
     private final ActionType type;
     private String data;
+    private long delay;
 
     /**
      * Create new {@link Action}.
