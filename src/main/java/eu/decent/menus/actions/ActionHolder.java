@@ -18,6 +18,11 @@ public class ActionHolder extends DecentHolder<Action> {
      */
     public void execute(@NotNull PlayerProfile profile) {
         for (Action action : asList()) {
+            // Check the chance
+            if (action.getChance() >= 0 && !action.checkChance()) {
+                continue;
+            }
+            // Execute with delay if needed
             long delay = action.getDelay();
             if (delay > 0) {
                 Bukkit.getScheduler().runTaskLater(DecentMenus.getInstance(), () -> action.execute(profile), delay);
