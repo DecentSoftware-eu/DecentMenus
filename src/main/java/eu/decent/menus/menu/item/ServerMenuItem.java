@@ -9,6 +9,7 @@ import eu.decent.menus.utils.config.Configuration;
 import eu.decent.menus.utils.pinger.PingerResponse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class ServerMenuItem extends NormalMenuItem {
 
@@ -56,7 +57,7 @@ public class ServerMenuItem extends NormalMenuItem {
     }
 
     @Override
-    public void onClick(Menu menu, InventoryClickEvent event) {
+    public void onClick(@NotNull Menu menu, InventoryClickEvent event) {
         Server server = DecentMenus.getInstance().getServerRegistry().get(serverName);
         if (server != null) {
             server.connect((Player) event.getWhoClicked());

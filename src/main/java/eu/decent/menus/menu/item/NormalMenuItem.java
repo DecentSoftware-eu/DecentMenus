@@ -7,6 +7,7 @@ import eu.decent.menus.utils.config.Configuration;
 import eu.decent.menus.utils.item.ItemWrapper;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 public class NormalMenuItem extends MenuItem {
 
@@ -21,7 +22,7 @@ public class NormalMenuItem extends MenuItem {
     }
 
     @Override
-    public ItemStack construct(Menu menu) {
+    public ItemStack construct(@NotNull Menu menu) {
         Player player = menu.getOwner().getPlayer();
         return itemWrapper.toItemStack(player, s -> setPlaceholders(player, s));
     }

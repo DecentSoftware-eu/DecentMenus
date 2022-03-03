@@ -1,18 +1,18 @@
 package eu.decent.menus.menu.item;
 
-import eu.decent.library.actions.ActionHolder;
 import eu.decent.library.actions.IAction;
 import eu.decent.library.hooks.PAPI;
+import eu.decent.menus.actions.ActionHolder;
 import eu.decent.menus.menu.Menu;
 import eu.decent.menus.menu.enums.EnumDisplayType;
 import eu.decent.menus.menu.enums.EnumMenuItemType;
 import eu.decent.menus.menu.enums.EnumSlotType;
-import eu.decent.menus.utils.config.Configuration;
 import lombok.Getter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -67,8 +67,8 @@ public abstract class MenuItem {
 
         List<String> actions = config.getStringList("actions");
         for (String actionString: actions) {
-            IAction action = IAction.fromString(actionString);
-            actionHolder.append(action);
+            // TODO
+//            actionHolder.append(null);
         }
     }
 
@@ -90,7 +90,7 @@ public abstract class MenuItem {
      * @param strings The string list.
      * @return The result.
      */
-    public List<String> setPlaceholders(Player player, List<String> strings) {
+    public List<String> setPlaceholders(Player player, @NotNull List<String> strings) {
         strings.replaceAll((string) -> setPlaceholders(player, string));
         return strings;
     }
@@ -105,11 +105,8 @@ public abstract class MenuItem {
      * @param menu The menu in which the click was performed.
      * @param event The event.
      */
-    public void onClick(Menu menu, InventoryClickEvent event) {
-        Player player = menu.getOwner().getPlayer();
-        if (player != null) {
-            actionHolder.executeActions(player);
-        }
+    public void onClick(@NotNull Menu menu, InventoryClickEvent event) {
+        actionHolder.execute(menu.getOwner());
     }
 
     /*

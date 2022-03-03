@@ -72,8 +72,6 @@ public final class DecentMenus extends DecentPlugin {
         this.menuRegistry.shutdown();
         this.serverRegistry.shutdown();
         this.playerRegistry.shutdown();
-        this.commandManager.unregisterCommand("decentmenus");
-        this.commandManager.unregisterCommand("openmenu");
         this.commandManager.destroy();
 
         // Unregister Bungee channel
