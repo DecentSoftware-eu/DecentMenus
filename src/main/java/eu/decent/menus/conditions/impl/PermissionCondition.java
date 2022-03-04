@@ -1,7 +1,9 @@
 package eu.decent.menus.conditions.impl;
 
+import eu.decent.library.hooks.PAPI;
 import eu.decent.menus.conditions.Condition;
 import eu.decent.menus.player.PlayerProfile;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -23,7 +25,8 @@ public class PermissionCondition extends Condition {
 
     @Override
     public boolean check(@NotNull PlayerProfile profile) {
-        return profile.getPlayer().hasPermission(permission);
+        Player player = profile.getPlayer();
+        return player.hasPermission(PAPI.setPlaceholders(player, this.permission));
     }
 
 }

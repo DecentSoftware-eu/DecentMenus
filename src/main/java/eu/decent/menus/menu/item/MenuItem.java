@@ -1,6 +1,5 @@
 package eu.decent.menus.menu.item;
 
-import eu.decent.library.actions.IAction;
 import eu.decent.library.hooks.PAPI;
 import eu.decent.menus.actions.ActionHolder;
 import eu.decent.menus.menu.Menu;
