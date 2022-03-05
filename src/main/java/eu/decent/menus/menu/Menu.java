@@ -1,11 +1,10 @@
 package eu.decent.menus.menu;
 
 import eu.decent.library.utils.Common;
-import eu.decent.menus.menu.enums.EnumSlotType;
-import eu.decent.menus.menu.item.MenuItem;
+import eu.decent.menus.conditions.ConditionIntent;
 import eu.decent.menus.player.PlayerProfile;
-import eu.decent.menus.utils.ticker.DecentMenusTicked;
 import eu.decent.menus.utils.MenuUtils;
+import eu.decent.menus.utils.ticker.DecentMenusTicked;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -98,15 +97,15 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
                 }
 
                 MenuItem menuItem = itemMap.get(ch);
-                if (menuItem != null && menuItem.canDisplayTo(player) && menuItem.canDisplay()) {
+                if (menuItem != null && menuItem.getConditionHolderMap().get(ConditionIntent.DISPLAY).checkAll(owner)) {
                     // Prepare the slot
-                    int slot = menuItem.getSlotType().equals(EnumSlotType.FILL)
+                    int slot = menuItem.getSlotType().equals(MenuSlotType.FILL)
                             ? MenuUtils.getFirstFreeSlot(inventory)
                             : i * 9 + j;
                     // Add the item if possible
                     if (slot >= 0) {
                         items[slot] = menuItem;
-                        inventory.setItem(slot, menuItem.construct(this));
+                        inventory.setItem(slot, menuItem.getItemWrapper().toItemStack(player));
                     }
                 }
             }
@@ -141,10 +140,10 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      */
     public void onClick(@NotNull InventoryClickEvent event) {
         event.setCancelled(true);
-        int slot = event.getSlot();
-        MenuItem menuItem = items[slot];
-        if (menuItem != null && menuItem.canClick(owner.getPlayer())) {
-            menuItem.onClick(this, event);
+
+        MenuItem menuItem = items[event.getSlot()];
+        if (menuItem != null) {
+            menuItem.onClick(owner, event);
         }
     }
 

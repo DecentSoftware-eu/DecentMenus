@@ -3,11 +3,14 @@ package eu.decent.menus.menu;
 import eu.decent.menus.actions.ActionHolder;
 import eu.decent.menus.conditions.ConditionHolder;
 import eu.decent.menus.conditions.ConditionIntent;
-import eu.decent.menus.menu.enums.EnumSlotType;
+import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.item.ItemWrapper;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -18,7 +21,6 @@ import java.util.Map;
  * TODO:
  *  - implement everything
  *  - I/O impl
- *  - remove old menu items
  *  - PAPI, colors support
  */
 @Getter
@@ -30,7 +32,7 @@ public class MenuItem {
     private final Map<ConditionIntent, ConditionHolder> conditionHolderMap;
     private final Map<ConditionIntent, ActionHolder> actionHolderMap;
     private ItemWrapper itemWrapper;
-    private EnumSlotType slotType;
+    private MenuSlotType slotType;
     private boolean updating;
 
     /**
@@ -47,6 +49,25 @@ public class MenuItem {
         this.updating = true;
     }
 
+    public boolean canClick(@NotNull PlayerProfile profile, @NotNull InventoryClickEvent e) {
+        ClickType clickType = e.getClick();
+        boolean globalConditions = conditionHolderMap.get(ConditionIntent.CLICK).checkAll(profile);
+        if (globalConditions) {
+            ConditionIntent conditionIntent = ConditionIntent.fromClickType(clickType);
+            if (conditionIntent != null) {
+                ConditionHolder conditionHolder = conditionHolderMap.get(conditionIntent);
+                return conditionHolder == null || conditionHolder.checkAll(profile);
+            }
+        }
+        return globalConditions;
+    }
 
+    public void onClick(@NotNull PlayerProfile profile, @NotNull InventoryClickEvent e) {
+        if (!canClick(profile, e)) {
+            return;
+        }
+
+
+    }
 
 }

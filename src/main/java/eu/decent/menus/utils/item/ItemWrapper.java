@@ -1,7 +1,6 @@
 package eu.decent.menus.utils.item;
 
 import eu.decent.library.utils.Common;
-import eu.decent.menus.menu.item.MenuItem;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -136,7 +135,7 @@ public class ItemWrapper {
 				(int) map.getOrDefault("customModelData", 0),
 				(int) map.getOrDefault("amount", 1),
 				durability > Short.MAX_VALUE ? Short.MAX_VALUE : durability < Short.MIN_VALUE ? Short.MIN_VALUE : (short) durability,
-				(List<String>) map.getOrDefault("lore", List.of()),
+				(List<String>) map.getOrDefault("lore", new ArrayList<>()),
 				enchantments,
 				itemFlags,
 				(boolean) map.getOrDefault("unbreakable", false)
