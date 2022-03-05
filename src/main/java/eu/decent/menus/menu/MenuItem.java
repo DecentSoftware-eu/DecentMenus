@@ -27,7 +27,13 @@ import java.util.Map;
 @Setter
 public class MenuItem {
 
+    // Both options have to work
+    // Option #1
+    private String name;
+    private int slot;
+    // Option #2
     private final char identifier;
+
     private final ConfigurationSection config;
     private final Map<ConditionIntent, ConditionHolder> conditionHolderMap;
     private final Map<ConditionIntent, ActionHolder> actionHolderMap;
@@ -41,33 +47,68 @@ public class MenuItem {
      * @param identifier The items' identifier from config.
      * @param config The configuration section responsible for this item.
      */
-    public MenuItem(char identifier, ConfigurationSection config) {
+    public MenuItem(char identifier, @NotNull ConfigurationSection config, @NotNull ItemWrapper itemWrapper) {
         this.identifier = identifier;
         this.config = config;
+        this.itemWrapper = itemWrapper;
         this.conditionHolderMap = new EnumMap<>(ConditionIntent.class);
         this.actionHolderMap = new EnumMap<>(ConditionIntent.class);
         this.updating = true;
     }
 
+    /**
+     * Check whether the given {@link PlayerProfile} can click this {@link MenuItem}.
+     *
+     * @param profile The profile.
+     * @param e The click event that's responsible for this click.
+     * @return The requested boolean.
+     */
     public boolean canClick(@NotNull PlayerProfile profile, @NotNull InventoryClickEvent e) {
-        ClickType clickType = e.getClick();
-        boolean globalConditions = conditionHolderMap.get(ConditionIntent.CLICK).checkAll(profile);
-        if (globalConditions) {
+        // Check the global conditions (any click type)
+        ConditionHolder globalConditionHolder = conditionHolderMap.get(ConditionIntent.CLICK);
+        boolean globalConditionsMet = globalConditionHolder == null || globalConditionHolder.checkAll(profile);
+        if (globalConditionsMet) {
+            // Check the specific conditions (per click type)
+            ClickType clickType = e.getClick();
             ConditionIntent conditionIntent = ConditionIntent.fromClickType(clickType);
             if (conditionIntent != null) {
                 ConditionHolder conditionHolder = conditionHolderMap.get(conditionIntent);
                 return conditionHolder == null || conditionHolder.checkAll(profile);
             }
         }
-        return globalConditions;
+        return globalConditionsMet;
     }
 
+    /**
+     * Perform a click by the given {@link PlayerProfile}.
+     * <p>
+     *     This method also checks the profiles ability to click this {@link MenuItem}.
+     * </p>
+     *
+     * @param profile The profile.
+     * @param e The click event that's responsible for this click.
+     */
     public void onClick(@NotNull PlayerProfile profile, @NotNull InventoryClickEvent e) {
+        // Check the profiles' ability to click
         if (!canClick(profile, e)) {
             return;
         }
 
+        // Execute the global actions (any click type)
+        ActionHolder globalActionHolder = actionHolderMap.get(ConditionIntent.CLICK);
+        if (globalActionHolder != null) {
+            globalActionHolder.execute(profile);
+        }
 
+        // Execute the specific actions (per click type)
+        ClickType clickType = e.getClick();
+        ConditionIntent conditionIntent = ConditionIntent.fromClickType(clickType);
+        if (conditionIntent != null) {
+            ActionHolder actionHolder = actionHolderMap.get(conditionIntent);
+            if (actionHolder != null) {
+                actionHolder.execute(profile);
+            }
+        }
     }
 
 }

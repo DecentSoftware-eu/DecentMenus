@@ -4,14 +4,14 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import eu.decent.library.utils.collection.DMap;
 import eu.decent.menus.DecentMenus;
-import eu.decent.menus.menu.enums.EnumMenuItemType;
-import eu.decent.menus.menu.item.MenuItem;
+import eu.decent.menus.utils.config.ConfigUtils;
 import eu.decent.menus.utils.config.Configuration;
+import eu.decent.menus.utils.item.ItemWrapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -45,8 +45,9 @@ public class MenuModel {
      * @param fileName The files name.
      * @return The MenuModel.
      */
-    public static MenuModel fromFile(String fileName) {
-        Validate.notNull(fileName);
+    public static MenuModel fromFile(@NotNull String fileName) {
+        // TODO: check whether the file exists
+
         Configuration config = new Configuration(DecentMenus.getInstance(), "menus/" + fileName);
 
         // Parse model name
@@ -75,12 +76,13 @@ public class MenuModel {
         ConfigurationSection items = config.getConfigurationSection("items");
         if (items != null) {
             for (String key : items.getKeys(false)) {
-                if (key.length() != 1) continue;
+                if (key.length() != 1) {
+                    continue;
+                }
                 char ch = key.charAt(0);
-                String typeName = items.getString(key + ".type", "NORMAL");
-                EnumMenuItemType type = EnumMenuItemType.fromName(typeName);
-                ConfigurationSection configuration = items.getConfigurationSection(key);
-                itemMap.put(ch, type.create(configuration, ch));
+                ConfigurationSection section = items.getConfigurationSection(key);
+                ItemWrapper itemWrapper = ConfigUtils.getItemWrapper(section, "item");
+                itemMap.put(ch, new MenuItem(ch, section, itemWrapper));
             }
         }
         return new MenuModel(name, config, title, permission, slots, itemMap, updating, updateInterval);
