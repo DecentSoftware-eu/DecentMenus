@@ -1,0 +1,85 @@
+# -- Settings
+
+# lines: 3
+
+# size: 27
+
+# type: HOPPER # <- Item slots
+# slots: '     ' # <- ? # ex.: Only load the first five chars in 'slots' for hopper
+
+title: 'Example Menu'
+slots:
+  - '         '
+  - '    x    '
+  - '         '
+
+# -- Conditions
+conditions:
+  DISPLAY:
+    - type: stringequals
+      compare: d0by
+      input: %player_name%
+
+# -- Actions
+actions:
+  DISPLAY:
+    - type: sound
+      sound: BLOCK_BEACON_ACTIVATE
+
+# -- Items
+items:
+  'x':
+    # -- Settings
+    # slot: 10
+    # slot_type: FILL
+
+    # -- Conditions
+    conditions:
+      CLICK:
+        - type: stringequals
+          compare: d0by
+          input: %player_name%
+
+    # -- Actions
+    actions:
+      CLICK:
+        - type: message
+          message: '&6Click Type:'
+      RIGHT:
+        - type: message
+          message:
+            - '  &eRight!'
+      SHIFT_RIGHT:
+        - type: message
+          message:
+            - '  &eShift Right!'
+      LEFT:
+        - type: message
+          message:
+            - '  &eLeft!'
+      SHIFT_LEFT:
+        - type: message
+          message:
+            - '  &eShift Left!'
+
+    # -- Item
+    item:
+      material: IRON_BOOTS
+      name: 'boots'
+      amount: 1
+      durability: 20
+      lore:
+        - 'Lore line 1'
+        - 'Lore line 2'
+      enachantments:
+        - 'PROTECTION_ENVIRONMENTAL:3'
+        - 'THORNS:3'
+      customModelData: 1
+      unbreakable: true
+      flags:
+        - 'HIDE_ATTRIBUTES'
+        - 'HIDE_UNBREAKABLE'
+      skull:
+        # Owner OR Texture
+        owner: d0by
+        texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjhkMjE4MzY0MDIxOGFiMzMwYWM1NmQyYWFiN2UyOWE5NzkwYTU0NWY2OTE2MTllMzg1NzhlYTRhNjlhZTBiNiJ9fX0=
