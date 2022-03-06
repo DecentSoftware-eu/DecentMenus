@@ -3,6 +3,7 @@ package eu.decent.menus.menu;
 import eu.decent.menus.actions.ActionHolder;
 import eu.decent.menus.conditions.ConditionHolder;
 import eu.decent.menus.menu.item.MenuItem;
+import eu.decent.menus.menu.item.MenuItemIntent;
 import eu.decent.menus.menu.item.MenuSlotType;
 import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.config.ConfigUtils;
@@ -111,18 +112,24 @@ public class MenuModel {
         this.updateInterval = config.getInt("update_interval", 20);
 
         // -- Load conditions
-        executeForEachMenuIntentInSection("conditions", (menuIntent, section) -> {
-            ConditionHolder conditionHolder = ConditionHolder.load(section, false);
-            if (conditionHolder != null) {
-                this.conditionHolderMap.put(menuIntent, conditionHolder);
+        executeForEachSection(config, "conditions", (key, section) -> {
+            MenuIntent menuIntent = MenuIntent.fromString(key);
+            if (menuIntent != null) {
+                ConditionHolder conditionHolder = ConditionHolder.load(section, false);
+                if (conditionHolder != null) {
+                    this.conditionHolderMap.put(menuIntent, conditionHolder);
+                }
             }
         });
 
         // -- Load actions
-        executeForEachMenuIntentInSection("actions", (menuIntent, section) -> {
-            ActionHolder actionHolder = ActionHolder.load(section, false);
-            if (actionHolder != null) {
-                this.actionHolderMap.put(menuIntent, actionHolder);
+        executeForEachSection(config, "actions", (key, section) -> {
+            MenuIntent menuIntent = MenuIntent.fromString(key);
+            if (menuIntent != null) {
+                ActionHolder actionHolder = ActionHolder.load(section, false);
+                if (actionHolder != null) {
+                    this.actionHolderMap.put(menuIntent, actionHolder);
+                }
             }
         });
 
@@ -130,17 +137,42 @@ public class MenuModel {
         ConfigurationSection itemsSection = config.getConfigurationSection("items");
         if (itemsSection != null) {
             for (String key : itemsSection.getKeys(false)) {
-                ConfigurationSection section = itemsSection.getConfigurationSection(key);
-                if (section == null) {
+                ConfigurationSection itemSection = itemsSection.getConfigurationSection(key);
+                if (itemSection == null) {
                     continue;
                 }
-                int slot = section.getInt("slot", -1);
-                MenuSlotType slotType = MenuSlotType.fromName(section.getString("slot_type", "DEFAULT"));
-                ItemWrapper itemWrapper = ConfigUtils.getItemWrapper(section, "item");
-                ItemWrapper errorItemWrapper = ConfigUtils.getItemWrapper(section, "error_item");
-                MenuItem menuItem = new MenuItem(key, section, itemWrapper, errorItemWrapper);
+                // -- Load item
+                int slot = itemSection.getInt("slot", -1);
+                MenuSlotType slotType = MenuSlotType.fromName(itemSection.getString("slot_type", "DEFAULT"));
+                ItemWrapper itemWrapper = ConfigUtils.getItemWrapper(itemSection, "item");
+                ItemWrapper errorItemWrapper = ConfigUtils.getItemWrapper(itemSection, "error_item");
+
+                MenuItem menuItem = new MenuItem(key, itemSection, itemWrapper, errorItemWrapper);
                 menuItem.setSlotType(slotType);
                 menuItem.setSlot(slot);
+
+                // -- Load item conditions
+                executeForEachSection(itemSection, "conditions", (sectionKey, section) -> {
+                    MenuItemIntent menuItemIntent = MenuItemIntent.fromString(sectionKey);
+                    if (menuItemIntent != null) {
+                        ConditionHolder conditionHolder = ConditionHolder.load(section, true);
+                        if (conditionHolder != null) {
+                            menuItem.getConditionHolderMap().put(menuItemIntent, conditionHolder);
+                        }
+                    }
+                });
+
+                // -- Load item actions
+                executeForEachSection(itemSection, "conditions", (sectionKey, section) -> {
+                    MenuItemIntent menuItemIntent = MenuItemIntent.fromString(sectionKey);
+                    if (menuItemIntent != null) {
+                        ActionHolder actionHolder = ActionHolder.load(section, true);
+                        if (actionHolder != null) {
+                            menuItem.getActionHolderMap().put(menuItemIntent, actionHolder);
+                        }
+                    }
+                });
+
                 this.menuItemMap.put(key, menuItem);
             }
         }
@@ -150,19 +182,17 @@ public class MenuModel {
      *  Utility Methods
      */
 
-    private void executeForEachMenuIntentInSection(@NotNull String path, @NotNull BiConsumer<MenuIntent, ConfigurationSection> execute) {
+    private void executeForEachSection(@NotNull ConfigurationSection config,
+                                       @NotNull String path,
+                                       @NotNull BiConsumer<String, ConfigurationSection> execute) {
         ConfigurationSection actionsSection = config.getConfigurationSection(path);
         if (actionsSection != null) {
             for (String key : actionsSection.getKeys(false)) {
-                MenuIntent menuIntent = MenuIntent.fromString(key);
-                if (menuIntent == null) {
-                    continue;
-                }
                 ConfigurationSection section = actionsSection.getConfigurationSection(key);
                 if (section == null) {
                     continue;
                 }
-                execute.accept(menuIntent, section);
+                execute.accept(key, section);
             }
         }
     }

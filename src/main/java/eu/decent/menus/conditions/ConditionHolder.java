@@ -16,7 +16,7 @@ public class ConditionHolder extends DecentHolder<Condition> {
 
     /**
      * Checks all Conditions stored in this holder. This method also executes
-     * all 'met' or 'not met' actions of the checked conditions if needed.
+     * all 'met' or 'not met' actions of the checked conditions.
      *
      * @param profile Profile of the player for whom we want to check the conditions.
      * @return True if all the conditions are fulfilled, False otherwise.
