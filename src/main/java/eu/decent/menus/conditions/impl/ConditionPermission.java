@@ -10,15 +10,15 @@ import org.jetbrains.annotations.NotNull;
  * This class represents a {@link Condition} that checks
  * whether the player has a specified permission.
  */
-public class PermissionCondition extends Condition {
+public class ConditionPermission extends Condition {
 
     private final String permission;
 
-    public PermissionCondition(@NotNull String permission) {
+    public ConditionPermission(@NotNull String permission) {
         this(false, permission);
     }
 
-    public PermissionCondition(boolean inverted, @NotNull String permission) {
+    public ConditionPermission(boolean inverted, @NotNull String permission) {
         super(inverted);
         this.permission = permission;
     }

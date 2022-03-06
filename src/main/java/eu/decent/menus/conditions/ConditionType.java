@@ -17,25 +17,25 @@ import java.util.Set;
  */
 @SuppressWarnings("SpellCheckingInspection")
 public enum ConditionType {
-    MONEY("money", "hasmoney"),
-    PERMISSION("permission", "haspermission", "perm", "hasperm"),
-    REGEX("regex", "regex_matches", "matchesregex", "compareregex"),
-    DISTANCE("distance", "near", "isnear"),
-    EXP("exp", "hasexp", "xp", "hasxp"),
-    ITEM("item", "hasitem"),
+    MONEY("money", "has money"),
+    PERMISSION("permission", "has permission", "perm", "has perm"),
+    REGEX("regex", "regex matches", "matches regex", "compare regex"),
+    DISTANCE("distance", "near", "is near"),
+    EXP("exp", "has exp", "xp", "has xp"),
+    ITEM("item", "has item"),
     JAVASCRIPT("javascript", "js"),
 
     // -- Numbers
-    EQUAL("==", "equals", "equal", "equalto", "isequal", "isequalto"),
-    LESS("<", "less", "isless", "lessthan", "islessthan"),
-    LESS_EQUAL("<=", "lessorequal", "islessorequal", "lessthanorequal", "islessthanorequal"),
-    GREATER(">", "greater", "isgreater", "greaterthan", "isgreaterthan"),
-    GREATER_EQUAL(">=", "greaterorequal", "isgreaterorequal", "greaterthanorequal", "isgreaterthanorequal"),
+    EQUAL("==", "equals", "equal", "equal to", "is equal", "is equal to"),
+    LESS("<", "less", "is less", "less than", "isless than"),
+    LESS_EQUAL("<=", "less or equal", "is less or equal", "less than or equal", "is less than or equal"),
+    GREATER(">", "greater", "is greater", "greater than", "is greater than"),
+    GREATER_EQUAL(">=", "greater or equal", "is greater or equal", "greater than or equal", "is greater than or equal"),
 
     // -- Strings
-    STRING_EQUAL("stringequals"),
-    STRING_EQUAL_IGNORECASE("stringequalsignorecase"),
-    STRING_CONTAINS("stringcontains"),
+    STRING_EQUAL("string equals"),
+    STRING_EQUAL_IGNORECASE("string equals ignore case"),
+    STRING_CONTAINS("string contains"),
     ;
 
     @Getter
@@ -57,8 +57,10 @@ public enum ConditionType {
     @Nullable
     public static ConditionType fromString(@NotNull String string) {
         for (ConditionType conditionType : values()) {
-            if (conditionType.getAliases().contains(string.trim().toLowerCase())) {
-                return conditionType;
+            for (String alias : conditionType.getAliases()) {
+                if (alias.trim().equalsIgnoreCase(string.trim())) {
+                    return conditionType;
+                }
             }
         }
         return null;
