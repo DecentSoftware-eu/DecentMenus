@@ -47,7 +47,7 @@ public abstract class Condition {
      * Create a {@link Condition} from the given config.
      *
      * @param config The config.
-     * @return The new Condition or null if the map contents are invalid.
+     * @return The new Condition or null.
      */
     @Nullable
     public static Condition load(@NotNull ConfigurationSection config) {

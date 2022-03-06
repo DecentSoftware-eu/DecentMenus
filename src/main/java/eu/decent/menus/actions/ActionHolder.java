@@ -34,10 +34,20 @@ public class ActionHolder extends DecentHolder<Action> {
         }
     }
 
-    @Nullable
-    public static ActionHolder load(@NotNull ConfigurationSection config, boolean forMenuItem) {
-        // TODO
-        return null;
+    @NotNull
+    public static ActionHolder load(@NotNull ConfigurationSection config) {
+        ActionHolder actionHolder = new ActionHolder();
+        for (String key : config.getKeys(false)) {
+            ConfigurationSection section = config.getConfigurationSection(key);
+            if (section == null) {
+                continue;
+            }
+            Action action = Action.load(section);
+            if (action != null) {
+                actionHolder.append(action);
+            }
+        }
+        return actionHolder;
     }
 
 }

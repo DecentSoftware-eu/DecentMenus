@@ -46,10 +46,20 @@ public class ConditionHolder extends DecentHolder<Condition> {
         return success;
     }
 
-    @Nullable
-    public static ConditionHolder load(@NotNull ConfigurationSection config, boolean forMenuItem) {
-        // TODO
-        return null;
+    @NotNull
+    public static ConditionHolder load(@NotNull ConfigurationSection config) {
+        ConditionHolder conditionHolder = new ConditionHolder();
+        for (String key : config.getKeys(false)) {
+            ConfigurationSection section = config.getConfigurationSection(key);
+            if (section == null) {
+                continue;
+            }
+            Condition condition = Condition.load(section);
+            if (condition != null) {
+                conditionHolder.append(condition);
+            }
+        }
+        return conditionHolder;
     }
 
 }

@@ -3,7 +3,9 @@ package eu.decent.menus.actions;
 import eu.decent.menus.player.PlayerProfile;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -53,6 +55,18 @@ public class Action {
         }
         double random = ThreadLocalRandom.current().nextDouble() * 100d;
         return random > chance;
+    }
+
+    /**
+     * Create a {@link Action} from the given config.
+     *
+     * @param config The config.
+     * @return The new Action or null.
+     */
+    @Nullable
+    public static Action load(@NotNull ConfigurationSection config) {
+
+        return null;
     }
 
 }

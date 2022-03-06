@@ -115,10 +115,8 @@ public class MenuModel {
         executeForEachSection(config, "conditions", (key, section) -> {
             MenuIntent menuIntent = MenuIntent.fromString(key);
             if (menuIntent != null) {
-                ConditionHolder conditionHolder = ConditionHolder.load(section, false);
-                if (conditionHolder != null) {
-                    this.conditionHolderMap.put(menuIntent, conditionHolder);
-                }
+                ConditionHolder conditionHolder = ConditionHolder.load(section);
+                conditionHolderMap.put(menuIntent, conditionHolder);
             }
         });
 
@@ -126,10 +124,8 @@ public class MenuModel {
         executeForEachSection(config, "actions", (key, section) -> {
             MenuIntent menuIntent = MenuIntent.fromString(key);
             if (menuIntent != null) {
-                ActionHolder actionHolder = ActionHolder.load(section, false);
-                if (actionHolder != null) {
-                    this.actionHolderMap.put(menuIntent, actionHolder);
-                }
+                ActionHolder actionHolder = ActionHolder.load(section);
+                actionHolderMap.put(menuIntent, actionHolder);
             }
         });
 
@@ -155,10 +151,8 @@ public class MenuModel {
                 executeForEachSection(itemSection, "conditions", (sectionKey, section) -> {
                     MenuItemIntent menuItemIntent = MenuItemIntent.fromString(sectionKey);
                     if (menuItemIntent != null) {
-                        ConditionHolder conditionHolder = ConditionHolder.load(section, true);
-                        if (conditionHolder != null) {
-                            menuItem.getConditionHolderMap().put(menuItemIntent, conditionHolder);
-                        }
+                        ConditionHolder conditionHolder = ConditionHolder.load(section);
+                        menuItem.getConditionHolderMap().put(menuItemIntent, conditionHolder);
                     }
                 });
 
@@ -166,10 +160,8 @@ public class MenuModel {
                 executeForEachSection(itemSection, "conditions", (sectionKey, section) -> {
                     MenuItemIntent menuItemIntent = MenuItemIntent.fromString(sectionKey);
                     if (menuItemIntent != null) {
-                        ActionHolder actionHolder = ActionHolder.load(section, true);
-                        if (actionHolder != null) {
-                            menuItem.getActionHolderMap().put(menuItemIntent, actionHolder);
-                        }
+                        ActionHolder actionHolder = ActionHolder.load(section);
+                        menuItem.getActionHolderMap().put(menuItemIntent, actionHolder);
                     }
                 });
 
