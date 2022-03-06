@@ -1,4 +1,4 @@
-package eu.decent.menus.menu;
+package eu.decent.menus.menu.item;
 
 /**
  * This enum represents all {@link MenuItem}s slot types.

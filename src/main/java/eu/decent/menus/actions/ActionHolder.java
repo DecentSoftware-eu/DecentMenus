@@ -4,7 +4,9 @@ import eu.decent.library.objects.DecentHolder;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.player.PlayerProfile;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class represents a holder for actions.
@@ -30,6 +32,12 @@ public class ActionHolder extends DecentHolder<Action> {
                 action.execute(profile);
             }
         }
+    }
+
+    @Nullable
+    public static ActionHolder load(@NotNull ConfigurationSection config) {
+        // TODO
+        return null;
     }
 
 }

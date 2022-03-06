@@ -2,8 +2,12 @@ package eu.decent.menus.conditions;
 
 import eu.decent.library.objects.DecentHolder;
 import eu.decent.menus.actions.ActionHolder;
+import eu.decent.menus.menu.MenuIntent;
+import eu.decent.menus.menu.item.MenuItemIntent;
 import eu.decent.menus.player.PlayerProfile;
+import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class represents a holder for conditions.
@@ -40,6 +44,12 @@ public class ConditionHolder extends DecentHolder<Condition> {
         }
         // All conditions are fulfilled.
         return success;
+    }
+
+    @Nullable
+    public static ConditionHolder load(@NotNull ConfigurationSection config) {
+        // TODO
+        return null;
     }
 
 }

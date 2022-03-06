@@ -4,11 +4,12 @@ import eu.decent.library.utils.Common;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.Registry;
-import org.apache.commons.lang.Validate;
+import eu.decent.menus.utils.config.Configuration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -48,7 +49,16 @@ public class MenuRegistry extends Registry<String, MenuModel> {
             String[] fileNames = menusDir.list((dir1, name) -> name.matches("\\S+\\.yml"));
             if (fileNames != null && fileNames.length > 0) {
                 for (String fileName : fileNames) {
-                    MenuModel menuModel = MenuModel.fromFile(fileName);
+                    Configuration configuration = new Configuration(DecentMenus.getInstance(), fileName);
+                    // Parse model name
+                    String name;
+                    if (fileName.toLowerCase().startsWith("menu_") && fileName.length() > "menu_".length()) {
+                        name = fileName.substring("menu_".length(), fileName.length() - 4);
+                    } else {
+                        name = fileName.substring(0, fileName.length() - 4);
+                    }
+                    // Register the model
+                    MenuModel menuModel = new MenuModel(name, configuration);
                     register(menuModel);
                     counter++;
                 }
@@ -81,13 +91,10 @@ public class MenuRegistry extends Registry<String, MenuModel> {
      * @param model The models' name
      * @return Boolean whether the operation was successful.
      */
-    public boolean openMenu(Player player, String model) {
-        Validate.notNull(player);
-        Validate.notNull(model);
-
+    public boolean openMenu(@NotNull Player player, @NotNull String model) {
         PlayerProfile playerProfile = DecentMenus.getInstance().getPlayerRegistry().get(player.getUniqueId());
         MenuModel menuModel = get(model);
-        if (menuModel != null && menuModel.hasPermission(player)) {
+        if (menuModel != null) {
             Menu menu = new Menu(menuModel, playerProfile);
             menu.open();
             return true;
@@ -100,7 +107,7 @@ public class MenuRegistry extends Registry<String, MenuModel> {
      *
      * @param menuModel The MenuModel.
      */
-    public void register(MenuModel menuModel) {
+    public void register(@NotNull MenuModel menuModel) {
         register(menuModel.getName(), menuModel);
     }
 

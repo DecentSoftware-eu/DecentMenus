@@ -1,91 +1,165 @@
 package eu.decent.menus.menu;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
-import eu.decent.library.utils.collection.DMap;
-import eu.decent.menus.DecentMenus;
+import eu.decent.menus.actions.ActionHolder;
+import eu.decent.menus.conditions.ConditionHolder;
+import eu.decent.menus.menu.item.MenuItem;
+import eu.decent.menus.menu.item.MenuSlotType;
+import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.config.ConfigUtils;
 import eu.decent.menus.utils.config.Configuration;
 import eu.decent.menus.utils.item.ItemWrapper;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * This class represents a model that can be used to create a menu.
+ */
 @Getter
-@AllArgsConstructor
+@Setter
 public class MenuModel {
 
     private final String name;
     private final Configuration config;
-    private final String title;
-    private final String permission;
-    private final List<String> slots;
-    private final Map<Character, MenuItem> items;
-    private final boolean updating;
-    private final int updateInterval;
+    private final Map<MenuIntent, ConditionHolder> conditionHolderMap;
+    private final Map<MenuIntent, ActionHolder> actionHolderMap;
+    private final Map<String, MenuItem> menuItemMap;
+    private String title;
+    private int size;
+    private int lines;
+    private List<String> slots;
+    private boolean updating;
+    private int updateInterval;
 
     /**
-     * Check whether the given player is allowed to open the menu.
+     * Create new {@link MenuModel}.
      *
-     * @param player The player.
-     * @return The result.
+     * @param name Name of the new model.
+     * @param config Configuration of the new model.
      */
-    public boolean hasPermission(Player player) {
-        return permission == null || player.hasPermission(permission);
+    public MenuModel(@NotNull String name, @NotNull Configuration config) {
+        this.name = name;
+        this.config = config;
+        this.conditionHolderMap = new EnumMap<>(MenuIntent.class);
+        this.actionHolderMap = new EnumMap<>(MenuIntent.class);
+        this.menuItemMap = new HashMap<>();
+        this.load();
     }
 
     /**
-     * Load a {@link MenuModel} from file.
+     * Check whether the given profile is allowed to perform the intended action.
      *
-     * @param fileName The files name.
-     * @return The MenuModel.
+     * @param profile The profile.
+     * @param intent The intention.
+     * @return The requested boolean.
      */
-    public static MenuModel fromFile(@NotNull String fileName) {
-        // TODO: check whether the file exists
+    public boolean isAllowed(@NotNull PlayerProfile profile, @NotNull MenuIntent intent) {
+        ConditionHolder conditionHolder = conditionHolderMap.get(intent);
+        return conditionHolder == null || conditionHolder.checkAll(profile);
+    }
 
-        Configuration config = new Configuration(DecentMenus.getInstance(), "menus/" + fileName);
-
-        // Parse model name
-        String name;
-        if (fileName.toLowerCase().startsWith("menu_") && fileName.length() > "menu_".length()) {
-            name = fileName.substring("menu_".length(), fileName.length() - 4);
-        } else {
-            name = fileName.substring(0, fileName.length() - 4);
+    /**
+     * Perform all actions assigned to the given intention.
+     *
+     * @param profile The profile that performs these actions.
+     * @param intent The intention.
+     */
+    public void performActions(@NotNull PlayerProfile profile, @NotNull MenuIntent intent) {
+        ActionHolder actionHolder = actionHolderMap.get(intent);
+        if (actionHolder != null) {
+            actionHolder.execute(profile);
         }
-        String title = config.getString("title", "Unnamed Menu");
-        String permission = config.getString("permission", null);
-        boolean updating = config.getBoolean("updating", false);
-        int updateInterval = config.getInt("update_interval", 20);
+    }
 
-        // Get the slots
-        List<String> slots = config.getStringList("slots");
-        if (slots.isEmpty()) {
-            slots = Lists.newArrayList(Strings.repeat(" ", 9));
+    /**
+     * Get the inventory size of this {@link MenuModel}.
+     * <br>
+     * This is the only safe way to get the size.
+     *
+     * @return The size.
+     */
+    public int getInventorySize() {
+        if (size >= 9 && size <= 54 && size % 9 == 0) {
+            return size;
+        } else if (lines >= 1 && lines <= 6) {
+            return lines * 9;
+        } else if (slots != null && slots.size() > 0) {
+            return slots.size() > 6 ? 54 : slots.size() * 9;
         }
+        return 27;
+    }
 
-        DMap<Character, MenuItem> itemMap = new DMap<>();
-        if (!config.contains("items")) {
-            config.createSection("items");
-        }
-        // Load the items
-        ConfigurationSection items = config.getConfigurationSection("items");
-        if (items != null) {
-            for (String key : items.getKeys(false)) {
-                if (key.length() != 1) {
+    /**
+     * Load this {@link MenuModel} from its configuration.
+     */
+    private void load() {
+        // -- Load settings
+        this.title = config.getString("title", "Unnamed Menu");
+        this.size = config.getInt("size", -1);
+        this.lines = config.getInt("lines", -1);
+        this.slots = config.getStringList("slots");
+        this.updating = config.getBoolean("updating", true);
+        this.updateInterval = config.getInt("update_interval", 20);
+
+        // -- Load conditions
+        ConfigurationSection conditionsSection = config.getConfigurationSection("conditions");
+        if (conditionsSection != null) {
+            for (String key : conditionsSection.getKeys(false)) {
+                MenuIntent menuIntent = MenuIntent.fromString(key);
+                if (menuIntent == null) {
                     continue;
                 }
-                char ch = key.charAt(0);
-                ConfigurationSection section = items.getConfigurationSection(key);
-                ItemWrapper itemWrapper = ConfigUtils.getItemWrapper(section, "item");
-                itemMap.put(ch, new MenuItem(ch, section, itemWrapper));
+                ConfigurationSection section = conditionsSection.getConfigurationSection(key);
+                if (section == null) {
+                    continue;
+                }
+                ConditionHolder conditionHolder = ConditionHolder.load(section);
+                if (conditionHolder != null) {
+                    this.conditionHolderMap.put(menuIntent, conditionHolder);
+                }
             }
         }
-        return new MenuModel(name, config, title, permission, slots, itemMap, updating, updateInterval);
+
+        // -- Load actions
+        ConfigurationSection actionsSection = config.getConfigurationSection("actions");
+        if (actionsSection != null) {
+            for (String key : actionsSection.getKeys(false)) {
+                MenuIntent menuIntent = MenuIntent.fromString(key);
+                if (menuIntent == null) {
+                    continue;
+                }
+                ConfigurationSection section = actionsSection.getConfigurationSection(key);
+                if (section == null) {
+                    continue;
+                }
+                ActionHolder actionHolder = ActionHolder.load(section);
+                if (actionHolder != null) {
+                    this.actionHolderMap.put(menuIntent, actionHolder);
+                }
+            }
+        }
+
+        // -- Load items
+        ConfigurationSection itemsSection = config.getConfigurationSection("items");
+        if (itemsSection != null) {
+            for (String key : itemsSection.getKeys(false)) {
+                ConfigurationSection section = itemsSection.getConfigurationSection(key);
+                if (section == null) {
+                    continue;
+                }
+                int slot = section.getInt("slot", -1);
+                MenuSlotType slotType = MenuSlotType.fromName(section.getString("slot_type", "DEFAULT"));
+                ItemWrapper itemWrapper = ConfigUtils.getItemWrapper(section, "item");
+                ItemWrapper errorItemWrapper = ConfigUtils.getItemWrapper(section, "error_item");
+                this.menuItemMap.put(key, new MenuItem(key, section, itemWrapper, errorItemWrapper));
+            }
+        }
     }
 
 }

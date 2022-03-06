@@ -1,16 +1,12 @@
-package eu.decent.menus.conditions;
+package eu.decent.menus.menu.item;
 
 import lombok.Getter;
 import org.bukkit.event.inventory.ClickType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * This enum represents all the different intentions, that actions and conditions can be set on.
- */
-public enum ConditionIntent {
+public enum MenuItemIntent {
     DISPLAY,
-    // -- Click Types
     CLICK,
     LEFT_CLICK(ClickType.LEFT),
     SHIFT_LEFT_CLICK(ClickType.SHIFT_LEFT),
@@ -23,20 +19,30 @@ public enum ConditionIntent {
     @Getter
     private final ClickType clickType;
 
-    ConditionIntent() {
+    MenuItemIntent() {
         this.clickType = null;
     }
 
-    ConditionIntent(ClickType clickType) {
+    MenuItemIntent(ClickType clickType) {
         this.clickType = clickType;
     }
 
     @Nullable
-    public static ConditionIntent fromClickType(@NotNull ClickType clickType) {
-        for (ConditionIntent intent : values()) {
+    public static MenuItemIntent fromClickType(@NotNull ClickType clickType) {
+        for (MenuItemIntent intent : values()) {
             ClickType intentClickType = intent.getClickType();
             if (intentClickType != null && intentClickType.equals(clickType)) {
                 return intent;
+            }
+        }
+        return null;
+    }
+
+    @Nullable
+    public static MenuItemIntent fromString(@NotNull String string) {
+        for (MenuItemIntent menuItemIntent : values()) {
+            if (menuItemIntent.name().equalsIgnoreCase(string)) {
+                return menuItemIntent;
             }
         }
         return null;

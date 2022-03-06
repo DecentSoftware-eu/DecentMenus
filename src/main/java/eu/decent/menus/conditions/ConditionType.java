@@ -31,7 +31,6 @@ public enum ConditionType {
     LESS_EQUAL("<=", "lessorequal", "islessorequal", "lessthanorequal", "islessthanorequal"),
     GREATER(">", "greater", "isgreater", "greaterthan", "isgreaterthan"),
     GREATER_EQUAL(">=", "greaterorequal", "isgreaterorequal", "greaterthanorequal", "isgreaterthanorequal"),
-    BETWEEN("between", "isbetween"),
 
     // -- Strings
     STRING_EQUAL("stringequals"),

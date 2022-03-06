@@ -1,9 +1,12 @@
 package eu.decent.menus.menu;
 
 import eu.decent.library.utils.Common;
-import eu.decent.menus.conditions.ConditionIntent;
+import eu.decent.menus.menu.item.MenuItem;
+import eu.decent.menus.menu.item.MenuItemIntent;
+import eu.decent.menus.menu.item.MenuSlotType;
 import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.MenuUtils;
+import eu.decent.menus.utils.item.ItemWrapper;
 import eu.decent.menus.utils.ticker.DecentMenusTicked;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This class represents a menu.
@@ -65,63 +69,71 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      */
     public void open() {
         Player player = owner.getPlayer();
-        // If the player is offline or not allowed to open the menu, return.
-        if (player == null || !menuModel.hasPermission(player)) {
+        // -- If the player is offline or not allowed to open the menu, return.
+        if (player == null || !menuModel.isAllowed(owner, MenuIntent.OPEN)) {
             return;
         }
 
-        Map<Character, MenuItem> itemMap = menuModel.getItems();
-        List<String> slots = menuModel.getSlots();
+        Map<String, MenuItem> itemMap = menuModel.getMenuItemMap();
         String title = Common.colorize(menuModel.getTitle());
-        int size = slots.size() * 9;
+        int size = menuModel.getInventorySize();
 
         items = new MenuItem[size];
 
-        // Create & open the inventory
-        if (inventory == null || !equals(player.getOpenInventory().getTopInventory().getHolder()) || inventory.getSize() != size) {
+        // -- Create & open the inventory if not open yet
+        InventoryHolder playerTopInventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
+        if (inventory == null || !equals(playerTopInventoryHolder) || inventory.getSize() != size) {
             inventory = Bukkit.createInventory(this, size, title);
             player.openInventory(inventory);
             owner.setOpenMenu(this);
+            menuModel.performActions(owner, MenuIntent.OPEN);
             startTicking();
         }
 
-        // Update the inventory contents
+        // -- Clear the inventory
         inventory.clear();
-        for (int i = 0; i < slots.size(); i++) {
-            String line = slots.get(i);
-            char[] chars = line.toCharArray();
-            for (int j = 0; j < chars.length; j++) {
-                char ch = chars[j];
-                if (ch == ' ' || !itemMap.containsKey(ch)) {
-                    continue;
-                }
 
-                MenuItem menuItem = itemMap.get(ch);
-                if (menuItem != null && menuItem.getConditionHolderMap().get(ConditionIntent.DISPLAY).checkAll(owner)) {
-                    // Prepare the slot
-                    int slot = menuItem.getSlotType().equals(MenuSlotType.FILL)
-                            ? MenuUtils.getFirstFreeSlot(inventory)
-                            : i * 9 + j;
-                    // Add the item if possible
-                    if (slot >= 0) {
-                        items[slot] = menuItem;
-                        inventory.setItem(slot, menuItem.getItemWrapper().toItemStack(player));
+        // -- Add all items from layout
+        List<String> slots = menuModel.getSlots();
+        if (slots != null && !slots.isEmpty()) {
+            for (int i = 0; i < slots.size(); i++) {
+                String line = slots.get(i);
+                char[] chars = line.toCharArray();
+                for (int j = 0; j < chars.length; j++) {
+                    String ch = String.valueOf(chars[j]);
+                    if (!itemMap.containsKey(ch)) {
+                        continue;
+                    }
+                    MenuItem menuItem = itemMap.get(ch);
+                    if (menuItem != null) {
+                        int slot = prepareSlot(menuItem, i * 9 + j);
+                        addMenuItemToInventoryIfPossible(player, menuItem, slot);
                     }
                 }
             }
         }
+
+        // -- Add all the other items
+        List<MenuItem> otherItems = itemMap.values().stream()
+                .filter(menuItem -> menuItem.getSlot() != -1)
+                .collect(Collectors.toList());
+        for (MenuItem menuItem : otherItems) {
+            int slot = prepareSlot(menuItem, menuItem.getSlot());
+            addMenuItemToInventoryIfPossible(player, menuItem, slot);
+        }
+
+        // -- Update inventory contents
         player.updateInventory();
     }
 
     /**
-     * Close this menu for the owning player.
+     * Close this menu for the owning player if allowed.
      */
     public void close() {
-        Player player = owner.getPlayer();
-        if (player == null) {
-            return;
+        // If the player is not allowed to close this menu, don't close.
+        if (menuModel.isAllowed(owner, MenuIntent.CLOSE)) {
+            owner.getPlayer().closeInventory();
         }
-        player.closeInventory();
     }
 
     @Override
@@ -162,8 +174,36 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      * @param event The event.
      */
     public void onClose(@NotNull InventoryCloseEvent event) {
-        getOwner().setOpenMenu(null);
-        stopTicking();
+        if (menuModel.isAllowed(owner, MenuIntent.CLOSE)) {
+            getOwner().setOpenMenu(null);
+            stopTicking();
+            menuModel.performActions(owner, MenuIntent.CLOSE);
+        } else {
+            // If the player is not allowed to close this menu, open in back.
+            open();
+        }
+    }
+
+    /*
+     *  Utility Methods
+     */
+
+    private int prepareSlot(@NotNull MenuItem menuItem, int defaultValue) {
+        return menuItem.getSlotType().equals(MenuSlotType.FILL)
+                ? MenuUtils.getFirstFreeSlot(inventory)
+                : defaultValue;
+    }
+
+    private void addMenuItemToInventoryIfPossible(@NotNull Player player, @NotNull MenuItem menuItem, int slot) {
+        if (slot >= 0 && items[slot] == null) {
+            ItemWrapper itemWrapper = menuItem.isAllowed(owner, MenuItemIntent.DISPLAY)
+                    ? menuItem.getItemWrapper()
+                    : menuItem.getErrorItemWrapper();
+            if (itemWrapper != null) {
+                inventory.setItem(slot, itemWrapper.toItemStack(player));
+                items[slot] = menuItem;
+            }
+        }
     }
 
 }
