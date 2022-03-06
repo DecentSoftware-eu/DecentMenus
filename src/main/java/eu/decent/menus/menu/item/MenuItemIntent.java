@@ -20,7 +20,7 @@ public enum MenuItemIntent {
     private final ClickType clickType;
 
     MenuItemIntent() {
-        this.clickType = null;
+        this(null);
     }
 
     MenuItemIntent(ClickType clickType) {
