@@ -79,9 +79,11 @@ public class MenuModel {
     }
 
     /**
-     * Get the inventory size of this {@link MenuModel}.
-     * <br>
-     * This is the only safe way to get the size.
+     * Get the inventory size of this {@link MenuModel} safely.
+     * <p>
+     *     This is the only safe way to get the size as this method
+     *     always returns a valid inventory size.
+     * </p>
      *
      * @return The size.
      */

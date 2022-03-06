@@ -64,9 +64,29 @@ public class MenuItem {
         this.updating = true;
     }
 
-    public boolean isAllowed(@NotNull PlayerProfile profile, @NotNull eu.decent.menus.menu.item.MenuItemIntent intent) {
+    /**
+     * Check whether the given profile is allowed to perform the intended action.
+     *
+     * @param profile The profile.
+     * @param intent The intention.
+     * @return The requested boolean.
+     */
+    public boolean isAllowed(@NotNull PlayerProfile profile, @NotNull MenuItemIntent intent) {
         ConditionHolder conditionHolder = conditionHolderMap.get(intent);
         return conditionHolder == null || conditionHolder.checkAll(profile);
+    }
+
+    /**
+     * Perform all actions assigned to the given intention.
+     *
+     * @param profile The profile that performs these actions.
+     * @param intent The intention.
+     */
+    public void performActions(@NotNull PlayerProfile profile, @NotNull MenuItemIntent intent) {
+        ActionHolder actionHolder = actionHolderMap.get(intent);
+        if (actionHolder != null) {
+            actionHolder.execute(profile);
+        }
     }
 
     /**
@@ -78,15 +98,13 @@ public class MenuItem {
      */
     public boolean canClick(@NotNull PlayerProfile profile, @NotNull InventoryClickEvent e) {
         // Check the global conditions (any click type)
-        ConditionHolder globalConditionHolder = conditionHolderMap.get(MenuItemIntent.CLICK);
-        boolean globalConditionsMet = globalConditionHolder == null || globalConditionHolder.checkAll(profile);
+        boolean globalConditionsMet = isAllowed(profile, MenuItemIntent.CLICK);
         if (globalConditionsMet) {
             // Check the specific conditions (per click type)
             ClickType clickType = e.getClick();
             MenuItemIntent menuItemIntent = MenuItemIntent.fromClickType(clickType);
             if (menuItemIntent != null) {
-                ConditionHolder conditionHolder = conditionHolderMap.get(menuItemIntent);
-                return conditionHolder == null || conditionHolder.checkAll(profile);
+                return isAllowed(profile, menuItemIntent);
             }
         }
         return globalConditionsMet;
@@ -108,19 +126,13 @@ public class MenuItem {
         }
 
         // Execute the global actions (any click type)
-        ActionHolder globalActionHolder = actionHolderMap.get(MenuItemIntent.CLICK);
-        if (globalActionHolder != null) {
-            globalActionHolder.execute(profile);
-        }
+        performActions(profile, MenuItemIntent.CLICK);
 
         // Execute the specific actions (per click type)
         ClickType clickType = e.getClick();
         MenuItemIntent menuItemIntent = MenuItemIntent.fromClickType(clickType);
         if (menuItemIntent != null) {
-            ActionHolder actionHolder = actionHolderMap.get(menuItemIntent);
-            if (actionHolder != null) {
-                actionHolder.execute(profile);
-            }
+            performActions(profile, menuItemIntent);
         }
     }
 
