@@ -47,7 +47,7 @@ public class ConditionHolder extends DecentHolder<Condition> {
     }
 
     @Nullable
-    public static ConditionHolder load(@NotNull ConfigurationSection config) {
+    public static ConditionHolder load(@NotNull ConfigurationSection config, boolean forMenuItem) {
         // TODO
         return null;
     }

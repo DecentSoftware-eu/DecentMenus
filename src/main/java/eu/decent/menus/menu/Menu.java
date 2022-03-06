@@ -173,6 +173,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      *
      * @param event The event.
      */
+    @SuppressWarnings("unused")
     public void onClose(@NotNull InventoryCloseEvent event) {
         if (menuModel.isAllowed(owner, MenuIntent.CLOSE)) {
             getOwner().setOpenMenu(null);

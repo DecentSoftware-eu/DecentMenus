@@ -59,6 +59,8 @@ public class MenuItem {
         this.errorItemWrapper = errorItemWrapper;
         this.conditionHolderMap = new EnumMap<>(MenuItemIntent.class);
         this.actionHolderMap = new EnumMap<>(MenuItemIntent.class);
+        this.slotType = MenuSlotType.DEFAULT;
+        this.slot = -1;
         this.updating = true;
     }
 

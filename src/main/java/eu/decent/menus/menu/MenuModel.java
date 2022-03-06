@@ -17,6 +17,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 /**
  * This class represents a model that can be used to create a menu.
@@ -108,42 +109,20 @@ public class MenuModel {
         this.updateInterval = config.getInt("update_interval", 20);
 
         // -- Load conditions
-        ConfigurationSection conditionsSection = config.getConfigurationSection("conditions");
-        if (conditionsSection != null) {
-            for (String key : conditionsSection.getKeys(false)) {
-                MenuIntent menuIntent = MenuIntent.fromString(key);
-                if (menuIntent == null) {
-                    continue;
-                }
-                ConfigurationSection section = conditionsSection.getConfigurationSection(key);
-                if (section == null) {
-                    continue;
-                }
-                ConditionHolder conditionHolder = ConditionHolder.load(section);
-                if (conditionHolder != null) {
-                    this.conditionHolderMap.put(menuIntent, conditionHolder);
-                }
+        executeForEachMenuIntentInSection("conditions", (menuIntent, section) -> {
+            ConditionHolder conditionHolder = ConditionHolder.load(section, false);
+            if (conditionHolder != null) {
+                this.conditionHolderMap.put(menuIntent, conditionHolder);
             }
-        }
+        });
 
         // -- Load actions
-        ConfigurationSection actionsSection = config.getConfigurationSection("actions");
-        if (actionsSection != null) {
-            for (String key : actionsSection.getKeys(false)) {
-                MenuIntent menuIntent = MenuIntent.fromString(key);
-                if (menuIntent == null) {
-                    continue;
-                }
-                ConfigurationSection section = actionsSection.getConfigurationSection(key);
-                if (section == null) {
-                    continue;
-                }
-                ActionHolder actionHolder = ActionHolder.load(section);
-                if (actionHolder != null) {
-                    this.actionHolderMap.put(menuIntent, actionHolder);
-                }
+        executeForEachMenuIntentInSection("actions", (menuIntent, section) -> {
+            ActionHolder actionHolder = ActionHolder.load(section, false);
+            if (actionHolder != null) {
+                this.actionHolderMap.put(menuIntent, actionHolder);
             }
-        }
+        });
 
         // -- Load items
         ConfigurationSection itemsSection = config.getConfigurationSection("items");
@@ -157,7 +136,31 @@ public class MenuModel {
                 MenuSlotType slotType = MenuSlotType.fromName(section.getString("slot_type", "DEFAULT"));
                 ItemWrapper itemWrapper = ConfigUtils.getItemWrapper(section, "item");
                 ItemWrapper errorItemWrapper = ConfigUtils.getItemWrapper(section, "error_item");
-                this.menuItemMap.put(key, new MenuItem(key, section, itemWrapper, errorItemWrapper));
+                MenuItem menuItem = new MenuItem(key, section, itemWrapper, errorItemWrapper);
+                menuItem.setSlotType(slotType);
+                menuItem.setSlot(slot);
+                this.menuItemMap.put(key, menuItem);
+            }
+        }
+    }
+
+    /*
+     *  Utility Methods
+     */
+
+    private void executeForEachMenuIntentInSection(@NotNull String path, @NotNull BiConsumer<MenuIntent, ConfigurationSection> execute) {
+        ConfigurationSection actionsSection = config.getConfigurationSection(path);
+        if (actionsSection != null) {
+            for (String key : actionsSection.getKeys(false)) {
+                MenuIntent menuIntent = MenuIntent.fromString(key);
+                if (menuIntent == null) {
+                    continue;
+                }
+                ConfigurationSection section = actionsSection.getConfigurationSection(key);
+                if (section == null) {
+                    continue;
+                }
+                execute.accept(menuIntent, section);
             }
         }
     }

@@ -35,7 +35,7 @@ public class ActionHolder extends DecentHolder<Action> {
     }
 
     @Nullable
-    public static ActionHolder load(@NotNull ConfigurationSection config) {
+    public static ActionHolder load(@NotNull ConfigurationSection config, boolean forMenuItem) {
         // TODO
         return null;
     }
