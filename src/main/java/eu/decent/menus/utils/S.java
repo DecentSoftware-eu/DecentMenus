@@ -5,6 +5,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 
 @UtilityClass
+@SuppressWarnings({"unused", "deprecation"})
 public final class S {
 
     private static final DecentMenus PLUGIN = DecentMenus.getInstance();
