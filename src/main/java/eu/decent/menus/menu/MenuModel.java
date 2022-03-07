@@ -13,7 +13,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
