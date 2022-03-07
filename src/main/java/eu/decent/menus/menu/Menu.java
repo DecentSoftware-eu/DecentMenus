@@ -1,6 +1,9 @@
 package eu.decent.menus.menu;
 
 import eu.decent.library.utils.Common;
+import eu.decent.menus.api.events.MenuClickEvent;
+import eu.decent.menus.api.events.MenuCloseEvent;
+import eu.decent.menus.api.events.MenuOpenEvent;
 import eu.decent.menus.menu.item.MenuItem;
 import eu.decent.menus.menu.item.MenuItemIntent;
 import eu.decent.menus.menu.item.MenuSlotType;
@@ -88,6 +91,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
             owner.setOpenMenu(this);
             menuModel.performActions(owner, MenuIntent.OPEN);
             startTicking();
+            Bukkit.getPluginManager().callEvent(new MenuOpenEvent(this));
         }
 
         // -- Clear the inventory
@@ -153,7 +157,16 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
     public void onClick(@NotNull InventoryClickEvent event) {
         event.setCancelled(true);
 
-        MenuItem menuItem = items[event.getSlot()];
+        int slot = event.getSlot();
+        // -- Call the MenuClickEvent
+        MenuClickEvent menuClickEvent = new MenuClickEvent(this, event.getClick(), slot);
+        Bukkit.getPluginManager().callEvent(menuClickEvent);
+        if (menuClickEvent.isCancelled()) {
+            return;
+        }
+
+        // -- Execute menu item click
+        MenuItem menuItem = items[slot];
         if (menuItem != null) {
             menuItem.onClick(owner, event);
         }
@@ -175,7 +188,11 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
      */
     @SuppressWarnings("unused")
     public void onClose(@NotNull InventoryCloseEvent event) {
-        if (menuModel.isAllowed(owner, MenuIntent.CLOSE)) {
+        // -- Call the MenuCloseEvent
+        MenuCloseEvent menuCloseEvent = new MenuCloseEvent(this);
+        Bukkit.getPluginManager().callEvent(menuCloseEvent);
+
+        if (menuModel.isAllowed(owner, MenuIntent.CLOSE) && !menuCloseEvent.isCancelled()) {
             getOwner().setOpenMenu(null);
             stopTicking();
             menuModel.performActions(owner, MenuIntent.CLOSE);
