@@ -9,9 +9,11 @@ import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.config.ConfigUtils;
 import eu.decent.menus.utils.config.Configuration;
 import eu.decent.menus.utils.item.ItemWrapper;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumMap;
@@ -25,6 +27,7 @@ import java.util.function.BiConsumer;
  */
 @Getter
 @Setter
+@Builder
 public class MenuModel {
 
     private final String name;
@@ -168,6 +171,11 @@ public class MenuModel {
                 this.menuItemMap.put(key, menuItem);
             }
         }
+    }
+
+    @Contract(" -> new")
+    public static @NotNull MenuModelBuilder create() {
+        return new MenuModelBuilder();
     }
 
     /*
