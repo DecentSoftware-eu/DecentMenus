@@ -21,6 +21,21 @@ public enum ActionType {
      */
     BROADCAST("broadcast", "broadcast message"),
 
+    // -- Sound Actions
+
+    /**
+     * Play the given sound to the player.
+     */
+    SOUND("sound", "play sound"),
+    /**
+     * Broadcast the given sound across the server.
+     */
+    BROADCAST_SOUND("broadcast sound"),
+    /**
+     * Broadcast the given sound across the world.
+     */
+    BROADCAST_SOUND_WORLD("broadcast sound world", "play sound world", "sound world"),
+
     // -- Command Actions
 
     /**
