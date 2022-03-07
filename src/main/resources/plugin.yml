@@ -2,7 +2,7 @@ name: DecentMenus
 version: '${version}'
 main: eu.decent.menus.DecentMenus
 api-version: 1.13
-prefix: '[DecentMenus]'
+prefix: 'DecentMenus'
 softdepend: [ PlaceholderAPI, HeadDatabase ]
 authors: [ d0by ]
 website: github.decentsoftware.eu

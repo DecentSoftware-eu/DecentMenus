@@ -16,14 +16,16 @@ slots:
 # -- Conditions
 conditions:
   DISPLAY:
-    - type: stringequals
+    some_random_name:
+      type: stringequals
       compare: d0by
       input: %player_name%
 
 # -- Actions
 actions:
   DISPLAY:
-    - type: sound
+    some_random_name:
+      type: sound
       sound: BLOCK_BEACON_ACTIVATE
 
 # -- Items
@@ -36,7 +38,8 @@ items:
     # -- Conditions
     conditions:
       CLICK:
-        - type: stringequals
+        some_random_name:
+          type: stringequals
           compare: d0by
           input: %player_name%
 
@@ -47,19 +50,23 @@ items:
           type: message
           message: '&6Click Type:'
       RIGHT:
-        - type: message
+        print_click_type:
+          type: message
           message:
             - '  &eRight!'
       SHIFT_RIGHT:
-        - type: message
+        print_click_type:
+          type: message
           message:
             - '  &eShift Right!'
       LEFT:
-        - type: message
+        print_click_type:
+          type: message
           message:
             - '  &eLeft!'
       SHIFT_LEFT:
-        - type: message
+        print_click_type:
+          type: message
           message:
             - '  &eShift Left!'
 

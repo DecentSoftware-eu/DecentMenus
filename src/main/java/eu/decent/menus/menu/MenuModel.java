@@ -9,6 +9,7 @@ import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.config.ConfigUtils;
 import eu.decent.menus.utils.config.Configuration;
 import eu.decent.menus.utils.item.ItemWrapper;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -27,6 +28,7 @@ import java.util.function.BiConsumer;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class MenuModel {
 
     private final String name;
