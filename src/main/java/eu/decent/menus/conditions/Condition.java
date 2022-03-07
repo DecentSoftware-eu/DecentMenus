@@ -55,7 +55,7 @@ public abstract class Condition {
             return null;
         }
 
-        // Get type of the condition
+        // -- Get type of the condition
         String typeName = config.getString("type", "");
         String typeNameLowerTrimmed = typeName.trim().toLowerCase();
         boolean inverted = typeNameLowerTrimmed.startsWith("!") || typeNameLowerTrimmed.startsWith("not");
@@ -64,6 +64,8 @@ public abstract class Condition {
             return null;
         }
 
+        // -- Create the condition if possible
+        Condition condition = null;
         switch (type) {
             case STRING_EQUAL:
             case STRING_EQUAL_IGNORECASE:
@@ -76,25 +78,39 @@ public abstract class Condition {
                 if (config.isString("compare") && config.isString("input")) {
                     String compare = config.getString("compare", "");
                     String input = config.getString("input", "");
-                    return new ConditionComparing(inverted, type, compare, input);
+                    condition = new ConditionComparing(inverted, type, compare, input);
                 }
                 break;
             case PERMISSION:
                 if (config.isString("permission")) {
                     String permission = config.getString("permission", "");
-                    return new ConditionPermission(inverted, permission);
+                    condition = new ConditionPermission(inverted, permission);
                 }
                 break;
             case REGEX:
                 if (config.isString("regex") && config.isString("input")) {
                     String regex = config.getString("regex", "");
                     String input = config.getString("input", "");
-                    return new ConditionRegex(inverted, Pattern.compile(regex), input);
+                    condition = new ConditionRegex(inverted, Pattern.compile(regex), input);
                 }
                 break;
             // TODO finish
         }
-        return null;
+
+        // -- Load actions if possible
+        if (condition != null) {
+            // Met actions
+            ConfigurationSection metActionsSection = config.getConfigurationSection("met_actions");
+            if (metActionsSection != null) {
+                condition.setMetActions(ActionHolder.load(metActionsSection));
+            }
+            // Not Met actions
+            ConfigurationSection notMetActionsSection = config.getConfigurationSection("not_met_actions");
+            if (notMetActionsSection != null) {
+                condition.setNotMetActions(ActionHolder.load(notMetActionsSection));
+            }
+        }
+        return condition;
     }
 
 
