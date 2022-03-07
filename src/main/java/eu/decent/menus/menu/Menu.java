@@ -24,7 +24,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * This class represents a menu.
@@ -118,10 +117,7 @@ public class Menu extends DecentMenusTicked implements InventoryHolder {
         }
 
         // -- Add all the other items
-        List<MenuItem> otherItems = itemMap.values().stream()
-                .filter(menuItem -> menuItem.getSlot() != -1)
-                .collect(Collectors.toList());
-        for (MenuItem menuItem : otherItems) {
+        for (MenuItem menuItem : itemMap.values()) {
             int slot = prepareSlot(menuItem, menuItem.getSlot());
             addMenuItemToInventoryIfPossible(player, menuItem, slot);
         }
