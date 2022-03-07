@@ -4,8 +4,6 @@ import eu.decent.menus.actions.impl.ActionProfile;
 import eu.decent.menus.actions.impl.ActionSingleString;
 import eu.decent.menus.actions.impl.ActionSound;
 import eu.decent.menus.actions.impl.ActionTeleport;
-import eu.decent.menus.conditions.Condition;
-import eu.decent.menus.conditions.ConditionType;
 import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.config.ConfigUtils;
 import lombok.Getter;
