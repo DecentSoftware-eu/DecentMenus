@@ -76,6 +76,14 @@ public enum ActionType {
      * Close the players current menu if possible.
      */
     CLOSE_MENU("close menu", "close"),
+
+    // -- Other Actions
+
+    /**
+     * Teleport the player to the given location.
+     */
+    TELEPORT("teleport", "tele", "tp"),
+
     ;
 
     private final Set<String> aliases;
