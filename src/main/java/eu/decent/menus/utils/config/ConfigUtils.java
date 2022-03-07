@@ -4,11 +4,15 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import eu.decent.menus.utils.item.ItemWrapper;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,13 +79,54 @@ public class ConfigUtils {
     }
 
     /**
+     * Get bukkit location from the given config.
+     *
+     * @param config The config.
+     * @param path Path to the location.
+     * @return The location or null if it couldn't be loaded.
+     */
+    @Nullable
+    public Location getLocation(@NotNull ConfigurationSection config, String path) {
+        path = preparePath(path);
+
+        Location location = null;
+        // -- Get world
+        World world;
+        String worldName = config.getString("world");
+        if (worldName == null || (world = Bukkit.getWorld(worldName)) == null) {
+            return null;
+        }
+
+        // -- Get xyz
+        if (config.isDouble(path + "x") && config.isDouble(path + "y") && config.isDouble(path + "z")) {
+            double x = config.getDouble("x");
+            double y = config.getDouble("y");
+            double z = config.getDouble("z");
+            location = new Location(world, x, y, z);
+        }
+
+        // -- Get yaw & pitch
+        if (location != null) {
+            if (config.contains("yaw")) {
+                float yaw = (float) config.getDouble("yaw");
+                location.setYaw(yaw);
+            }
+            if (config.contains("pitch")) {
+                float pitch = (float) config.getDouble("pitch");
+                location.setPitch(pitch);
+            }
+        }
+        return location;
+    }
+
+    /**
      * Get all keys from a ConfigurationSection on the given path in the given ConfigurationSection.
      *
      * @param config The ConfigurationSection.
      * @param path The path.
      * @return Set of the keys.
      */
-    public Set<String> getSectionKeys(ConfigurationSection config, String path) {
+    public Set<String> getSectionKeys(@NotNull ConfigurationSection config, String path) {
         ConfigurationSection section = config.getConfigurationSection(path);
         if (section == null) {
             return Sets.newHashSet();
