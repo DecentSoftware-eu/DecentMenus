@@ -2,7 +2,6 @@ package eu.decent.menus.actions;
 
 import eu.decent.menus.player.PlayerProfile;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,26 +12,27 @@ import java.util.concurrent.ThreadLocalRandom;
  * This class represents an action, that can be executed for a specific profile.
  */
 @Getter
-@Setter
-public class Action {
+public abstract class Action {
 
-    private final ActionType type;
-    private String data;
-    private long delay;
-    private double chance;
+    protected final long delay;
+    protected final double chance;
+
+    /**
+     * Create new {@link Action}.
+     */
+    public Action() {
+        this(0, -1);
+    }
 
     /**
      * Create new {@link Action}.
      *
-     * @param type Type of the new action.
-     * @param data Data, used by the new action.
+     * @param delay Delay of this action.
+     * @param chance Chance of this action.
      */
-    public Action(@NotNull ActionType type, String data) {
-        this.type = type;
-        this.data = data;
-        // Default values
-        this.delay = 0;
-        this.chance = -1d; // Negative means ignore
+    public Action(long delay, double chance) {
+        this.delay = delay;
+        this.chance = chance;
     }
 
     /**
@@ -40,9 +40,7 @@ public class Action {
      *
      * @param profile The profile.
      */
-    public void execute(@NotNull PlayerProfile profile) {
-        type.execute(profile, data);
-    }
+    public abstract void execute(@NotNull PlayerProfile profile);
 
     /**
      * Check the chance of this action.
