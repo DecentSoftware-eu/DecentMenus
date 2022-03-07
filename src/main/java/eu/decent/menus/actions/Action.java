@@ -1,7 +1,16 @@
 package eu.decent.menus.actions;
 
+import eu.decent.menus.actions.impl.ActionProfile;
+import eu.decent.menus.actions.impl.ActionSingleString;
+import eu.decent.menus.actions.impl.ActionSound;
+import eu.decent.menus.actions.impl.ActionTeleport;
+import eu.decent.menus.conditions.Condition;
+import eu.decent.menus.conditions.ConditionType;
 import eu.decent.menus.player.PlayerProfile;
+import eu.decent.menus.utils.config.ConfigUtils;
 import lombok.Getter;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -63,8 +72,74 @@ public abstract class Action {
      */
     @Nullable
     public static Action load(@NotNull ConfigurationSection config) {
+        if (!config.isString("type")) {
+            return null;
+        }
 
-        return null;
+        // -- Get type of the action
+        String typeName = config.getString("type", "");
+        ActionType type = ActionType.fromString(typeName);
+        if (type == null) {
+            return null;
+        }
+
+        // -- Create the action if possible
+        Action action = null;
+        switch (type) {
+            case SOUND:
+            case BROADCAST_SOUND:
+            case BROADCAST_SOUND_WORLD:
+                String soundName = config.getString("sound");
+                if (soundName != null) {
+                    float volume = (float) config.getDouble("volume", 1.0f);
+                    float pitch = (float) config.getDouble("pitch", 1.0f);
+                    try {
+                        Sound sound = Sound.valueOf(soundName.toUpperCase());
+                        action = new ActionSound(type, sound, volume, pitch);
+                    } catch (Exception ignored) {}
+                }
+                break;
+            case MESSAGE:
+            case BROADCAST:
+            case CHAT:
+                String message = config.getString("message");
+                if (message != null) {
+                    action = new ActionSingleString(type, message);
+                }
+                break;
+            case COMMAND:
+            case CONSOLE:
+                String command = config.getString("command");
+                if (command != null) {
+                    action = new ActionSingleString(type, command);
+                }
+                break;
+            case CONNECT:
+                String server = config.getString("server");
+                if (server != null) {
+                    action = new ActionSingleString(type, server);
+                }
+                break;
+            case OPEN_MENU:
+                String menu = config.getString("menu");
+                if (menu != null) {
+                    action = new ActionSingleString(type, menu);
+                }
+                break;
+            case CLOSE_MENU:
+            case REFRESH_MENU:
+            case PREVIOUS_MENU:
+                action = new ActionProfile(type);
+                break;
+            case TELEPORT:
+                Location location = ConfigUtils.getLocation(config, "");
+                if (location != null) {
+                    action = new ActionTeleport(location);
+                }
+                break;
+            default: break;
+        }
+        return action;
     }
 
 }
