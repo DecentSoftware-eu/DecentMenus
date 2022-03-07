@@ -34,7 +34,7 @@ public enum ActionType {
     /**
      * Broadcast the given sound across the world.
      */
-    BROADCAST_SOUND_WORLD("broadcast sound world", "play sound world", "sound world"),
+    BROADCAST_SOUND_WORLD("broadcast sound world", "play sound world"),
 
     // -- Command Actions
 
