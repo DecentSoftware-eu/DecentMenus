@@ -16,11 +16,6 @@ import java.util.Map;
 
 /**
  * This class represents a menu item.
- *
- * TODO:
- *  - implement everything
- *  - I/O impl
- *  - PAPI, colors support
  */
 @Getter
 @Setter

@@ -10,10 +10,6 @@ import java.util.Set;
 
 /**
  * This enum represents all possible Condition types.
- *
- * TODO:
- *  - ADD: Time, World, Weather, Hand Item, Health, Hunger, Durability
- *  - maybe a little structure rework for condition
  */
 @SuppressWarnings("SpellCheckingInspection")
 public enum ConditionType {

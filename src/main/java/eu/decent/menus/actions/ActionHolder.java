@@ -6,7 +6,6 @@ import eu.decent.menus.player.PlayerProfile;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This class represents a holder for actions.
@@ -21,7 +20,7 @@ public class ActionHolder extends DecentHolder<Action> {
     public void execute(@NotNull PlayerProfile profile) {
         for (Action action : asList()) {
             // Check the chance
-            if (action.getChance() >= 0 && !action.checkChance()) {
+            if (!action.checkChance()) {
                 continue;
             }
             // Execute with delay if needed
@@ -34,6 +33,12 @@ public class ActionHolder extends DecentHolder<Action> {
         }
     }
 
+    /**
+     * Load an {@link ActionHolder} from the given ConfigurationSection.
+     *
+     * @param config The ConfigurationSection.
+     * @return The loaded {@link ActionHolder}.
+     */
     @NotNull
     public static ActionHolder load(@NotNull ConfigurationSection config) {
         ActionHolder actionHolder = new ActionHolder();

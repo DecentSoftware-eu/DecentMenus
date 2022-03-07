@@ -2,12 +2,9 @@ package eu.decent.menus.conditions;
 
 import eu.decent.library.objects.DecentHolder;
 import eu.decent.menus.actions.ActionHolder;
-import eu.decent.menus.menu.MenuIntent;
-import eu.decent.menus.menu.item.MenuItemIntent;
 import eu.decent.menus.player.PlayerProfile;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * This class represents a holder for conditions.
@@ -46,6 +43,12 @@ public class ConditionHolder extends DecentHolder<Condition> {
         return success;
     }
 
+    /**
+     * Load an {@link ConditionHolder} from the given ConfigurationSection.
+     *
+     * @param config The ConfigurationSection.
+     * @return The loaded {@link ConditionHolder}.
+     */
     @NotNull
     public static ConditionHolder load(@NotNull ConfigurationSection config) {
         ConditionHolder conditionHolder = new ConditionHolder();
