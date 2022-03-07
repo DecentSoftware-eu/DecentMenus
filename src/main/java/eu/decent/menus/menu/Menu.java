@@ -1,6 +1,5 @@
 package eu.decent.menus.menu;
 
-import eu.decent.library.utils.Common;
 import eu.decent.menus.api.events.MenuClickEvent;
 import eu.decent.menus.api.events.MenuCloseEvent;
 import eu.decent.menus.api.events.MenuOpenEvent;
@@ -8,9 +7,10 @@ import eu.decent.menus.menu.item.MenuItem;
 import eu.decent.menus.menu.item.MenuItemIntent;
 import eu.decent.menus.menu.item.MenuSlotType;
 import eu.decent.menus.player.PlayerProfile;
+import eu.decent.menus.utils.Common;
 import eu.decent.menus.utils.MenuUtils;
 import eu.decent.menus.utils.item.ItemWrapper;
-import eu.decent.menus.utils.ticker.DecentMenusTicked;
+import eu.decent.menus.utils.ticker.Ticked;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -29,7 +29,7 @@ import java.util.Map;
  * This class represents a menu.
  */
 @Getter
-public class Menu extends DecentMenusTicked implements InventoryHolder {
+public class Menu extends Ticked implements InventoryHolder {
 
     private final MenuModel menuModel;
     private final PlayerProfile owner;

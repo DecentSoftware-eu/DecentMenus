@@ -1,10 +1,8 @@
 package eu.decent.menus.actions;
 
-import eu.decent.library.objects.DecentHolder;
-import eu.decent.menus.DecentMenus;
 import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.S;
-import org.bukkit.Bukkit;
+import eu.decent.menus.utils.collection.DecentHolder;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 

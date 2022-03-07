@@ -1,8 +1,8 @@
 package eu.decent.menus.conditions.impl;
 
-import eu.decent.library.hooks.PAPI;
 import eu.decent.menus.conditions.Condition;
 import eu.decent.menus.conditions.ConditionType;
+import eu.decent.menus.hooks.PAPI;
 import eu.decent.menus.player.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 

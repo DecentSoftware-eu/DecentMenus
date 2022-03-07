@@ -1,9 +1,9 @@
 package eu.decent.menus.server;
 
 import eu.decent.menus.utils.BungeeUtils;
-import eu.decent.menus.utils.ticker.DecentMenusTicked;
 import eu.decent.menus.utils.pinger.Pinger;
 import eu.decent.menus.utils.pinger.PingerResponse;
+import eu.decent.menus.utils.ticker.Ticked;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ import java.net.InetSocketAddress;
  * This class represents a cached server.
  */
 @Getter
-public class Server extends DecentMenusTicked {
+public class Server extends Ticked {
 
     private final String name;
     private final Pinger pinger;

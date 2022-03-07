@@ -1,12 +1,12 @@
 package eu.decent.menus.actions.impl;
 
-import eu.decent.library.hooks.PAPI;
-import eu.decent.library.utils.Common;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.actions.Action;
 import eu.decent.menus.actions.ActionType;
+import eu.decent.menus.hooks.PAPI;
 import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.BungeeUtils;
+import eu.decent.menus.utils.Common;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

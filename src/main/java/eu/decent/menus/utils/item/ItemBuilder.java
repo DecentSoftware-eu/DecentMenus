@@ -1,10 +1,10 @@
 package eu.decent.menus.utils.item;
 
 import com.google.common.collect.Lists;
-import eu.decent.library.reflect.ReflectConstructor;
-import eu.decent.library.reflect.ReflectMethod;
-import eu.decent.library.reflect.ReflectionUtil;
-import eu.decent.library.utils.Common;
+import eu.decent.menus.utils.Common;
+import eu.decent.menus.utils.reflect.ReflectConstructor;
+import eu.decent.menus.utils.reflect.ReflectMethod;
+import eu.decent.menus.utils.reflect.ReflectionUtil;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;

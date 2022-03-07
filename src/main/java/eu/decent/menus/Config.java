@@ -1,7 +1,7 @@
 package eu.decent.menus;
 
-import eu.decent.library.config.ConfigValue;
-import eu.decent.library.utils.Common;
+import eu.decent.menus.utils.Common;
+import eu.decent.menus.utils.config.ConfigValue;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -20,6 +20,10 @@ public final class Config {
 
     @ConfigValue("prefix")
     public static String PREFIX = "&8[&3DecentMenus&8] &7";
+    @ConfigValue("messages.usage")
+    public static String USAGE = "{prefix}Use: &b/dm <args> &7or &b/openmenu <menu>.";
+    @ConfigValue("messages.no_perm")
+    public static String NO_PERM = "{prefix}&cYou are not allowed to do this.";
     @ConfigValue("messages.unknown_sub_command")
     public static String UNKNOWN_SUB_COMMAND = "{prefix}&cUnknown sub command.";
     @ConfigValue("messages.menu_no_perm")
@@ -32,15 +36,6 @@ public final class Config {
     public static String MENU_DOES_NOT_EXIST = "{prefix}Menu called '%s' doesn't exist.";
     @ConfigValue("messages.menu_list")
     public static String MENU_LIST = "{prefix}Menus: &b%s";
-
-    /*
-     *  Servers
-     */
-
-    @ConfigValue("servers.online_marker")
-    public static String ONLINE_MARKER = "True";
-    @ConfigValue("servers.offline_marker")
-    public static String OFFLINE_MARKER = "False";
 
     /*
      *  Utility Methods

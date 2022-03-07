@@ -1,6 +1,6 @@
 package eu.decent.menus.utils.item;
 
-import eu.decent.library.utils.Common;
+import eu.decent.menus.utils.Common;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

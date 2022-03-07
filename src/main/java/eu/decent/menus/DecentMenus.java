@@ -1,20 +1,20 @@
 package eu.decent.menus;
 
-import eu.decent.library.DecentPlugin;
-import eu.decent.library.command.CommandManager;
-import eu.decent.library.config.CFG;
-import eu.decent.library.ticker.Ticker;
-import eu.decent.menus.commands.DecentMenusCommand;
-import eu.decent.menus.commands.OpenMenuCommand;
+import eu.decent.menus.commands.CommandManager;
+import eu.decent.menus.commands.impl.DecentMenusCommand;
+import eu.decent.menus.commands.impl.OpenMenuCommand;
 import eu.decent.menus.menu.MenuListener;
 import eu.decent.menus.menu.MenuRegistry;
 import eu.decent.menus.player.PlayerListener;
 import eu.decent.menus.player.PlayerRegistry;
 import eu.decent.menus.server.ServerRegistry;
+import eu.decent.menus.utils.config.CFG;
+import eu.decent.menus.utils.ticker.Ticker;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
@@ -24,7 +24,7 @@ import java.io.File;
  * @author d0by
  */
 @Getter
-public final class DecentMenus extends DecentPlugin {
+public final class DecentMenus extends JavaPlugin {
 
     private static DecentMenus instance;
     private PlayerRegistry playerRegistry;
@@ -40,12 +40,7 @@ public final class DecentMenus extends DecentPlugin {
     }
 
     @Override
-    public void load() {
-
-    }
-
-    @Override
-    public void enable() {
+    public void onEnable() {
         this.reload();
         this.playerRegistry = new PlayerRegistry();
         this.serverRegistry = new ServerRegistry();
@@ -67,7 +62,7 @@ public final class DecentMenus extends DecentPlugin {
     }
 
     @Override
-    public void disable() {
+    public void onDisable() {
         this.ticker.shutdown();
         this.menuRegistry.shutdown();
         this.serverRegistry.shutdown();

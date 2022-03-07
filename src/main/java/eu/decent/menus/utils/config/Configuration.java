@@ -15,7 +15,7 @@ public class Configuration extends YamlConfiguration {
     private final JavaPlugin plugin;
     private File file;
 
-    public Configuration(JavaPlugin javaPlugin, String name) {
+    public Configuration(JavaPlugin javaPlugin, @NotNull String name) {
         this.plugin = javaPlugin;
         this.fileName = name.endsWith(".yml") ? name : name + ".yml";
 
