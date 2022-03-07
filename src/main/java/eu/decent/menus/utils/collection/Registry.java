@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * This class represents a registry that maps keys to values.
@@ -20,7 +21,7 @@ public abstract class Registry<K, V> {
      * Create a new instance of {@link Registry}.
      */
     public Registry() {
-        this.map = new HashMap<>();
+        this.map = new ConcurrentHashMap<>();
     }
 
     /**
