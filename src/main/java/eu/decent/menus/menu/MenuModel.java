@@ -173,8 +173,13 @@ public class MenuModel {
         }
     }
 
-    @Contract(" -> new")
-    public static @NotNull MenuModelBuilder create() {
+    /**
+     * Create a new {@link MenuModelBuilder} in order to build a new {@link MenuModel}.
+     *
+     * @return The new {@link MenuModelBuilder}.
+     */
+    @NotNull
+    public static MenuModelBuilder create() {
         return new MenuModelBuilder();
     }
 
