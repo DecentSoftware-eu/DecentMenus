@@ -1,6 +1,7 @@
 package eu.decent.menus.utils;
 
 import eu.decent.menus.DecentMenus;
+import lombok.experimental.UtilityClass;
 import org.bukkit.entity.Player;
 
 import java.io.ByteArrayOutputStream;
@@ -10,6 +11,7 @@ import java.io.IOException;
 /**
  * Utility class for Bungee Messaging Channel.
  */
+@UtilityClass
 public class BungeeUtils {
 
     /**

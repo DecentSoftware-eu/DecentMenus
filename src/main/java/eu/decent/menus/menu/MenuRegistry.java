@@ -3,7 +3,7 @@ package eu.decent.menus.menu;
 import eu.decent.library.utils.Common;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.player.PlayerProfile;
-import eu.decent.menus.utils.Registry;
+import eu.decent.menus.utils.collection.Registry;
 import eu.decent.menus.utils.config.Configuration;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

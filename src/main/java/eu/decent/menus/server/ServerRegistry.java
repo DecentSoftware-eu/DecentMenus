@@ -1,6 +1,6 @@
 package eu.decent.menus.server;
 
-import eu.decent.menus.utils.Registry;
+import eu.decent.menus.utils.collection.Registry;
 
 /**
  * This class holds all pinged servers.

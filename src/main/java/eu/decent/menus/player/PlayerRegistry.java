@@ -1,6 +1,6 @@
 package eu.decent.menus.player;
 
-import eu.decent.menus.utils.Registry;
+import eu.decent.menus.utils.collection.Registry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

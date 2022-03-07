@@ -1,4 +1,4 @@
-package eu.decent.menus.utils;
+package eu.decent.menus.utils.collection;
 
 import java.util.Collection;
 import java.util.HashMap;
