@@ -9,12 +9,14 @@ import eu.decent.menus.menu.item.MenuSlotType;
 import eu.decent.menus.player.PlayerProfile;
 import eu.decent.menus.utils.Common;
 import eu.decent.menus.utils.MenuUtils;
+import eu.decent.menus.utils.S;
 import eu.decent.menus.utils.item.ItemWrapper;
 import eu.decent.menus.utils.ticker.Ticked;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -85,6 +87,10 @@ public class Menu extends Ticked implements InventoryHolder {
         // -- Create & open the inventory if not open yet
         InventoryHolder playerTopInventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
         if (inventory == null || !equals(playerTopInventoryHolder) || inventory.getSize() != size) {
+            if (!Bukkit.isPrimaryThread()) {
+                S.run(this::open);
+                return;
+            }
             inventory = Bukkit.createInventory(this, size, title);
             player.openInventory(inventory);
             owner.setOpenMenu(this);
@@ -138,7 +144,7 @@ public class Menu extends Ticked implements InventoryHolder {
 
     @Override
     public void tick() {
-        open();
+        this.open();
     }
 
     /*
@@ -153,18 +159,31 @@ public class Menu extends Ticked implements InventoryHolder {
     public void onClick(@NotNull InventoryClickEvent event) {
         event.setCancelled(true);
 
+        ClickType clickType = event.getClick();
         int slot = event.getSlot();
+
         // -- Call the MenuClickEvent
-        MenuClickEvent menuClickEvent = new MenuClickEvent(this, event.getClick(), slot);
+        MenuClickEvent menuClickEvent = new MenuClickEvent(this, clickType, slot);
         Bukkit.getPluginManager().callEvent(menuClickEvent);
         if (menuClickEvent.isCancelled()) {
             return;
         }
 
+        // -- Window border clicks
+        if (clickType == ClickType.WINDOW_BORDER_RIGHT) {
+            menuModel.performActions(owner, MenuIntent.WINDOW_BORDER_RIGHT_CLICK);
+            return;
+        } else if (clickType == ClickType.WINDOW_BORDER_LEFT) {
+            menuModel.performActions(owner, MenuIntent.WINDOW_BORDER_LEFT_CLICK);
+            return;
+        }
+
         // -- Execute menu item click
-        MenuItem menuItem = items[slot];
-        if (menuItem != null) {
-            menuItem.onClick(owner, event);
+        if (slot >= 0 && slot < items.length) {
+            MenuItem menuItem = items[slot];
+            if (menuItem != null) {
+                menuItem.onClick(owner, event);
+            }
         }
     }
 
