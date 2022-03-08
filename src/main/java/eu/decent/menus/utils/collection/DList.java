@@ -5,24 +5,50 @@ import org.jetbrains.annotations.Contract;
 
 import java.util.*;
 
+/**
+ * This class represents a list with some useful methods.
+ *
+ * @param <T> Type of the items.
+ */
 @SuppressWarnings("unused")
 public class DList<T> extends ArrayList<T> {
 
+    /**
+     * Create a new {@link DList}.
+     *
+     * @param initialCapacity Initial capacity of this list.
+     * @see ArrayList#ArrayList(int)
+     */
     public DList(int initialCapacity) {
         super(initialCapacity);
     }
 
+    /**
+     * Create a new {@link DList}.
+     *
+     * @param collection Collection of items.
+     */
     public DList(Collection<T> collection) {
         super();
         this.add(collection);
     }
 
+    /**
+     * Create a new {@link DList}.
+     *
+     * @param array Array of items.
+     */
     @SafeVarargs
     public DList(T... array) {
         super();
         this.add(array);
     }
 
+    /**
+     * Add all items from the given array.
+     *
+     * @param ts The array.
+     */
     @Contract(mutates = "this")
     @SafeVarargs
     public final void add(T... ts) {
@@ -31,27 +57,56 @@ public class DList<T> extends ArrayList<T> {
         }
     }
 
+    /**
+     * Add all items from the given collection.
+     *
+     * @param collection The collection.
+     */
     public void add(Collection<T> collection) {
         if (collection != null && !collection.isEmpty()) {
             this.addAll(collection);
         }
     }
 
+    /**
+     * Add a new item at the first index of this list.
+     *
+     * @param t The item.
+     */
     public void addFirst(T t) {
         add(0, t);
     }
 
+    /**
+     * Get the first item of this list.
+     *
+     * @return The item.
+     */
     public T first() {
-        if (size() < 1) return null;
+        if (size() < 1) {
+            return null;
+        }
         return get(0);
     }
 
+    /**
+     * Get a random item from this list.
+     *
+     * @return The item.
+     */
     public T random() {
         return get(randomIndex());
     }
 
+    /**
+     * Get the last item of this list.
+     *
+     * @return The item.
+     */
     public T last() {
-        if (size() < 1) return null;
+        if (size() < 1) {
+            return null;
+        }
         return get(lastIndex());
     }
 
