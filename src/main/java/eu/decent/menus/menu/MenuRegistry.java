@@ -18,6 +18,7 @@ import java.io.File;
  */
 public class MenuRegistry extends Registry<String, MenuModel> {
 
+    private static final DecentMenus PLUGIN = DecentMenus.getInstance();
     private File menusDir;
 
     /**
@@ -38,7 +39,7 @@ public class MenuRegistry extends Registry<String, MenuModel> {
 
         // Get the folder with all menu model files
         if (menusDir == null) {
-            menusDir = new File(DecentMenus.getInstance().getDataFolder() + "/menus");
+            menusDir = new File(PLUGIN.getDataFolder(), "menus");
         }
 
         Common.log("Loading menus...");
@@ -46,17 +47,12 @@ public class MenuRegistry extends Registry<String, MenuModel> {
         int counter = 0;
         if (menusDir.exists() && menusDir.isDirectory()) {
             // Get all file names
-            String[] fileNames = menusDir.list((dir1, name) -> name.matches("\\S+\\.yml"));
+            String[] fileNames = menusDir.list((dir1, name) -> name.matches("\\w+\\.yml"));
             if (fileNames != null && fileNames.length > 0) {
                 for (String fileName : fileNames) {
-                    Configuration configuration = new Configuration(DecentMenus.getInstance(), fileName);
+                    Configuration configuration = new Configuration(PLUGIN, "menus/" + fileName);
                     // Parse model name
-                    String name;
-                    if (fileName.toLowerCase().startsWith("menu_") && fileName.length() > "menu_".length()) {
-                        name = fileName.substring("menu_".length(), fileName.length() - 4);
-                    } else {
-                        name = fileName.substring(0, fileName.length() - 4);
-                    }
+                    String name = fileName.substring(0, fileName.length() - 4);
                     // Register the model
                     MenuModel menuModel = new MenuModel(name, configuration);
                     register(menuModel);
