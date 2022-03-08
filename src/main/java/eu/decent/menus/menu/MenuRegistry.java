@@ -88,7 +88,7 @@ public class MenuRegistry extends Registry<String, MenuModel> {
      * @return Boolean whether the operation was successful.
      */
     public boolean openMenu(@NotNull Player player, @NotNull String model) {
-        PlayerProfile playerProfile = DecentMenus.getInstance().getPlayerRegistry().get(player.getUniqueId());
+        PlayerProfile playerProfile = PLUGIN.getPlayerRegistry().get(player.getUniqueId());
         MenuModel menuModel = get(model);
         if (menuModel != null) {
             Menu menu = new Menu(menuModel, playerProfile);
@@ -104,7 +104,7 @@ public class MenuRegistry extends Registry<String, MenuModel> {
      * @param menuModel The MenuModel.
      */
     public void register(@NotNull MenuModel menuModel) {
-        register(menuModel.getName(), menuModel);
+        this.register(menuModel.getName(), menuModel);
     }
 
 }

@@ -19,7 +19,7 @@ conditions:
     some_random_name:
       type: stringequals
       compare: d0by
-      input: %player_name%
+      input: '%player_name%'
 
 # -- Actions
 actions:
@@ -41,7 +41,7 @@ items:
         some_random_name:
           type: stringequals
           compare: d0by
-          input: %player_name%
+          input: '%player_name%'
 
     # -- Actions
     actions:
@@ -90,7 +90,7 @@ items:
       skull:
         # Owner OR Texture
         owner: d0by
-        texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjhkMjE4MzY0MDIxOGFiMzMwYWM1NmQyYWFiN2UyOWE5NzkwYTU0NWY2OTE2MTllMzg1NzhlYTRhNjlhZTBiNiJ9fX0=
+        texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjhkMjE4MzY0MDIxOGFiMzMwYWM1NmQyYWFiN2UyOWE5NzkwYTU0NWY2OTE2MTllMzg1NzhlYTRhNjlhZTBiNiJ9fX0='
     error_item:
       material: BARRIER
       name: 'You are not allowed to see this!'
