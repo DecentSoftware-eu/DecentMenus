@@ -1,6 +1,5 @@
 package eu.decent.menus.utils.ticker;
 
-import eu.decent.menus.DecentMenus;
 import lombok.Getter;
 
 import java.util.UUID;
@@ -24,20 +23,6 @@ public abstract class Ticked implements ITicked {
     @Override
     public long getInterval() {
         return interval.get();
-    }
-
-    /**
-     * Register this ticked object into the plugins' Ticker.
-     */
-    protected void startTicking() {
-        DecentMenus.getInstance().getTicker().register(this);
-    }
-
-    /**
-     * Unregister this ticked object from the plugins' Ticker.
-     */
-    protected void stopTicking() {
-        DecentMenus.getInstance().getTicker().unregister(this.getId());
     }
 
 }
