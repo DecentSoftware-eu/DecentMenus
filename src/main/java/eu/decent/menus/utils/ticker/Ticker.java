@@ -1,8 +1,7 @@
 package eu.decent.menus.utils.ticker;
 
-import eu.decent.menus.DecentMenus;
+import eu.decent.menus.utils.S;
 import eu.decent.menus.utils.collection.DList;
-import org.bukkit.Bukkit;
 
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -20,22 +19,22 @@ public class Ticker {
      */
     public Ticker() {
         this.ticks = new AtomicLong(0);
-        this.tickedObjects = new DList<>(1024);
-        this.newTickedObjects = new DList<>(64);
-        this.removeTickedObjects = new DList<>(64);
+        this.tickedObjects = new DList<>(512);
+        this.newTickedObjects = new DList<>(32);
+        this.removeTickedObjects = new DList<>(32);
         this.performingTick = false;
-        this.taskId = Bukkit.getScheduler().scheduleAsyncRepeatingTask(DecentMenus.getInstance(), () -> {
+        this.taskId = S.scheduleAsync(() -> {
             if (!performingTick) {
                 tick();
             }
-        }, 1L, 5L);
+        }, 1L, 1L);
     }
 
     /**
      * Stop the ticker and unregister all ticked objects.
      */
     public void shutdown() {
-        Bukkit.getScheduler().cancelTask(taskId);
+        S.cancel(taskId);
         tickedObjects.clear();
         newTickedObjects.clear();
         removeTickedObjects.clear();
@@ -71,28 +70,23 @@ public class Ticker {
     private void tick() {
         performingTick = true;
 
-        // Tick all ticked objects
-        DExecutor e = DExecutor.create(tickedObjects.size());
+        // -- Tick all ticked objects
         synchronized (tickedObjects) {
             for (ITicked ticked : tickedObjects) {
-                e.queue(() -> {
-                    if (ticked.shouldTick(ticks.get())) {
-                        try {
-                            ticked.tick();
-                        } catch(Throwable t) {
-                            t.printStackTrace();
-                        }
-                    }
-                });
+                if (ticked.shouldTick(ticks.get())) {
+                    try {
+                        ticked.tick();
+                    } catch(Throwable ignored) {}
+                }
             }
         }
 
-        // Remove ticked objects
+        // -- Remove ticked objects
         synchronized(removeTickedObjects) {
             while(removeTickedObjects.hasElements()) {
                 String id = removeTickedObjects.popRandom();
                 for (int i = 0; i < tickedObjects.size(); i++) {
-                    if(tickedObjects.get(i).getId().equals(id)) {
+                    if (tickedObjects.get(i).getId().equals(id)) {
                         tickedObjects.remove(i);
                         break;
                     }
@@ -100,14 +94,15 @@ public class Ticker {
             }
         }
 
-        // Add new ticked objects
+        // -- Add new ticked objects
         synchronized (newTickedObjects) {
             while (newTickedObjects.hasElements()) {
                 tickedObjects.add(newTickedObjects.pop());
             }
         }
-        performingTick = false;
+
         ticks.incrementAndGet();
+        performingTick = false;
     }
 
 }
