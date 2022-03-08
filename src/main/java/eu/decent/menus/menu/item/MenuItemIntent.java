@@ -12,8 +12,6 @@ public enum MenuItemIntent {
     SHIFT_LEFT_CLICK(ClickType.SHIFT_LEFT),
     RIGHT_CLICK(ClickType.RIGHT),
     SHIFT_RIGHT_CLICK(ClickType.SHIFT_RIGHT),
-    WINDOW_BORDER_RIGHT_CLICK(ClickType.WINDOW_BORDER_RIGHT),
-    WINDOW_BORDER_LEFT_CLICK(ClickType.WINDOW_BORDER_LEFT),
     ;
 
     @Getter
