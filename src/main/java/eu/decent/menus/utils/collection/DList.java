@@ -2,52 +2,38 @@ package eu.decent.menus.utils.collection;
 
 import eu.decent.menus.utils.Common;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.function.Function;
+import java.util.*;
 
+@SuppressWarnings("unused")
 public class DList<T> extends ArrayList<T> {
 
-    public DList() {
-        super();
-    }
-
-    public DList(int cap) {
-        super(cap);
+    public DList(int initialCapacity) {
+        super(initialCapacity);
     }
 
     public DList(Collection<T> collection) {
         super();
-        if (collection == null) return;
-        for (T t : collection) {
-            add(t);
-        }
+        this.add(collection);
     }
 
     @SafeVarargs
     public DList(T... array) {
         super();
-        if (array == null) return;
-        for (T t : array) {
-            add(t);
-        }
+        this.add(array);
     }
 
     @Contract(mutates = "this")
     @SafeVarargs
-    public final void add(T @NotNull ... ts) {
-        for (T t : ts) {
-            add(t);
+    public final void add(T... ts) {
+        if (ts != null && ts.length > 0) {
+            this.addAll(Arrays.asList(ts));
         }
     }
 
-    public void add(@NotNull Collection<T> collection) {
-        for (T t : collection) {
-            add(t);
+    public void add(Collection<T> collection) {
+        if (collection != null && !collection.isEmpty()) {
+            this.addAll(collection);
         }
     }
 
@@ -72,7 +58,7 @@ public class DList<T> extends ArrayList<T> {
     /**
      * Pop the first item off this list and return it
      *
-     * @return the item or null if the list is empty
+     * @return The item or null if the list is empty
      */
     public T pop() {
         if (isEmpty()) return null;
@@ -82,13 +68,18 @@ public class DList<T> extends ArrayList<T> {
     /**
      * Pop the last item off this list and return it
      *
-     * @return the item or null if the list is empty
+     * @return The item or null if the list is empty
      */
     public T popLast() {
         if (isEmpty()) return null;
         return remove(lastIndex());
     }
 
+    /**
+     * Pop a random item from this list and return it.
+     *
+     * @return The item or null if the list is empty.
+     */
     public T popRandom() {
         if (isEmpty()) return null;
         if (size() == 1) {
@@ -97,10 +88,20 @@ public class DList<T> extends ArrayList<T> {
         return remove(randomIndex());
     }
 
+    /**
+     * Check whether this list is NOT empty.
+     *
+     * @return The requested boolean.
+     */
     public boolean isNotEmpty() {
         return !isEmpty();
     }
 
+    /**
+     * Check whether this list is NOT empty.
+     *
+     * @return The requested boolean.
+     */
     public boolean hasElements() {
         return !isEmpty();
     }
@@ -114,55 +115,111 @@ public class DList<T> extends ArrayList<T> {
         return size() - 1;
     }
 
+    /**
+     * Get a random index in bounds of this list.
+     *
+     * @return The index.
+     */
     public int randomIndex() {
         return Common.irand(0, size() - 1);
     }
 
+    /**
+     * Check whether this list has any duplicate items.
+     *
+     * @return The requested boolean.
+     */
     public boolean hasDuplicates() {
         return size() != new LinkedHashSet<>(this).size();
     }
 
-    public boolean hasIndex(int i) {
-        return i >= 0 && i < size();
+    /**
+     * Check whether the given index is in bounds of this list.
+     *
+     * @param index The index.
+     * @return The requested boolean.
+     */
+    public boolean inBounds(int index) {
+        return index >= 0 && index < size();
     }
 
+    /**
+     * Create a copy of this list and return it.
+     *
+     * @return The copy.
+     */
     public DList<T> copy() {
         return new DList<>(this);
     }
 
+    /**
+     * Sort this list.
+     *
+     * @return Instance of this.
+     */
     public DList<T> sort() {
         sort(null);
         return this;
     }
 
+    /**
+     * Create a copy of this list and sort it.
+     *
+     * @return The copy.
+     */
     public DList<T> sortCopy() {
         DList<T> list = copy();
         list.sort(null);
         return list;
     }
 
+    /**
+     * Shuffle this list.
+     *
+     * @return Instance of this.
+     */
     public DList<T> shuffle() {
         Collections.shuffle(this);
         return this;
     }
 
+    /**
+     * Create a copy of this list and shuffle it.
+     *
+     * @return The copy.
+     */
     public DList<T> shuffleCopy() {
         DList<T> list = copy();
         Collections.shuffle(list);
         return list;
     }
 
+    /**
+     * Reverse this list.
+     *
+     * @return Instance of this.
+     */
     public DList<T> reverse() {
         Collections.reverse(this);
         return this;
     }
 
+    /**
+     * Create a copy of this list and reverse it.
+     *
+     * @return The copy.
+     */
     public DList<T> reverseCopy() {
         DList<T> list = copy();
         Collections.reverse(list);
         return list;
     }
 
+    /**
+     * Create a copy of this list and parse all of its items to Strings.
+     *
+     * @return The copy.
+     */
     public DList<String> toStringList() {
         DList<String> list = new DList<>();
         for (T t : this) {
@@ -171,22 +228,18 @@ public class DList<T> extends ArrayList<T> {
         return list;
     }
 
+    /**
+     * Get a sublist.
+     *
+     * @param start The start index. (Including)
+     * @param end The end index. (Excluding)
+     * @return The sublist.
+     */
     @Override
     public DList<T> subList(int start, int end) {
         DList<T> list = new DList<>();
         for (int i = start; i < Math.min(size(), end); i++) {
             list.add(get(i));
-        }
-        return list;
-    }
-
-    public <R> DList<R> convert(Function<T, R> converter) {
-        DList<R> list = new DList<>();
-        for(T i : this) {
-            R r = converter.apply(i);
-            if(r != null) {
-                list.add(r);
-            }
         }
         return list;
     }

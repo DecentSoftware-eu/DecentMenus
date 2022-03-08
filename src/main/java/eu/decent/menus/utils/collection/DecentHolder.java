@@ -5,6 +5,7 @@ package eu.decent.menus.utils.collection;
  *
  * @param <T> Type of the held objects.
  */
+@SuppressWarnings("unused")
 public class DecentHolder<T> {
 
     /**
