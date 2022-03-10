@@ -42,7 +42,8 @@ public class MenuRegistry extends Registry<String, MenuModel> {
             menusDir = new File(PLUGIN.getDataFolder(), "menus");
         }
 
-        Common.log("Loading menus...");
+        long startMillis = System.currentTimeMillis();
+        Common.log("Loading menu(s)...");
         // Load all menu models
         int counter = 0;
         if (menusDir.exists() && menusDir.isDirectory()) {
@@ -60,7 +61,8 @@ public class MenuRegistry extends Registry<String, MenuModel> {
                 }
             }
         }
-        Common.log("Loaded %d menus!", counter);
+        long took = System.currentTimeMillis() - startMillis;
+        Common.log("Successfully loaded %d menu(s) in %d!", counter, took);
     }
 
     /**
