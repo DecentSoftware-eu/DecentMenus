@@ -1,4 +1,4 @@
-package eu.decent.menus.commands;
+package eu.decent.menus.api.commands;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

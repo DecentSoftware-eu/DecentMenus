@@ -1,11 +1,11 @@
-package eu.decent.menus.commands.impl;
+package eu.decent.menus.commands;
 
 import eu.decent.menus.Config;
 import eu.decent.menus.DecentMenus;
-import eu.decent.menus.commands.CommandHandler;
-import eu.decent.menus.commands.CommandInfo;
-import eu.decent.menus.commands.DecentCommand;
-import eu.decent.menus.commands.TabCompleteHandler;
+import eu.decent.menus.api.commands.CommandHandler;
+import eu.decent.menus.api.commands.CommandInfo;
+import eu.decent.menus.api.commands.DecentCommand;
+import eu.decent.menus.api.commands.TabCompleteHandler;
 
 @CommandInfo(
         permission = Config.ADMIN_PERM,

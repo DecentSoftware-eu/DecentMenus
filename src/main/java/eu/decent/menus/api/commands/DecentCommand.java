@@ -1,4 +1,4 @@
-package eu.decent.menus.commands;
+package eu.decent.menus.api.commands;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;

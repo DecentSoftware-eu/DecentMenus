@@ -1,4 +1,4 @@
-package eu.decent.menus.commands;
+package eu.decent.menus.api.commands;
 
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.utils.reflect.ReflectField;
