@@ -35,7 +35,7 @@ public class MenuRegistry extends Registry<String, MenuModel> {
     @Override
     public void reload() {
         // Clear existing menu models
-        clear();
+        this.clear();
 
         // Get the folder with all menu model files
         if (menusDir == null) {
@@ -72,7 +72,14 @@ public class MenuRegistry extends Registry<String, MenuModel> {
     public void clear() {
         super.clear();
 
-        // Close all menus
+        // -- Close all menus
+        this.closeAll();
+    }
+
+    /**
+     * Close all open menus.
+     */
+    public void closeAll() {
         Bukkit.getOnlinePlayers().forEach((p) -> {
             Inventory inventory = p.getOpenInventory().getTopInventory();
             InventoryHolder holder = inventory.getHolder();
