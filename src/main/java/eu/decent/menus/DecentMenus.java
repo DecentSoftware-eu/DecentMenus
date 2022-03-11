@@ -1,8 +1,8 @@
 package eu.decent.menus;
 
-import eu.decent.menus.commands.CommandManager;
-import eu.decent.menus.commands.impl.DecentMenusCommand;
-import eu.decent.menus.commands.impl.OpenMenuCommand;
+import eu.decent.menus.api.commands.CommandManager;
+import eu.decent.menus.commands.DecentMenusCommand;
+import eu.decent.menus.commands.OpenMenuCommand;
 import eu.decent.menus.menu.MenuListener;
 import eu.decent.menus.menu.MenuRegistry;
 import eu.decent.menus.player.PlayerListener;
