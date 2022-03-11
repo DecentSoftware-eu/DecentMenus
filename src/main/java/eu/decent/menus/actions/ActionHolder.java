@@ -48,7 +48,7 @@ public class ActionHolder extends DecentHolder<Action> {
             }
             Action action = Action.load(section);
             if (action != null) {
-                actionHolder.append(action);
+                actionHolder.add(action);
             }
         }
         return actionHolder;

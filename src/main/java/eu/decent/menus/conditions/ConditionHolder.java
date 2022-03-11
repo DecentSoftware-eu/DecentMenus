@@ -59,7 +59,7 @@ public class ConditionHolder extends DecentHolder<Condition> {
             }
             Condition condition = Condition.load(section);
             if (condition != null) {
-                conditionHolder.append(condition);
+                conditionHolder.add(condition);
             }
         }
         return conditionHolder;
