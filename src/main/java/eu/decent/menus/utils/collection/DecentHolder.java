@@ -1,5 +1,7 @@
 package eu.decent.menus.utils.collection;
 
+import org.jetbrains.annotations.Nullable;
+
 /**
  * This class represents an object that holds a list of something.
  *
@@ -35,7 +37,7 @@ public class DecentHolder<T> {
      * @param t The object.
      * @return Instance of this.
      */
-    public DecentHolder<T> append(T t) {
+    public DecentHolder<T> add(T t) {
         list.add(t);
         return this;
     }
@@ -46,7 +48,7 @@ public class DecentHolder<T> {
      * @param t The object.
      * @return Instance of this.
      */
-    public DecentHolder<T> prepend(T t) {
+    public DecentHolder<T> addFirst(T t) {
         list.addFirst(t);
         return this;
     }
@@ -83,8 +85,9 @@ public class DecentHolder<T> {
      * Remove the object at the specified index in this holder.
      *
      * @param index The index.
-     * @return The removed object.
+     * @return The removed object or null if index is out of bounds.
      */
+    @Nullable
     public T remove(int index) {
         if (inBounds(index)) {
             return list.remove(index);
@@ -96,8 +99,9 @@ public class DecentHolder<T> {
      * Get the object at the specified index in this holder.
      *
      * @param index The index.
-     * @return The object.
+     * @return The object or null if index is out of bounds.
      */
+    @Nullable
     public T get(int index) {
         if (inBounds(index)) {
             return list.get(index);
