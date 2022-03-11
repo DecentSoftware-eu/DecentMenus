@@ -1,13 +1,15 @@
 package eu.decent.menus.utils;
 
+import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Utility class with some useful methods related to inventories and item stacks.
+ * Utility class with some useful methods related to inventory and item stacks.
  */
+@UtilityClass
 public final class MenuUtils {
 
 	/**

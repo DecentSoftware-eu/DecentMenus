@@ -2,7 +2,6 @@ package eu.decent.menus.utils;
 
 import eu.decent.menus.utils.colors.IridiumColorAPI;
 import lombok.experimental.UtilityClass;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.logging.Level;
 
+/**
+ * Utility class with some useful methods.
+ */
 @UtilityClass
 public final class Common {
 
@@ -17,30 +19,41 @@ public final class Common {
      * 	General
      */
 
-    public static int irand(int f, int t) {
-        return f + (int) (Math.random() * ((t - f) + 1));
-    }
-
-    public static String formatSeconds(int seconds) {
-        return String.format("%d:%02d", seconds / 60, seconds % 60);
+    /**
+     * Generate a random integer between min and max.
+     *
+     * @param min The min value.
+     * @param max The max value.
+     * @return The random number.
+     */
+    public static int irand(int min, int max) {
+        return min + (int) (Math.random() * ((max - min) + 1));
     }
 
     /*
      * 	Colorize
      */
 
+    /**
+     * Colorize the given string replacing all color codes, hex colors, gradients and rainbows.
+     *
+     * @param string The string.
+     * @return The colorized string.
+     */
     @NotNull
     public static String colorize(String string) {
         return IridiumColorAPI.process(string);
     }
 
+    /**
+     * Colorize the given string list replacing all color codes, hex colors, gradients and rainbows.
+     *
+     * @param list The string list.
+     * @return The colorized string list.
+     */
     public static List<String> colorize(@NotNull List<String> list) {
         list.replaceAll(Common::colorize);
         return list;
-    }
-
-    public static String stripColors(String string) {
-        return ChatColor.stripColor(IridiumColorAPI.stripColorFormatting(string));
     }
 
     /*
