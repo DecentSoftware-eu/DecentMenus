@@ -30,7 +30,6 @@ public final class CFG {
             if (!file.getParentFile().mkdirs()) {
                 return null;
             }
-
             // -- Get the YamlConfiguration
             YamlConfiguration config = CFG.saveIntoConfigurationFromObject(object);
             if (!file.exists()) {
@@ -38,7 +37,6 @@ public final class CFG {
             } else {
                 config.load(file);
             }
-
             // -- Load & Save
             CFG.loadFromConfigurationToObject(object, config);
             CFG.saveIntoConfigurationFromObject(object).save(file);
@@ -69,8 +67,12 @@ public final class CFG {
             }
             f.setAccessible(true);
 
+            // -- Get the annotation
+            ConfigValue configValue = f.getAnnotation(ConfigValue.class);
+            String key = configValue.value();
+
+            // -- Save the value
             try {
-                String key = f.getAnnotation(ConfigValue.class).value();
                 if (Modifier.isStatic(f.getModifiers())) {
                     config.set(key, f.get(null));
                 } else if (!stat) {
