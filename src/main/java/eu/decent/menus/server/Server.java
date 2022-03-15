@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class represents a cached server.
@@ -19,6 +20,7 @@ public class Server extends Ticked {
 
     private final String name;
     private final Pinger pinger;
+    private final AtomicBoolean online;
     private PingerResponse data;
 
     /**
@@ -31,12 +33,13 @@ public class Server extends Ticked {
         super(20L);
         this.name = name;
         this.pinger = new Pinger(address);
-        this.update();
+        this.online = new AtomicBoolean(false);
+        this.startTicking();
     }
 
     @Override
     public void tick() {
-        update();
+        this.update();
     }
 
     /**
@@ -45,7 +48,9 @@ public class Server extends Ticked {
     public void update() {
         try {
             data = pinger.fetchData();
+            online.set(true);
         } catch (IOException e) {
+            online.set(false);
             e.printStackTrace();
         }
     }
@@ -65,7 +70,7 @@ public class Server extends Ticked {
      * @return The result boolean.
      */
     public boolean isOnline() {
-        return data != null && data.getPlayers().getMax() > 0;
+        return data != null && online.get();
     }
 
 }
