@@ -107,11 +107,11 @@ public class ConfigUtils {
 
         // -- Get yaw & pitch
         if (location != null) {
-            if (config.contains("yaw")) {
+            if (config.isDouble("yaw")) {
                 float yaw = (float) config.getDouble("yaw");
                 location.setYaw(yaw);
             }
-            if (config.contains("pitch")) {
+            if (config.isDouble("pitch")) {
                 float pitch = (float) config.getDouble("pitch");
                 location.setPitch(pitch);
             }
