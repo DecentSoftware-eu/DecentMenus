@@ -24,10 +24,24 @@ public final class Config {
      *  Options
      */
 
+    // -- General
+
+    @ConfigValue("check-for-updates")
+    public static boolean CHECK_FOR_UPDATES = true;
+
     // -- Defaults
 
     @ConfigValue("defaults.menu-title")
     public static String DEFAULT_MENU_TITLE = "Unnamed Menu";
+
+    // -- Date & Time
+
+    @ConfigValue("datetime.time-format")
+    public static String DATETIME_TIME_FORMAT = "HH:mm:ss";
+    @ConfigValue("datetime.date-format")
+    public static String DATETIME_DATE_FORMAT = "dd:MM:yyyy";
+    @ConfigValue("datetime.zone")
+    public static String DATETIME_ZONE = "GMT+0";
 
     // -- Messages
 
@@ -56,8 +70,16 @@ public final class Config {
     public static boolean PINGER_ENABLED = false;
     @ConfigValue(value = "pinger.update-interval", min = 20, max = 1200)
     public static long PINGER_UPDATE_INTERVAL = 20;
+    @ConfigValue(value = "pinger.timeout", min = 50, max = 5000)
+    public static int PINGER_TIMEOUT = 500;
     @ConfigValue("pinger.servers")
     public static List<String> PINGER_SERVERS = new ArrayList<>();
+    @ConfigValue("pinger.status.online")
+    public static String PINGER_STATUS_ONLINE = "&aOnline";
+    @ConfigValue("pinger.status.offline")
+    public static String PINGER_STATUS_OFFLINE = "&cOffline";
+    @ConfigValue("pinger.trim-motd")
+    public static boolean PINGER_TRIM_MOTD = true;
 
     // --
 
