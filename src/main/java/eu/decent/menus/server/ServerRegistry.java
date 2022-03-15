@@ -37,6 +37,15 @@ public class ServerRegistry extends Registry<String, Server> {
         }
     }
 
+    @Override
+    public void clear() {
+        // -- Stop the existing servers from ticking
+        for (Server server : getValues()) {
+            server.stopTicking();
+        }
+        super.clear();
+    }
+
     /**
      * Register a new server.
      *
