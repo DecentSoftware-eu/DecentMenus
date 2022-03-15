@@ -8,7 +8,6 @@ import eu.decent.menus.menu.MenuRegistry;
 import eu.decent.menus.player.PlayerListener;
 import eu.decent.menus.player.PlayerRegistry;
 import eu.decent.menus.server.ServerRegistry;
-import eu.decent.menus.utils.config.CFG;
 import eu.decent.menus.utils.ticker.Ticker;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -41,7 +40,8 @@ public final class DecentMenus extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        this.reload();
+        Config.reload();
+
         this.playerRegistry = new PlayerRegistry();
         this.serverRegistry = new ServerRegistry();
         this.menuRegistry = new MenuRegistry();
@@ -79,7 +79,11 @@ public final class DecentMenus extends JavaPlugin {
      * Reload this plugin.
      */
     public void reload() {
-        Config.CONFIG = CFG.load(Config.class, getConfigFile());
+        Config.reload();
+
+        this.menuRegistry.reload();
+        this.serverRegistry.reload();
+        this.playerRegistry.reload();
     }
 
     /**
