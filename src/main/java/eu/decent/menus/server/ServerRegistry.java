@@ -31,7 +31,8 @@ public class ServerRegistry extends Registry<String, Server> {
                 String serverAddress = spl[1];
                 int serverPort = Integer.parseInt(spl[2]);
                 // -- Register the server
-                Server server = new Server(serverName, new InetSocketAddress(serverAddress, serverPort));
+                InetSocketAddress inetSocketAddress = new InetSocketAddress(serverAddress, serverPort);
+                Server server = new Server(serverName, inetSocketAddress);
                 this.register(server);
             }
         }

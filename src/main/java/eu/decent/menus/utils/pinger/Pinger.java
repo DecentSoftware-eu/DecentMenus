@@ -1,6 +1,7 @@
 package eu.decent.menus.utils.pinger;
 
 import com.google.gson.Gson;
+import eu.decent.menus.Config;
 
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -17,7 +18,7 @@ public class Pinger {
 	 */
 
 	public Pinger(InetSocketAddress address) {
-		this(address, 1500);
+		this(address, Config.PINGER_TIMEOUT);
 	}
 
 	public Pinger(InetSocketAddress address, int timeout) {
