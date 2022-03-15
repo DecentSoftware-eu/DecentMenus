@@ -29,10 +29,10 @@ public class ActionSingleString extends Action {
     @Override
     public void execute(@NotNull PlayerProfile profile) {
         Player player = profile.getPlayer();
-        String parsedData = PAPI.setPlaceholders(player, data);
+        String processed = PAPI.setPlaceholders(player, data);
         switch (type) {
             case MESSAGE:
-                Common.tell(player, parsedData);
+                Common.tell(player, processed);
                 break;
             case BROADCAST:
                 for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
@@ -40,19 +40,19 @@ public class ActionSingleString extends Action {
                 }
                 break;
             case CHAT:
-                player.chat(Common.colorize(parsedData));
+                player.chat(Common.colorize(processed));
                 break;
             case COMMAND:
-                Bukkit.dispatchCommand(player, parsedData);
+                Bukkit.dispatchCommand(player, processed);
                 break;
             case CONSOLE:
-                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), parsedData);
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), processed);
                 break;
             case CONNECT:
-                BungeeUtils.connect(player, parsedData);
+                BungeeUtils.connect(player, processed);
                 break;
             case OPEN_MENU:
-                DecentMenus.getInstance().getMenuRegistry().openMenu(player, parsedData);
+                DecentMenus.getInstance().getMenuRegistry().openMenu(player, processed);
                 break;
             default: break;
         }
