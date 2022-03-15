@@ -26,35 +26,35 @@ public final class Config {
 
     // -- Defaults
 
-    @ConfigValue("defaults.menu_title")
+    @ConfigValue("defaults.menu-title")
     public static String DEFAULT_MENU_TITLE = "Unnamed Menu";
-    
+
     // -- Messages
 
     @ConfigValue("messages.prefix")
     public static String PREFIX = "&8[&3DecentMenus&8] &7";
     @ConfigValue("messages.usage")
     public static String USAGE = "{prefix}Use: &b/dm <args> &7or &b/openmenu <menu>.";
-    @ConfigValue("messages.no_perm")
+    @ConfigValue("messages.no-perm")
     public static String NO_PERM = "{prefix}&cYou are not allowed to do this.";
-    @ConfigValue("messages.unknown_sub_command")
+    @ConfigValue("messages.unknown-sub-command")
     public static String UNKNOWN_SUB_COMMAND = "{prefix}&cUnknown sub command.";
-    @ConfigValue("messages.menu_no_perm")
+    @ConfigValue("messages.menu-no-perm")
     public static String MENU_NO_PERM = "{prefix}You cannot open that menu.";
-    @ConfigValue("messages.menu_usage")
+    @ConfigValue("messages.menu-usage")
     public static String MENU_USAGE = "{prefix}Usage: &b/decentmenus <list|ver>";
-    @ConfigValue("messages.menu_open_usage")
+    @ConfigValue("messages.menu-open-usage")
     public static String MENU_OPEN_USAGE = "{prefix}Usage: &b/openmenu <menu>";
-    @ConfigValue("messages.menu_does_not_exist")
+    @ConfigValue("messages.menu-does-not-exist")
     public static String MENU_DOES_NOT_EXIST = "{prefix}Menu called '%s' doesn't exist.";
-    @ConfigValue("messages.menu_list")
+    @ConfigValue("messages.menu-list")
     public static String MENU_LIST = "{prefix}Menus: &b%s";
 
     // -- Pinger
 
     @ConfigValue("pinger.enabled")
     public static boolean PINGER_ENABLED = false;
-    @ConfigValue(value = "pinger.update_interval", min = 20, max = 1200)
+    @ConfigValue(value = "pinger.update-interval", min = 20, max = 1200)
     public static long PINGER_UPDATE_INTERVAL = 20;
     @ConfigValue("pinger.servers")
     public static List<String> PINGER_SERVERS = new ArrayList<>();
