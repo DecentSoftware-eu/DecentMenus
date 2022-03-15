@@ -6,6 +6,7 @@ import eu.decent.menus.utils.pinger.PingerResponse;
 import eu.decent.menus.utils.ticker.Ticked;
 import lombok.Getter;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -26,7 +27,7 @@ public class Server extends Ticked {
      * @param name Name of this server.
      * @param address The servers address.
      */
-    public Server(String name, InetSocketAddress address) {
+    public Server(@NotNull String name, @NotNull InetSocketAddress address) {
         super(20L);
         this.name = name;
         this.pinger = new Pinger(address);
@@ -54,7 +55,7 @@ public class Server extends Ticked {
      *
      * @param player The player.
      */
-    public void connect(Player player) {
+    public void connect(@NotNull Player player) {
         BungeeUtils.connect(player, name);
     }
 
