@@ -1,24 +1,32 @@
 package eu.decent.menus;
 
 import eu.decent.menus.utils.Common;
+import eu.decent.menus.utils.config.CFG;
 import eu.decent.menus.utils.config.ConfigValue;
+import lombok.Getter;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Configuration of DecentMenus plugin. (config.yml)
  */
 public final class Config {
 
-    public static YamlConfiguration CONFIG;
+    public static final String ADMIN_PERM = "ds.decentmenus.admin";
 
-    public static final String ADMIN_PERM = "decentmenus.admin";
+    @Getter
+    private static YamlConfiguration config;
 
     /*
-     *  Messages
+     *  Options
      */
 
-    @ConfigValue("prefix")
+    // -- Messages
+
+    @ConfigValue("messages.prefix")
     public static String PREFIX = "&8[&3DecentMenus&8] &7";
     @ConfigValue("messages.usage")
     public static String USAGE = "{prefix}Use: &b/dm <args> &7or &b/openmenu <menu>.";
@@ -36,6 +44,28 @@ public final class Config {
     public static String MENU_DOES_NOT_EXIST = "{prefix}Menu called '%s' doesn't exist.";
     @ConfigValue("messages.menu_list")
     public static String MENU_LIST = "{prefix}Menus: &b%s";
+
+    // -- Pinger
+
+    @ConfigValue("pinger.enabled")
+    public static boolean PINGER_ENABLED = false;
+    @ConfigValue(value = "pinger.update_interval", min = 20, max = 1200)
+    public static long PINGER_UPDATE_INTERVAL = 20;
+    @ConfigValue("pinger.servers")
+    public static List<String> PINGER_SERVERS = new ArrayList<>();
+
+    // --
+
+    /*
+     *  General Methods
+     */
+
+    /**
+     * Reload the configuration.
+     */
+    public static void reload() {
+        Config.config = CFG.load(Config.class, DecentMenus.getInstance().getConfigFile());
+    }
 
     /*
      *  Utility Methods
