@@ -19,9 +19,9 @@ public class Ticker {
      */
     public Ticker() {
         this.ticks = new AtomicLong(0);
-        this.tickedObjects = new DList<>(512);
-        this.newTickedObjects = new DList<>(32);
-        this.removeTickedObjects = new DList<>(32);
+        this.tickedObjects = new DList<>();
+        this.newTickedObjects = new DList<>();
+        this.removeTickedObjects = new DList<>();
         this.performingTick = false;
         this.taskId = S.scheduleAsync(() -> {
             if (!performingTick) {
@@ -73,10 +73,12 @@ public class Ticker {
         // -- Tick all ticked objects
         synchronized (tickedObjects) {
             for (ITicked ticked : tickedObjects) {
-                if (ticked.shouldTick(ticks.get())) {
-                    try {
+                try {
+                    if (ticked.shouldTick(ticks.get())) {
                         ticked.tick();
-                    } catch(Throwable ignored) {}
+                    }
+                } catch(Throwable t) {
+                    t.printStackTrace();
                 }
             }
         }
