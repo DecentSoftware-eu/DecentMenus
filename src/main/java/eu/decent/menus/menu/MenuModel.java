@@ -1,5 +1,6 @@
 package eu.decent.menus.menu;
 
+import eu.decent.menus.Config;
 import eu.decent.menus.actions.ActionHolder;
 import eu.decent.menus.conditions.ConditionHolder;
 import eu.decent.menus.menu.item.MenuItem;
@@ -108,7 +109,7 @@ public class MenuModel {
      */
     private void load() {
         // -- Load settings
-        this.title = config.getString("title", "Unnamed Menu");
+        this.title = config.getString("title", Config.DEFAULT_MENU_TITLE);
         this.size = config.getInt("size", -1);
         this.lines = config.getInt("lines", -1);
         this.slots = config.getStringList("slots");
