@@ -24,6 +24,11 @@ public final class Config {
      *  Options
      */
 
+    // -- Defaults
+
+    @ConfigValue("defaults.menu_title")
+    public static String DEFAULT_MENU_TITLE = "Unnamed Menu";
+    
     // -- Messages
 
     @ConfigValue("messages.prefix")
