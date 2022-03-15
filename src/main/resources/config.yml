@@ -1,0 +1,49 @@
+# # # # # # # # # # # # # # # # #
+#
+#  Welcome to DecentMenus config.yml.
+#
+# # # # # # # # # #
+
+defaults:
+  menu_title: 'Unnamed Menu'
+
+# # # # # # # # # # # # # # # # #
+#
+#  Pinger
+#
+#   - Setup servers, that will automatically be pinged by the plugin
+#   making it available to use built-in placeholders in order to display
+#   information about them like online players or status.
+#
+# # # # # # # # # #
+
+pinger:
+  enabled: true
+  # Update interval in ticks (20 ticks = 1 second)
+  update_interval: 20
+  # Format: <name>:<ip>:<port>
+  servers:
+    - 'Survival:127.0.0.1:25565'
+    - 'Lobby-01:127.0.0.1:25566'
+
+
+
+# # # # # # # # # # # # # # # # #
+#
+#  Messages
+#
+#   - You can edit any message here
+#
+# # # # # # # # # #
+
+messages:
+  # Use '{prefix}' in other messages, and it will be replaced with this.
+  prefix: '&8[&3DecentMenus&8] &7'
+  usage: '{prefix}Use: &b/dm <args> &7or &b/openmenu <menu>.'
+  no_perm: '{prefix}&cYou are not allowed to do this.'
+  unknown_sub_command: '{prefix}&cUnknown sub command.'
+  menu_no_perm: '{prefix}You cannot open that menu.'
+  menu_usage: '{prefix}Usage: &b/decentmenus <list|ver>'
+  menu_open_usage: '{prefix}Usage: &b/openmenu <menu>'
+  menu_does_not_exist: '{prefix}Menu called ''%s'' doesn''t exist.'
+  menu_list: '{prefix}Menus: &b%s'
