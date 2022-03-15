@@ -96,8 +96,7 @@ public class MenuItem {
         boolean globalConditionsMet = isAllowed(profile, MenuItemIntent.CLICK);
         if (globalConditionsMet) {
             // Check the specific conditions (per click type)
-            ClickType clickType = e.getClick();
-            MenuItemIntent menuItemIntent = MenuItemIntent.fromClickType(clickType);
+            MenuItemIntent menuItemIntent = MenuItemIntent.fromEvent(e);
             if (menuItemIntent != null) {
                 return isAllowed(profile, menuItemIntent);
             }
@@ -124,8 +123,7 @@ public class MenuItem {
         performActions(profile, MenuItemIntent.CLICK);
 
         // Execute the specific actions (per click type)
-        ClickType clickType = e.getClick();
-        MenuItemIntent menuItemIntent = MenuItemIntent.fromClickType(clickType);
+        MenuItemIntent menuItemIntent = MenuItemIntent.fromEvent(e);
         if (menuItemIntent != null) {
             performActions(profile, menuItemIntent);
         }
