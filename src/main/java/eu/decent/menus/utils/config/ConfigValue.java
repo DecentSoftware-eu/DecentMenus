@@ -11,4 +11,8 @@ public @interface ConfigValue {
 
     String value() default "";
 
+    double min() default 0;
+
+    double max() default Double.MAX_VALUE;
+
 }
