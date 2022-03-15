@@ -233,7 +233,7 @@ public class Menu extends Ticked implements InventoryHolder {
                     ? menuItem.getItemWrapper()
                     : menuItem.getErrorItemWrapper();
             if (itemWrapper != null) {
-                inventory.setItem(slot, itemWrapper.toItemStack(player));
+                inventory.setItem(slot, itemWrapper.toItemStack(player, (s) -> menuItem.processString(player, s)));
                 items[slot] = menuItem;
             }
         }

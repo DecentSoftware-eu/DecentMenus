@@ -2,12 +2,14 @@ package eu.decent.menus.menu.item;
 
 import eu.decent.menus.actions.ActionHolder;
 import eu.decent.menus.conditions.ConditionHolder;
+import eu.decent.menus.hooks.PAPI;
 import eu.decent.menus.player.PlayerProfile;
+import eu.decent.menus.utils.Common;
 import eu.decent.menus.utils.item.ItemWrapper;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.event.inventory.ClickType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -127,6 +129,25 @@ public class MenuItem {
         if (menuItemIntent != null) {
             performActions(profile, menuItemIntent);
         }
+    }
+
+    /**
+     * Process the given string for the given player replacing all placeholders and colors.
+     *
+     * @param player The player.
+     * @param string The string.
+     * @return The processed string.
+     */
+    public String processString(@NotNull Player player, @NotNull String string) {
+        // -- Replace built-in placeholders
+        string = string.replace("{player}", player.getName());
+        string = string.replace("{display_name}", player.getDisplayName());
+        // TODO: built-in placeholders (server, player, etc..)
+
+        // -- Replace PAPI placeholders & colors
+        string = PAPI.setPlaceholders(player, string);
+        string = Common.colorize(string);
+        return string;
     }
 
 }
