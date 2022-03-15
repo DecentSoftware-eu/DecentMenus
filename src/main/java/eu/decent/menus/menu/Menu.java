@@ -212,7 +212,7 @@ public class Menu extends Ticked implements InventoryHolder {
             stopTicking();
             menuModel.performActions(owner, MenuIntent.CLOSE);
         } else {
-            // If the player is not allowed to close this menu, open in back.
+            // If the player is not allowed to close this menu, open it back.
             open();
         }
     }
