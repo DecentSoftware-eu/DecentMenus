@@ -30,16 +30,20 @@ public final class CFG {
     public static YamlConfiguration load(@NotNull Object object, @NotNull File file) {
         try {
             // -- Prepare the dirs
-            if (!file.getParentFile().mkdirs()) {
+            if (!file.getParentFile().isDirectory() && !file.getParentFile().mkdirs()) {
                 return null;
             }
             // -- Get the YamlConfiguration
             YamlConfiguration config = CFG.saveIntoConfigurationFromObject(object);
             if (!file.exists()) {
+                // -- If the missing file is a resource, use it
                 InputStream is = DecentMenus.getInstance().getResource(file.getName());
                 if (is != null) {
                     InputStreamReader isr = new InputStreamReader(is);
                     config = YamlConfiguration.loadConfiguration(isr);
+                    config.save(file);
+                    CFG.loadFromConfigurationToObject(object, config);
+                    return config;
                 }
                 config.save(file);
             } else {
@@ -80,6 +84,10 @@ public final class CFG {
             String key = configValue.value();
 
             // -- Save the value
+            if (config.contains(key)) {
+                continue;
+            }
+
             try {
                 if (Modifier.isStatic(f.getModifiers())) {
                     config.set(key, f.get(null));
