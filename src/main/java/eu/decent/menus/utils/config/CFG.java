@@ -1,11 +1,14 @@
 package eu.decent.menus.utils.config;
 
+import eu.decent.menus.DecentMenus;
 import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -33,6 +36,11 @@ public final class CFG {
             // -- Get the YamlConfiguration
             YamlConfiguration config = CFG.saveIntoConfigurationFromObject(object);
             if (!file.exists()) {
+                InputStream is = DecentMenus.getInstance().getResource(file.getName());
+                if (is != null) {
+                    InputStreamReader isr = new InputStreamReader(is);
+                    config = YamlConfiguration.loadConfiguration(isr);
+                }
                 config.save(file);
             } else {
                 config.load(file);
