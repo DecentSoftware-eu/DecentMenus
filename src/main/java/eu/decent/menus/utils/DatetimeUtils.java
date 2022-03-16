@@ -48,7 +48,7 @@ public class DatetimeUtils {
         try {
             formatter = DateTimeFormatter.ofPattern(pattern);
         } catch (Throwable ignored) {
-            formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+            formatter = DateTimeFormatter.ISO_INSTANT;
         }
         // Apply time zone
         try {
