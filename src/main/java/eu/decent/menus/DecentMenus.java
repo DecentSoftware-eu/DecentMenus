@@ -5,6 +5,7 @@ import eu.decent.menus.commands.DecentMenusCommand;
 import eu.decent.menus.commands.OpenMenuCommand;
 import eu.decent.menus.menu.MenuListener;
 import eu.decent.menus.menu.MenuRegistry;
+import eu.decent.menus.placeholders.PlaceholderRegistry;
 import eu.decent.menus.player.PlayerListener;
 import eu.decent.menus.player.PlayerRegistry;
 import eu.decent.menus.server.ServerRegistry;
@@ -28,6 +29,7 @@ public final class DecentMenus extends JavaPlugin {
     private static DecentMenus instance;
     private PlayerRegistry playerRegistry;
     private ServerRegistry serverRegistry;
+    private PlaceholderRegistry placeholderRegistry;
     private MenuRegistry menuRegistry;
     private CommandManager commandManager;
     private Ticker ticker;
@@ -44,6 +46,7 @@ public final class DecentMenus extends JavaPlugin {
 
         this.playerRegistry = new PlayerRegistry();
         this.serverRegistry = new ServerRegistry();
+        this.placeholderRegistry = new PlaceholderRegistry();
         this.menuRegistry = new MenuRegistry();
         this.commandManager = new CommandManager();
         this.ticker = new Ticker();

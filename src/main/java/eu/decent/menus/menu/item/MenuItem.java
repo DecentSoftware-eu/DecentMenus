@@ -1,5 +1,6 @@
 package eu.decent.menus.menu.item;
 
+import eu.decent.menus.DecentMenus;
 import eu.decent.menus.actions.ActionHolder;
 import eu.decent.menus.conditions.ConditionHolder;
 import eu.decent.menus.hooks.PAPI;
@@ -140,12 +141,10 @@ public class MenuItem {
      */
     public String processString(@NotNull Player player, @NotNull String string) {
         // -- Replace built-in placeholders
-        string = string.replace("{player}", player.getName());
-        string = string.replace("{display_name}", player.getDisplayName());
-        // TODO: built-in placeholders (server, player, etc..)
-
-        // -- Replace PAPI placeholders & colors
+        string = DecentMenus.getInstance().getPlaceholderRegistry().replacePlaceholders(player, string);
+        // -- Replace PAPI placeholders
         string = PAPI.setPlaceholders(player, string);
+        // -- Replace colors
         string = Common.colorize(string);
         return string;
     }
