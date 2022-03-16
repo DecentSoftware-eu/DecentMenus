@@ -9,6 +9,7 @@ import eu.decent.menus.placeholders.PlaceholderRegistry;
 import eu.decent.menus.player.PlayerListener;
 import eu.decent.menus.player.PlayerRegistry;
 import eu.decent.menus.server.ServerRegistry;
+import eu.decent.menus.utils.BungeeUtils;
 import eu.decent.menus.utils.ticker.Ticker;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -61,7 +62,7 @@ public final class DecentMenus extends JavaPlugin {
         commandManager.registerCommand(new OpenMenuCommand());
 
         // Register Bungee channel
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        BungeeUtils.init();
     }
 
     @Override
@@ -73,7 +74,7 @@ public final class DecentMenus extends JavaPlugin {
         this.commandManager.destroy();
 
         // Unregister Bungee channel
-        getServer().getMessenger().unregisterOutgoingPluginChannel(this, "BungeeCord");
+        BungeeUtils.shutdown();
 
         HandlerList.unregisterAll(this);
     }
