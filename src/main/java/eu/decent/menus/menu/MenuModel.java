@@ -189,7 +189,7 @@ public class MenuModel {
      *  Utility Methods
      */
 
-    private void executeForEachSection(@NotNull ConfigurationSection config,
+    private static void executeForEachSection(@NotNull ConfigurationSection config,
                                        @NotNull String path,
                                        @NotNull BiConsumer<String, ConfigurationSection> execute) {
         ConfigurationSection actionsSection = config.getConfigurationSection(path);

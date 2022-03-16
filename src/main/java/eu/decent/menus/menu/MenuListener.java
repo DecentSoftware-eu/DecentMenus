@@ -31,7 +31,7 @@ public class MenuListener implements Listener {
         executeIfMenu(e.getInventory(), (menu) -> menu.onClose(e));
     }
 
-    private void executeIfMenu(Inventory inventory, @NotNull Consumer<Menu> consumer) {
+    private static void executeIfMenu(Inventory inventory, @NotNull Consumer<Menu> consumer) {
         if (inventory != null) {
             InventoryHolder holder = inventory.getHolder();
             if (holder instanceof Menu) {
