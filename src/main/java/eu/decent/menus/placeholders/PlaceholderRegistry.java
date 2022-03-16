@@ -1,6 +1,10 @@
 package eu.decent.menus.placeholders;
 
+import eu.decent.menus.Config;
+import eu.decent.menus.DecentMenus;
+import eu.decent.menus.server.Server;
 import eu.decent.menus.utils.collection.Registry;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,6 +17,7 @@ import java.util.regex.Pattern;
  */
 public class PlaceholderRegistry extends Registry<String, Placeholder> {
 
+    private static final DecentMenus PLUGIN = DecentMenus.getInstance();
     private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{(\\S+(:\\S+)?)}");
 
     public PlaceholderRegistry() {
@@ -21,26 +26,6 @@ public class PlaceholderRegistry extends Registry<String, Placeholder> {
 
     @Override
     public void reload() {}
-
-    /**
-     * Register the default built-in placeholders.
-     */
-    private void registerDefaultPlaceholders() {
-        this.register("player", new Placeholder(
-                (player, argument) -> player.getName(),
-                "You")
-        );
-        this.register("displayName", new Placeholder(
-                (player, argument) -> player.getDisplayName(),
-                "You")
-        );
-        this.register("ping", new Placeholder(
-                (player, argument) -> String.valueOf(player.getPing()),
-                "0")
-        );
-        // TODO: implement all placeholders
-
-    }
 
     /**
      * Replace all registered placeholders, that the given String contains.
@@ -53,7 +38,9 @@ public class PlaceholderRegistry extends Registry<String, Placeholder> {
         Matcher matcher = PLACEHOLDER_PATTERN.matcher(string);
         while (matcher.find()) {
             String replacement = this.getReplacement(player, matcher.group(1).trim());
-            string = string.replace(matcher.group(), String.valueOf(replacement));
+            if (replacement != null) {
+                string = string.replace(matcher.group(), replacement);
+            }
             matcher = PLACEHOLDER_PATTERN.matcher(string);
         }
         return string;
@@ -86,6 +73,117 @@ public class PlaceholderRegistry extends Registry<String, Placeholder> {
             return replacement == null ? placeholder.getDefaultReplacement() : replacement;
         }
         return null;
+    }
+
+    /**
+     * Register the default built-in placeholders.
+     */
+    private void registerDefaultPlaceholders() {
+        // -- Player placeholders
+
+        this.register("player", new Placeholder(
+                (player, argument) -> player.getName(),
+                "You")
+        );
+        this.register("display_name", new Placeholder(
+                (player, argument) -> player.getDisplayName(),
+                "You")
+        );
+        this.register("ping", new Placeholder(
+                (player, argument) -> String.valueOf(player.getPing()),
+                "0")
+        );
+
+        // -- Global placeholders
+
+        // -- World placeholders
+
+        this.register("online", new Placeholder(
+                (player, argument) -> {
+                    int online;
+                    if (argument != null) {
+                        // -- Given worlds
+                        online = PlaceholderCommons.getFromWorldOrWorldsInt(
+                                argument, (world) -> world.getPlayers().size()
+                        );
+                    } else if (player != null) {
+                        // -- Player world
+                        online = player.getWorld().getPlayers().size();
+                    } else {
+                        online = -1;
+                    }
+                    return online >= 0 ? String.valueOf(online) : null;
+                }, "0")
+        );
+
+        // -- Server & Pinger placeholders
+
+        this.register("online", new Placeholder(
+                (player, argument) -> {
+                    if (argument != null) {
+                        // -- Pinged server
+                        int online = PlaceholderCommons.getFromServerOrServersInt(
+                                argument, (server) -> server.getData().getPlayers().getOnline()
+                        );
+                        if (online >= 0) {
+                            return String.valueOf(online);
+                        }
+                    } else {
+                        // -- This server
+                        return String.valueOf(Bukkit.getOnlinePlayers().size());
+                    }
+                    return null;
+                }, "0")
+        );
+        this.register("max_players", new Placeholder(
+                (player, argument) -> {
+                    if (argument != null) {
+                        // -- Pinged server
+                        int online = PlaceholderCommons.getFromServerOrServersInt(
+                                argument, (server) -> server.getData().getPlayers().getMax()
+                        );
+                        if (online >= 0) {
+                            return String.valueOf(online);
+                        }
+                    } else {
+                        // -- This server
+                        return String.valueOf(Bukkit.getServer().getMaxPlayers());
+                    }
+                    return null;
+                }, "0")
+        );
+        this.register("motd", new Placeholder(
+                (player, argument) -> {
+                    if (argument != null) {
+                        // -- Pinged server
+                        Server server = PLUGIN.getServerRegistry().get(argument);
+                        if (server != null && server.isOnline()) {
+                            return server.getData().getDescription();
+                        }
+                    } else {
+                        // -- This server
+                        return Bukkit.getServer().getMotd();
+                    }
+                    return null;
+                }, "")
+        );
+        this.register("status", new Placeholder(
+                (player, argument) -> {
+                    if (argument != null) {
+                        // -- Pinged server
+                        Server server = PLUGIN.getServerRegistry().get(argument);
+                        if (server != null && server.isOnline()) {
+                            return Config.PINGER_STATUS_ONLINE;
+                        }
+                    } else {
+                        // -- This server
+                        return Config.PINGER_STATUS_ONLINE;
+                    }
+                    return null;
+                }, Config.PINGER_STATUS_OFFLINE)
+        );
+        // TODO: implement all placeholders
+
     }
 
 }
