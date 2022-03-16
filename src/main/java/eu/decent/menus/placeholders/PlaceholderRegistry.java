@@ -3,6 +3,7 @@ package eu.decent.menus.placeholders;
 import eu.decent.menus.Config;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.server.Server;
+import eu.decent.menus.utils.BungeeUtils;
 import eu.decent.menus.utils.DatetimeUtils;
 import eu.decent.menus.utils.collection.Registry;
 import org.bukkit.Bukkit;
@@ -108,7 +109,7 @@ public class PlaceholderRegistry extends Registry<String, Placeholder> {
 
         // -- World placeholders
 
-        this.register("online", new Placeholder(
+        this.register("world", new Placeholder(
                 (player, argument) -> {
                     int online;
                     if (argument != null) {
@@ -128,18 +129,12 @@ public class PlaceholderRegistry extends Registry<String, Placeholder> {
 
         // -- Server & Pinger placeholders
 
-        this.register("online_bungee", new Placeholder(
-                (player, argument) -> {
-
-                    return null;
-                }, "0")
-        );
         this.register("online", new Placeholder(
                 (player, argument) -> {
                     if (argument != null) {
                         // -- Pinged server
                         int online = PlaceholderCommons.getFromServerOrServersInt(
-                                argument, (server) -> server.getData().getPlayers().getOnline()
+                                player, argument, (server) -> server.getData().getPlayers().getOnline()
                         );
                         if (online >= 0) {
                             return String.valueOf(online);
@@ -156,7 +151,7 @@ public class PlaceholderRegistry extends Registry<String, Placeholder> {
                     if (argument != null) {
                         // -- Pinged server
                         int online = PlaceholderCommons.getFromServerOrServersInt(
-                                argument, (server) -> server.getData().getPlayers().getMax()
+                                player, argument, (server) -> server.getData().getPlayers().getMax()
                         );
                         if (online >= 0) {
                             return String.valueOf(online);

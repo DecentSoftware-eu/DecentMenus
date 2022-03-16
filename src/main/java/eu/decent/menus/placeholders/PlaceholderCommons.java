@@ -1,12 +1,16 @@
 package eu.decent.menus.placeholders;
 
+import eu.decent.menus.Config;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.server.Server;
+import eu.decent.menus.utils.BungeeUtils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 
 @UtilityClass
@@ -14,22 +18,36 @@ public class PlaceholderCommons {
 
     private static final DecentMenus PLUGIN = DecentMenus.getInstance();
 
-    public static int getFromServerOrServersInt(@NotNull String argument, @NotNull Function<Server, Integer> getValue) {
+    public static int getFromServerOrServersInt(Player player, @NotNull String argument, @NotNull Function<Server, Integer> getValue) {
         // -- Get from multiple servers
         if (argument.contains(",")) {
             int total = 0;
             for (String s : argument.split(",")) {
-                Server server = PLUGIN.getServerRegistry().get(argument);
-                if (server != null && server.isOnline()) {
-                    total += getValue.apply(server);
+                if (Config.PINGER_ENABLED && PLUGIN.getServerRegistry().contains(s)) {
+                    Server server = PLUGIN.getServerRegistry().get(s);
+                    if (server != null && server.isOnline()) {
+                        total += getValue.apply(server);
+                    }
+                } else if (player != null) {
+                    // -- If not pinged, get from bungee
+                    try {
+                        total += BungeeUtils.sendPlayerCountRequest(player, s).get();
+                    } catch (InterruptedException | ExecutionException ignored) {}
                 }
             }
             return total;
         }
         // -- Get from one server
-        Server server = PLUGIN.getServerRegistry().get(argument);
-        if (server != null && server.isOnline()) {
-            return getValue.apply(server);
+        if (Config.PINGER_ENABLED && PLUGIN.getServerRegistry().contains(argument)) {
+            Server server = PLUGIN.getServerRegistry().get(argument);
+            if (server != null && server.isOnline()) {
+                return getValue.apply(server);
+            }
+        } else if (player != null) {
+            // -- If not pinged, get from bungee
+            try {
+                return BungeeUtils.sendPlayerCountRequest(player, argument).get();
+            } catch (InterruptedException | ExecutionException ignored) {}
         }
         return -1;
     }
