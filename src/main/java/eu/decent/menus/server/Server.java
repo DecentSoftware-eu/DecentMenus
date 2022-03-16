@@ -1,6 +1,7 @@
 package eu.decent.menus.server;
 
 import eu.decent.menus.utils.BungeeUtils;
+import eu.decent.menus.utils.S;
 import eu.decent.menus.utils.pinger.Pinger;
 import eu.decent.menus.utils.pinger.PingerResponse;
 import eu.decent.menus.utils.ticker.Ticked;
@@ -46,13 +47,15 @@ public class Server extends Ticked {
      * Fetch the data using pinger.
      */
     public void update() {
-        try {
-            data = pinger.fetchData();
-            online.set(true);
-        } catch (IOException e) {
-            online.set(false);
-            e.printStackTrace();
-        }
+        S.async(() -> {
+            try {
+                data = pinger.fetchData();
+                online.set(true);
+            } catch (IOException e) {
+                online.set(false);
+                e.printStackTrace();
+            }
+        });
     }
 
     /**
