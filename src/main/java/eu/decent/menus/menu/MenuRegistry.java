@@ -62,7 +62,7 @@ public class MenuRegistry extends Registry<String, MenuModel> {
             }
         }
         long took = System.currentTimeMillis() - startMillis;
-        Common.log("Successfully loaded %d menu(s) in %d!", counter, took);
+        Common.log("Successfully loaded %d menu(s) in %d ms!", counter, took);
     }
 
     /**
