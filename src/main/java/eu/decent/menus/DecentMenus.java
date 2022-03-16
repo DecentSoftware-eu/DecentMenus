@@ -61,7 +61,6 @@ public final class DecentMenus extends JavaPlugin {
         commandManager.registerCommand(new DecentMenusCommand());
         commandManager.registerCommand(new OpenMenuCommand());
 
-        // Register Bungee channel
         BungeeUtils.init();
     }
 
@@ -73,9 +72,7 @@ public final class DecentMenus extends JavaPlugin {
         this.playerRegistry.shutdown();
         this.commandManager.destroy();
 
-        // Unregister Bungee channel
         BungeeUtils.shutdown();
-
         HandlerList.unregisterAll(this);
     }
 

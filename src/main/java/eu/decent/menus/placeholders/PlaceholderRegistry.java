@@ -3,7 +3,6 @@ package eu.decent.menus.placeholders;
 import eu.decent.menus.Config;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.server.Server;
-import eu.decent.menus.utils.BungeeUtils;
 import eu.decent.menus.utils.DatetimeUtils;
 import eu.decent.menus.utils.collection.Registry;
 import org.bukkit.Bukkit;
