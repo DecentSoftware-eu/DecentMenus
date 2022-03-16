@@ -3,6 +3,7 @@ package eu.decent.menus.placeholders;
 import eu.decent.menus.Config;
 import eu.decent.menus.DecentMenus;
 import eu.decent.menus.server.Server;
+import eu.decent.menus.utils.DatetimeUtils;
 import eu.decent.menus.utils.collection.Registry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -96,6 +97,15 @@ public class PlaceholderRegistry extends Registry<String, Placeholder> {
 
         // -- Global placeholders
 
+        this.register("time", new Placeholder(
+                (player, argument) -> DatetimeUtils.getTimeFormatted(),
+                "-")
+        );
+        this.register("date", new Placeholder(
+                (player, argument) -> DatetimeUtils.getDateFormatted(),
+                "-")
+        );
+
         // -- World placeholders
 
         this.register("online", new Placeholder(
@@ -118,6 +128,12 @@ public class PlaceholderRegistry extends Registry<String, Placeholder> {
 
         // -- Server & Pinger placeholders
 
+        this.register("online_bungee", new Placeholder(
+                (player, argument) -> {
+
+                    return null;
+                }, "0")
+        );
         this.register("online", new Placeholder(
                 (player, argument) -> {
                     if (argument != null) {
