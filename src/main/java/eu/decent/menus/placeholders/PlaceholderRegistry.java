@@ -192,8 +192,6 @@ public class PlaceholderRegistry extends Registry<String, Placeholder> {
                     return null;
                 }, Config.PINGER_STATUS_OFFLINE)
         );
-        // TODO: implement all placeholders
-
     }
 
 }
