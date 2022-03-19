@@ -18,6 +18,7 @@ public class DecentMenusCommand extends DecentCommand {
     public DecentMenusCommand() {
         super("decentmenus", Config.MENU_USAGE);
 
+        addSubCommand(new ReloadSubCommand());
         addSubCommand(new ListSubCommand());
         addSubCommand(new VersionSubCommand());
     }
@@ -27,11 +28,11 @@ public class DecentMenusCommand extends DecentCommand {
         return (sender, args) -> {
             if (sender.hasPermission(Config.ADMIN_PERM)) {
                 if (args.length == 0) {
-                    Config.send(sender, Config.MENU_USAGE);
+                    Config.tell(sender, Config.MENU_USAGE);
                     return true;
                 }
-                Config.send(sender, Config.UNKNOWN_SUB_COMMAND);
-                Config.send(sender, Config.MENU_USAGE);
+                Config.tell(sender, Config.UNKNOWN_SUB_COMMAND);
+                Config.tell(sender, Config.MENU_USAGE);
             } else {
                 Config.sendVersionMessage(sender);
             }
@@ -42,6 +43,35 @@ public class DecentMenusCommand extends DecentCommand {
     @Override
     public TabCompleteHandler getTabCompleteHandler() {
         return null;
+    }
+
+    @CommandInfo(
+            permission = Config.ADMIN_PERM,
+            usage = "/decentmenus reload",
+            description = "Reloads the plugin."
+    )
+    static class ReloadSubCommand extends DecentCommand {
+
+        public ReloadSubCommand() {
+            super("reload", null);
+        }
+
+        @Override
+        public CommandHandler getCommandHandler() {
+            return (sender, args) -> {
+                long startTime = System.currentTimeMillis();
+                DecentMenus.getInstance().reload();
+                long took = System.currentTimeMillis() - startTime;
+                Config.tell(sender, Config.MENU_RELOADED.replace("{ms}", String.valueOf(took)));
+                return true;
+            };
+        }
+
+        @Override
+        public TabCompleteHandler getTabCompleteHandler() {
+            return null;
+        }
+
     }
 
     @CommandInfo(
@@ -59,7 +89,7 @@ public class DecentMenusCommand extends DecentCommand {
         public CommandHandler getCommandHandler() {
             return (sender, args) -> {
                 String[] menus = DecentMenus.getInstance().getMenuRegistry().getKeys().toArray(new String[0]);
-                Config.send(sender, Config.MENU_LIST, String.join(", ", menus));
+                Config.tell(sender, Config.MENU_LIST, String.join(", ", menus));
                 return true;
             };
         }

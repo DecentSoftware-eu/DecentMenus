@@ -61,6 +61,8 @@ public final class Config {
     public static String MENU_OPEN_USAGE = "{prefix}Usage: &b/openmenu <menu>";
     @ConfigValue("messages.menu-does-not-exist")
     public static String MENU_DOES_NOT_EXIST = "{prefix}Menu called '%s' doesn't exist.";
+    @ConfigValue("messages.menu-reloaded")
+    public static String MENU_RELOADED = "{prefix}Successfully reloaded! &b(Took {ms} ms)";
     @ConfigValue("messages.menu-list")
     public static String MENU_LIST = "{prefix}Menus: &b%s";
 
@@ -106,7 +108,7 @@ public final class Config {
      * @param message The message.
      * @param args Arguments for java string formatting.
      */
-    public static void send(CommandSender sender, String message, Object... args) {
+    public static void tell(CommandSender sender, String message, Object... args) {
         message = message.replace("{prefix}", PREFIX);
         Common.tell(sender, message, args);
     }

@@ -22,7 +22,7 @@ public class CommandValidator {
 	@Nullable
 	public static Player getPlayer(CommandSender sender) {
 		if (!(sender instanceof Player)) {
-			Config.send(sender, Config.NO_PERM);
+			Config.tell(sender, Config.NO_PERM);
 			return null;
 		}
 		return (Player) sender;
@@ -61,12 +61,12 @@ public class CommandValidator {
 	 */
 	public static boolean canExecute(CommandSender sender, @NotNull CommandBase commandBase) {
 		if (commandBase.isPlayerOnly() && !(sender instanceof Player)) {
-			Config.send(sender, Config.NO_PERM);
+			Config.tell(sender, Config.NO_PERM);
 			return false;
 		}
 
 		if (commandBase.getPermission() != null && !commandBase.getPermission().isEmpty() && !sender.hasPermission(commandBase.getPermission())) {
-			Config.send(sender, Config.NO_PERM);
+			Config.tell(sender, Config.NO_PERM);
 			return false;
 		}
 		return true;

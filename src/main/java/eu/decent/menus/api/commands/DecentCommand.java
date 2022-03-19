@@ -71,7 +71,7 @@ public abstract class DecentCommand extends Command implements CommandBase {
 				}
 			}
 		} else if (getMinArgs() > 0) {
-			Config.send(sender, Config.USAGE);
+			Config.tell(sender, Config.USAGE);
 			return true;
 		}
 

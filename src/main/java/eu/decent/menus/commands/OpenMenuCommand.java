@@ -33,11 +33,11 @@ public class OpenMenuCommand extends DecentCommand {
             MenuRegistry menuRegistry = DecentMenus.getInstance().getMenuRegistry();
             if (menuRegistry.contains(args[0])) {
                 if (!menuRegistry.openMenu((Player) sender, args[0])) {
-                    Config.send(sender, Config.MENU_NO_PERM, args[0]);
+                    Config.tell(sender, Config.MENU_NO_PERM, args[0]);
                 }
                 return true;
             }
-            Config.send(sender, Config.MENU_DOES_NOT_EXIST, args[0]);
+            Config.tell(sender, Config.MENU_DOES_NOT_EXIST, args[0]);
             return true;
         };
     }
