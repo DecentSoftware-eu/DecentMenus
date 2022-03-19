@@ -89,7 +89,7 @@ public class BungeeUtils {
         return future;
     }
 
-    private class BungeeListener implements PluginMessageListener {
+    private static class BungeeListener implements PluginMessageListener {
 
         @Override
         public void onPluginMessageReceived(@NotNull String channel, @NotNull Player player, byte[] message) {
