@@ -136,10 +136,7 @@ public class Menu extends Ticked implements InventoryHolder {
      * Close this menu for the owning player if allowed.
      */
     public void close() {
-        // If the player is not allowed to close this menu, don't close.
-        if (menuModel.isAllowed(owner, MenuIntent.CLOSE)) {
-            owner.getPlayer().closeInventory();
-        }
+        owner.getPlayer().closeInventory();
     }
 
     @Override
@@ -160,7 +157,7 @@ public class Menu extends Ticked implements InventoryHolder {
         event.setCancelled(true);
 
         ClickType clickType = event.getClick();
-        int slot = event.getSlot();
+        int slot = event.getRawSlot();
 
         // -- Call the MenuClickEvent
         MenuClickEvent menuClickEvent = new MenuClickEvent(this, clickType, slot);
