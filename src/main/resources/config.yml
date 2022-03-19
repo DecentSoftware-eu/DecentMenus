@@ -70,4 +70,5 @@ messages:
   menu-usage: '{prefix}Usage: &b/decentmenus <list|ver>'
   menu-open-usage: '{prefix}Usage: &b/openmenu <menu>'
   menu-does-not-exist: '{prefix}Menu called ''%s'' doesn''t exist.'
+  menu-reloaded: '{prefix}Successfully reloaded! &b(Took {ms} ms)'
   menu-list: '{prefix}Menus: &b%s'
