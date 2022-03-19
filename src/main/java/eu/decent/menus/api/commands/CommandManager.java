@@ -17,9 +17,15 @@ import java.util.Set;
 
 public class CommandManager {
 
-    private final Map<String, DecentCommand> commands = new HashMap<>();
-    @Getter @Setter
+    private final Map<String, DecentCommand> commands;
+
+    @Getter
+    @Setter
     private DecentCommand mainCommand;
+
+    public CommandManager() {
+        this.commands = new HashMap<>();
+    }
 
     /*
      *  General Methods
@@ -74,7 +80,7 @@ public class CommandManager {
         if (command == null) return;
         SimpleCommandMap commandMap = GET_COMMAND_MAP_METHOD.invoke(DecentMenus.getInstance().getServer());
         CommandManager.unregister(command);
-        commandMap.register("DecentHolograms", command);
+        commandMap.register("DecentMenus", command);
     }
 
     public static void unregister(Command command) {
