@@ -43,6 +43,23 @@ public final class Config {
     @ConfigValue("datetime.zone")
     public static String DATETIME_ZONE = "GMT+0";
 
+    // -- Pinger
+
+    @ConfigValue("pinger.enabled")
+    public static boolean PINGER_ENABLED = false;
+    @ConfigValue(value = "pinger.update-interval", min = 20, max = 1200)
+    public static long PINGER_UPDATE_INTERVAL = 20;
+    @ConfigValue(value = "pinger.timeout", min = 50, max = 5000)
+    public static int PINGER_TIMEOUT = 500;
+    @ConfigValue("pinger.servers")
+    public static List<String> PINGER_SERVERS = new ArrayList<>();
+    @ConfigValue("pinger.status.online")
+    public static String PINGER_STATUS_ONLINE = "&aOnline";
+    @ConfigValue("pinger.status.offline")
+    public static String PINGER_STATUS_OFFLINE = "&cOffline";
+    @ConfigValue("pinger.trim-motd")
+    public static boolean PINGER_TRIM_MOTD = true;
+
     // -- Messages
 
     @ConfigValue("messages.prefix")
@@ -65,25 +82,6 @@ public final class Config {
     public static String MENU_RELOADED = "{prefix}Successfully reloaded! &b(Took {ms} ms)";
     @ConfigValue("messages.menu-list")
     public static String MENU_LIST = "{prefix}Menus: &b%s";
-
-    // -- Pinger
-
-    @ConfigValue("pinger.enabled")
-    public static boolean PINGER_ENABLED = false;
-    @ConfigValue(value = "pinger.update-interval", min = 20, max = 1200)
-    public static long PINGER_UPDATE_INTERVAL = 20;
-    @ConfigValue(value = "pinger.timeout", min = 50, max = 5000)
-    public static int PINGER_TIMEOUT = 500;
-    @ConfigValue("pinger.servers")
-    public static List<String> PINGER_SERVERS = new ArrayList<>();
-    @ConfigValue("pinger.status.online")
-    public static String PINGER_STATUS_ONLINE = "&aOnline";
-    @ConfigValue("pinger.status.offline")
-    public static String PINGER_STATUS_OFFLINE = "&cOffline";
-    @ConfigValue("pinger.trim-motd")
-    public static boolean PINGER_TRIM_MOTD = true;
-
-    // --
 
     /*
      *  General Methods
