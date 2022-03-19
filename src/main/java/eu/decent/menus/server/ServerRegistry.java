@@ -1,6 +1,7 @@
 package eu.decent.menus.server;
 
 import eu.decent.menus.Config;
+import eu.decent.menus.utils.Common;
 import eu.decent.menus.utils.collection.Registry;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,6 +14,10 @@ import java.net.InetSocketAddress;
  */
 public class ServerRegistry extends Registry<String, Server> {
 
+    public ServerRegistry() {
+        this.reload();
+    }
+
     /**
      * Reload all servers.
      */
@@ -20,7 +25,10 @@ public class ServerRegistry extends Registry<String, Server> {
     public void reload() {
         this.clear();
 
-        if (Config.PINGER_ENABLED) {
+        if (Config.PINGER_ENABLED && !Config.PINGER_SERVERS.isEmpty()) {
+            long startMillis = System.currentTimeMillis();
+            Common.log("Loading server(s)...");
+            int counter = 0;
             for (String serverString : Config.PINGER_SERVERS) {
                 if (!serverString.matches("\\S+:(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3}):\\d{1,5}")) {
                     continue;
@@ -34,7 +42,10 @@ public class ServerRegistry extends Registry<String, Server> {
                 InetSocketAddress inetSocketAddress = new InetSocketAddress(serverAddress, serverPort);
                 Server server = new Server(serverName, inetSocketAddress);
                 this.register(server);
+                counter++;
             }
+            long took = System.currentTimeMillis() - startMillis;
+            Common.log("Successfully loaded %d server(s) in %d ms!", counter, took);
         }
     }
 
