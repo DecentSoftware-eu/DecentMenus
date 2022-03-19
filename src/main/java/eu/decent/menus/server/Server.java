@@ -53,7 +53,6 @@ public class Server extends Ticked {
                 online.set(true);
             } catch (IOException e) {
                 online.set(false);
-                e.printStackTrace();
             }
         });
     }

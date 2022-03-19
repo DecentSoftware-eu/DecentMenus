@@ -45,12 +45,12 @@ public final class DecentMenus extends JavaPlugin {
     public void onEnable() {
         Config.reload();
 
+        this.ticker = new Ticker();
         this.playerRegistry = new PlayerRegistry();
         this.serverRegistry = new ServerRegistry();
         this.placeholderRegistry = new PlaceholderRegistry();
         this.menuRegistry = new MenuRegistry();
         this.commandManager = new CommandManager();
-        this.ticker = new Ticker();
 
         // Register listeners
         PluginManager pm = Bukkit.getPluginManager();
@@ -66,9 +66,9 @@ public final class DecentMenus extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.ticker.shutdown();
         this.menuRegistry.shutdown();
         this.serverRegistry.shutdown();
+        this.ticker.shutdown();
         this.playerRegistry.shutdown();
         this.commandManager.destroy();
 
