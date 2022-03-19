@@ -17,9 +17,9 @@ slots:
 conditions:
   DISPLAY:
     some_random_name:
-      type: stringequals
-      compare: d0by
-      input: '%player_name%'
+      type: equals
+      compare: 1
+      input: 1
 
 # -- Actions
 actions:
@@ -27,6 +27,9 @@ actions:
     some_random_name:
       type: sound
       sound: BLOCK_BEACON_ACTIVATE
+    some_random_name_1:
+      type: message
+      message: 'You opened a menu!'
 
 # -- Items
 items:
@@ -49,22 +52,22 @@ items:
         print_click_type:
           type: message
           message: '&6Click Type:'
-      RIGHT:
+      RIGHT_CLICK:
         print_click_type:
           type: message
           message:
             - '  &eRight!'
-      SHIFT_RIGHT:
+      SHIFT_RIGHT_CLICK:
         print_click_type:
           type: message
           message:
             - '  &eShift Right!'
-      LEFT:
+      LEFT_CLICK:
         print_click_type:
           type: message
           message:
             - '  &eLeft!'
-      SHIFT_LEFT:
+      SHIFT_LEFT_CLICK:
         print_click_type:
           type: message
           message:
@@ -95,4 +98,4 @@ items:
       material: BARRIER
       name: 'You are not allowed to see this!'
       lore:
-        - 'Conditions to see this weren''t met for you.'
+        - 'You can''t see this.'
