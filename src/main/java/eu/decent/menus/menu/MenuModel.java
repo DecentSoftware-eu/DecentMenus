@@ -17,10 +17,7 @@ import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 /**
@@ -41,6 +38,7 @@ public class MenuModel {
     private int size;
     private int lines;
     private List<String> slots;
+    private List<String> openCommands;
     private boolean updating;
     private int updateInterval;
 
@@ -115,6 +113,7 @@ public class MenuModel {
         this.slots = config.getStringList("slots");
         this.updating = config.getBoolean("updating", true);
         this.updateInterval = config.getInt("update_interval", 20);
+        this.openCommands = config.getStringList("open_commands");
 
         // -- Load conditions
         executeForEachSection(config, "conditions", (key, section) -> {
