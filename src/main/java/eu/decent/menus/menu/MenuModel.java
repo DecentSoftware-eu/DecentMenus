@@ -17,7 +17,10 @@ import lombok.Setter;
 import org.bukkit.configuration.ConfigurationSection;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 
 /**
@@ -161,7 +164,7 @@ public class MenuModel {
                 });
 
                 // -- Load item actions
-                executeForEachSection(itemSection, "conditions", (sectionKey, section) -> {
+                executeForEachSection(itemSection, "actions", (sectionKey, section) -> {
                     MenuItemIntent menuItemIntent = MenuItemIntent.fromString(sectionKey);
                     if (menuItemIntent != null) {
                         ActionHolder actionHolder = ActionHolder.load(section);
