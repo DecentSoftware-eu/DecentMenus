@@ -78,11 +78,8 @@ public class Menu extends Ticked implements InventoryHolder {
             return;
         }
 
-        Map<String, MenuItem> itemMap = menuModel.getMenuItemMap();
         String title = Common.colorize(menuModel.getTitle());
         int size = menuModel.getInventorySize();
-
-        items = new MenuItem[size];
 
         // -- Create & open the inventory if not open yet
         InventoryHolder playerTopInventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
@@ -97,6 +94,24 @@ public class Menu extends Ticked implements InventoryHolder {
             menuModel.performActions(owner, MenuIntent.OPEN);
             startTicking();
             Bukkit.getPluginManager().callEvent(new MenuOpenEvent(this));
+        }
+        this.update();
+    }
+
+    /**
+     * Update the contents of this menu.
+     */
+    public void update() {
+        Player player = owner.getPlayer();
+        Map<String, MenuItem> itemMap = menuModel.getMenuItemMap();
+        int size = menuModel.getInventorySize();
+
+        this.items = new MenuItem[size];
+
+        // -- Create & open the inventory if not open yet
+        InventoryHolder playerTopInventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
+        if (inventory == null || !equals(playerTopInventoryHolder) || inventory.getSize() != size) {
+            return;
         }
 
         // -- Clear the inventory
@@ -141,7 +156,7 @@ public class Menu extends Ticked implements InventoryHolder {
 
     @Override
     public void tick() {
-        this.open();
+        this.update();
     }
 
     /*
@@ -200,13 +215,14 @@ public class Menu extends Ticked implements InventoryHolder {
      */
     @SuppressWarnings("unused")
     public void onClose(@NotNull InventoryCloseEvent event) {
+        stopTicking();
+        getOwner().setOpenMenu(null);
+
         // -- Call the MenuCloseEvent
         MenuCloseEvent menuCloseEvent = new MenuCloseEvent(this);
         Bukkit.getPluginManager().callEvent(menuCloseEvent);
 
         if (menuModel.isAllowed(owner, MenuIntent.CLOSE) && !menuCloseEvent.isCancelled()) {
-            getOwner().setOpenMenu(null);
-            stopTicking();
             menuModel.performActions(owner, MenuIntent.CLOSE);
         } else {
             // If the player is not allowed to close this menu, open it back.
