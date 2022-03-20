@@ -139,7 +139,7 @@ public final class Common {
     /**
      * Send a message to given CommandSender.
      * <p>
-     *     This method will colorize the message and formats given arguments to the message.
+     *     This method will colorize the message and format the given arguments into it.
      * </p>
      *
      * @param player The CommandSender receiving the message.
