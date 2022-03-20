@@ -7,16 +7,16 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ConditionDistance extends Condition {
+public class DistanceCondition extends Condition {
 
     private final Location location;
     private final double maxDistanceSquared;
 
-    public ConditionDistance(@NotNull Location location, double maxDistance) {
+    public DistanceCondition(@NotNull Location location, double maxDistance) {
         this(false, location, maxDistance);
     }
 
-    public ConditionDistance(boolean inverted, @NotNull Location location, double maxDistance) {
+    public DistanceCondition(boolean inverted, @NotNull Location location, double maxDistance) {
         super(inverted);
         this.location = location;
         this.maxDistanceSquared = maxDistance * maxDistance;

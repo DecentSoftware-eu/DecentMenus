@@ -1,4 +1,4 @@
 package eu.decent.menus.conditions.impl;
 
-public class ConditionMoney {
+public class JavascriptCondition {
 }

@@ -5,15 +5,15 @@ import eu.decent.menus.player.PlayerProfile;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ConditionExp extends Condition {
+public class ExpCondition extends Condition {
 
     private final int minLevel;
 
-    public ConditionExp(int minLevel) {
+    public ExpCondition(int minLevel) {
         this(false, minLevel);
     }
 
-    public ConditionExp(boolean inverted, int minLevel) {
+    public ExpCondition(boolean inverted, int minLevel) {
         super(inverted);
         this.minLevel = minLevel;
     }

@@ -6,17 +6,17 @@ import eu.decent.menus.hooks.PAPI;
 import eu.decent.menus.player.PlayerProfile;
 import org.jetbrains.annotations.NotNull;
 
-public class ConditionComparing extends Condition {
+public class ComparingCondition extends Condition {
 
     private final ConditionType type;
     private final String compare;
     private final String input;
 
-    public ConditionComparing(@NotNull ConditionType type, @NotNull String compare, @NotNull String input) {
+    public ComparingCondition(@NotNull ConditionType type, @NotNull String compare, @NotNull String input) {
         this(false, type, compare, input);
     }
 
-    public ConditionComparing(boolean inverted, @NotNull ConditionType type, @NotNull String compare, @NotNull String input) {
+    public ComparingCondition(boolean inverted, @NotNull ConditionType type, @NotNull String compare, @NotNull String input) {
         super(inverted);
         this.type = type;
         this.compare = compare;

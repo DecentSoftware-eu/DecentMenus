@@ -1,9 +1,9 @@
 package eu.decent.menus.conditions;
 
 import eu.decent.menus.actions.ActionHolder;
-import eu.decent.menus.conditions.impl.ConditionComparing;
-import eu.decent.menus.conditions.impl.ConditionPermission;
-import eu.decent.menus.conditions.impl.ConditionRegex;
+import eu.decent.menus.conditions.impl.ComparingCondition;
+import eu.decent.menus.conditions.impl.PermissionCondition;
+import eu.decent.menus.conditions.impl.RegexCondition;
 import eu.decent.menus.player.PlayerProfile;
 import lombok.Getter;
 import lombok.Setter;
@@ -78,20 +78,20 @@ public abstract class Condition {
                 if (config.isString("compare") && config.isString("input")) {
                     String compare = config.getString("compare", "");
                     String input = config.getString("input", "");
-                    condition = new ConditionComparing(inverted, type, compare, input);
+                    condition = new ComparingCondition(inverted, type, compare, input);
                 }
                 break;
             case PERMISSION:
                 if (config.isString("permission")) {
                     String permission = config.getString("permission", "");
-                    condition = new ConditionPermission(inverted, permission);
+                    condition = new PermissionCondition(inverted, permission);
                 }
                 break;
             case REGEX:
                 if (config.isString("regex") && config.isString("input")) {
                     String regex = config.getString("regex", "");
                     String input = config.getString("input", "");
-                    condition = new ConditionRegex(inverted, Pattern.compile(regex), input);
+                    condition = new RegexCondition(inverted, Pattern.compile(regex), input);
                 }
                 break;
             // TODO finish
