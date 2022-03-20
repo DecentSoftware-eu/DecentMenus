@@ -77,13 +77,11 @@ public class Menu extends Ticked implements InventoryHolder {
         if (player == null || !menuModel.isAllowed(owner, MenuIntent.OPEN)) {
             return;
         }
-
         String title = Common.colorize(menuModel.getTitle());
         int size = menuModel.getInventorySize();
 
-        // -- Create & open the inventory if not open yet
-        InventoryHolder playerTopInventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
-        if (inventory == null || !equals(playerTopInventoryHolder) || inventory.getSize() != size) {
+        // -- Create & open the inventory if not open
+        if (isClosed()) {
             if (!Bukkit.isPrimaryThread()) {
                 S.run(this::open);
                 return;
@@ -102,45 +100,45 @@ public class Menu extends Ticked implements InventoryHolder {
      * Update the contents of this menu.
      */
     public void update() {
+        // -- Don't update if not open
+        if (isClosed()) {
+            return;
+        }
+
         Player player = owner.getPlayer();
         Map<String, MenuItem> itemMap = menuModel.getMenuItemMap();
         int size = menuModel.getInventorySize();
-
         this.items = new MenuItem[size];
-
-        // -- Create & open the inventory if not open yet
-        InventoryHolder playerTopInventoryHolder = player.getOpenInventory().getTopInventory().getHolder();
-        if (inventory == null || !equals(playerTopInventoryHolder) || inventory.getSize() != size) {
-            return;
-        }
 
         // -- Clear the inventory
         inventory.clear();
 
-        // -- Add all items from layout
-        List<String> slots = menuModel.getSlots();
-        if (slots != null && !slots.isEmpty()) {
-            for (int i = 0; i < slots.size(); i++) {
-                String line = slots.get(i);
-                char[] chars = line.toCharArray();
-                for (int j = 0; j < chars.length; j++) {
-                    String ch = String.valueOf(chars[j]);
-                    if (!itemMap.containsKey(ch)) {
-                        continue;
-                    }
-                    MenuItem menuItem = itemMap.get(ch);
-                    if (menuItem != null) {
-                        int slot = prepareSlot(menuItem, i * 9 + j);
-                        addMenuItemToInventoryIfPossible(player, menuItem, slot);
+        if (!itemMap.isEmpty()) {
+            // -- Add all items from layout
+            List<String> slots = menuModel.getSlots();
+            if (slots != null && !slots.isEmpty()) {
+                for (int i = 0; i < slots.size(); i++) {
+                    String line = slots.get(i);
+                    char[] chars = line.toCharArray();
+                    for (int j = 0; j < chars.length; j++) {
+                        String ch = String.valueOf(chars[j]);
+                        if (!itemMap.containsKey(ch)) {
+                            continue;
+                        }
+                        MenuItem menuItem = itemMap.get(ch);
+                        if (menuItem != null) {
+                            int slot = prepareSlot(menuItem, i * 9 + j);
+                            addMenuItemToInventoryIfPossible(player, menuItem, slot);
+                        }
                     }
                 }
             }
-        }
 
-        // -- Add all the other items
-        for (MenuItem menuItem : itemMap.values()) {
-            int slot = prepareSlot(menuItem, menuItem.getSlot());
-            addMenuItemToInventoryIfPossible(player, menuItem, slot);
+            // -- Add all the other items
+            for (MenuItem menuItem : itemMap.values()) {
+                int slot = prepareSlot(menuItem, menuItem.getSlot());
+                addMenuItemToInventoryIfPossible(player, menuItem, slot);
+            }
         }
 
         // -- Update inventory contents
@@ -152,6 +150,17 @@ public class Menu extends Ticked implements InventoryHolder {
      */
     public void close() {
         owner.getPlayer().closeInventory();
+    }
+
+    /**
+     * Check whether this menu is currently open.
+     *
+     * @return The requested boolean.
+     */
+    public boolean isClosed() {
+        Player player = owner.getPlayer();
+        InventoryHolder holder = player.getOpenInventory().getTopInventory().getHolder();
+        return inventory == null || !equals(holder) || inventory.getSize() != menuModel.getInventorySize();
     }
 
     @Override
