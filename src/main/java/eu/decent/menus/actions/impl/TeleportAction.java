@@ -6,15 +6,15 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ActionTeleport extends Action {
+public class TeleportAction extends Action {
 
     private final Location location;
 
-    public ActionTeleport(@NotNull Location location) {
+    public TeleportAction(@NotNull Location location) {
         this.location = location;
     }
 
-    public ActionTeleport(long delay, double chance, @NotNull Location location) {
+    public TeleportAction(long delay, double chance, @NotNull Location location) {
         super(delay, chance);
         this.location = location;
     }

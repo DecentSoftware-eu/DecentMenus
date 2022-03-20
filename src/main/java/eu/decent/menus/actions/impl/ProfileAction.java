@@ -7,15 +7,15 @@ import eu.decent.menus.player.PlayerProfile;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ActionProfile extends Action {
+public class ProfileAction extends Action {
 
     private final ActionType type;
 
-    public ActionProfile(@NotNull ActionType type) {
+    public ProfileAction(@NotNull ActionType type) {
         this.type = type;
     }
 
-    public ActionProfile(long delay, double chance, @NotNull ActionType type) {
+    public ProfileAction(long delay, double chance, @NotNull ActionType type) {
         super(delay, chance);
         this.type = type;
     }

@@ -9,18 +9,18 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class ActionSound extends Action {
+public class SoundAction extends Action {
 
     private final ActionType type;
     private final Sound sound;
     private final float volume;
     private final float pitch;
 
-    public ActionSound(@NotNull ActionType type, @NotNull Sound sound, float volume, float pitch) {
+    public SoundAction(@NotNull ActionType type, @NotNull Sound sound, float volume, float pitch) {
         this(0, -1, type, sound, volume, pitch);
     }
 
-    public ActionSound(long delay, double chance, @NotNull ActionType type, @NotNull Sound sound, float volume, float pitch) {
+    public SoundAction(long delay, double chance, @NotNull ActionType type, @NotNull Sound sound, float volume, float pitch) {
         super(delay, chance);
         this.type = type;
         this.sound = sound;
