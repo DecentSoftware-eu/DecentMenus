@@ -82,17 +82,23 @@ public class Menu extends Ticked implements InventoryHolder {
 
         // -- Create & open the inventory if not open
         if (isClosed()) {
+            // Run sync
             if (!Bukkit.isPrimaryThread()) {
                 S.run(this::open);
                 return;
             }
+            // Open the inventory
             inventory = Bukkit.createInventory(this, size, title);
             player.openInventory(inventory);
             owner.setOpenMenu(this);
+            // Perform open actions
             menuModel.performActions(owner, MenuIntent.OPEN);
+            // Start ticking
             startTicking();
+            // Call open event
             Bukkit.getPluginManager().callEvent(new MenuOpenEvent(this));
         }
+        // -- Update contents
         this.update();
     }
 
