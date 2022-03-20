@@ -159,7 +159,7 @@ public class Menu extends Ticked implements InventoryHolder {
     }
 
     /**
-     * Check whether this menu is currently open.
+     * Check whether this menu is currently closed.
      *
      * @return The requested boolean.
      */
